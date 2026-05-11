@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hystan — Relatórios PDF em segundos</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -146,6 +147,12 @@
       position: relative;
       transition: background .2s;
     }
+    .ph {
+  font-size: 32px; /* Define um tamanho visível */
+  display: inline-block;
+  color: var(--dark); /* Garante que não esteja branco no fundo branco */
+  vertical-align: middle;
+}
     .step-card:first-child { border-radius: 16px 0 0 16px; }
     .step-card:last-child { border-radius: 0 16px 16px 0; }
     .step-card:hover { background: #ececea; }
@@ -300,25 +307,24 @@
     <p class="section-sub">Sem complicação. Sem formatação manual. Só resultados.</p>
   </div>
   <div class="steps-grid reveal">
-    <div class="step-card">
-      <div class="step-num">01</div>
-      <div class="step-icon">📊</div>
-      <div class="step-title">Faça upload da planilha</div>
-      <p class="step-desc">Arraste ou selecione seu arquivo Excel (.xlsx). A Hystan lê automaticamente os dados de atendimentos, serviços e valores.</p>
-    </div>
-    <div class="step-card">
-      <div class="step-num">02</div>
-      <div class="step-icon">📅</div>
-      <div class="step-title">Escolha o período</div>
-      <p class="step-desc">Selecione um mês específico, um intervalo personalizado ou o ano completo. O filtro é automático e preciso.</p>
-    </div>
-    <div class="step-card">
-      <div class="step-num">03</div>
-      <div class="step-icon">📄</div>
-      <div class="step-title">Baixe o PDF pronto</div>
-      <p class="step-desc">Em segundos, seu relatório formatado com tabela, totais e identidade visual está pronto para enviar ao cliente ou contador.</p>
-    </div>
+  <div class="step-card">
+    <div class="step-num">01</div>
+    <i class="ph ph-presentation-chart"></i> <div class="step-title">Faça upload da planilha</div>
+    <p class="step-desc">Arraste ou selecione seu arquivo Excel (.xlsx). A Hystan lê automaticamente os dados de atendimentos, serviços e valores.</p>
   </div>
+  
+  <div class="step-card">
+    <div class="step-num">02</div>
+    <i class="ph ph-calendar-blank"></i> <div class="step-title">Escolha o período</div>
+    <p class="step-desc">Selecione um mês específico, um intervalo personalizado ou o ano completo. O filtro é automático e preciso.</p>
+  </div>
+  
+  <div class="step-card">
+    <div class="step-num">03</div>
+    <i class="ph ph-file-pdf"></i> <div class="step-title">Baixe o PDF pronto</div>
+    <p class="step-desc">Em segundos, seu relatório formatado com tabela, totais e identidade visual está pronto para enviar ao cliente ou contador.</p>
+  </div>
+</div>
 </section>
 
 <!-- PREÇOS -->
@@ -332,7 +338,7 @@
     <div class="plan-card reveal">
       <div class="plan-badge">Básico</div>
       <div class="plan-name">Para autônomos</div>
-      <div class="plan-price">R$29<span>/mês</span></div>
+      <div class="plan-price">R$37<span>/mês</span></div>
       <div class="plan-desc">Ideal para quem está começando</div>
       <ul class="plan-features">
         <li>Até 20 relatórios por mês</li>
@@ -345,7 +351,7 @@
     <div class="plan-card featured reveal">
       <div class="plan-badge">Pro</div>
       <div class="plan-name">Para empresas</div>
-      <div class="plan-price">R$59<span>/mês</span></div>
+      <div class="plan-price">R$57<span>/mês</span></div>
       <div class="plan-desc">Para quem precisa de mais volume</div>
       <ul class="plan-features">
         <li>Relatórios ilimitados</li>
