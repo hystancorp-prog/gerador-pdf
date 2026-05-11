@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gerador de PDF</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f5f5f5;
+           display: flex; justify-content: center;
+           align-items: center; min-height: 100vh; padding: 20px; }
+    .card { background: white; border-radius: 12px;
+            padding: 36px; width: 100%; max-width: 480px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    p  { color: #666; font-size: 14px; margin-bottom: 28px; }
+    label { display: block; font-size: 13px; font-weight: 500;
+            margin-bottom: 6px; color: #333; }
+    input, select { width: 100%; padding: 10px 12px;
+            border: 1px solid #ddd; border-radius: 8px;
+            font-size: 14px; margin-bottom: 16px;
+            background: white; color: #333; }
+
+    /* Tabs de período */
+    .period-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .tab-btn {
+      flex: 1; min-width: 80px; padding: 8px 4px;
+      border: 1px solid #ddd; border-radius: 8px;
+      background: white; font-size: 13px; cursor: pointer;
+      color: #555; transition: all .15s; text-align: center;
+    }
+    .tab-btn.active {
+      background: #1a1a1a; color: white; border-color: #1a1a1a;
+    }
+
+    /* Painéis de período */
+    .period-panel { display: none; }
+    .period-panel.active { display: block; }
+
+    /* Meses em grade */
+    .months-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+    .month-btn {
+      padding: 10px 4px; border: 1px solid #ddd; border-radius: 8px;
+      background: white; font-size: 13px; cursor: pointer;
+      color: #555; transition: all .15s; text-align: center;
+    }
+    .month-btn.active { background: #1a1a1a; color: white; border-color: #1a1a1a; }
+    .month-btn:hover:not(.active) { border-color: #999; }
+
+    .row { display: flex; gap: 12px; }
+    .row > div { flex: 1; }
+
+    button[type=submit] {
+      width: 100%; padding: 12px; background: #1a1a1a;
+      color: white; border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 500; cursor: pointer; margin-top: 4px;
+    }
+    button[type=submit]:hover { background: #333; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h1>Gerador de PDF</h1>
+  <p>Preencha os dados e envie a planilha para gerar o relatório.</p>
+
+  <form action="/gerar-pdf" method="post" enctype="multipart/form-data" onsubmit="return prepareForm()">
+
+    <label>Nome da empresa</label>
+    <input type="text" name="empresa" placeholder="Ex: Clínica Saúde" required>
+
+    <label>Ano</label>
+    <input type="number" name="ano" id="ano" value="2026" required>
+
+    <!-- Campos ocultos enviados ao backend -->
+    <input type="hidden" name="mes" id="mesInput" value="0">
+    <input type="hidden" name="mesInicio" id="mesInicioInput" value="1">
+    <input type="hidden" name="mesFim" id="mesFimInput" value="12">
+    <input type="hidden" name="modo" id="modoInput" value="mes">
+
+    <!-- Tabs -->
+    <label>Período</label>
+    <div class="period-tabs">
+      <button type="button" class="tab-btn active" onclick="showTab('mes')">Mês específico</button>
+      <button type="button" class="tab-btn" onclick="showTab('intervalo')">Intervalo</button>
+      <button type="button" class="tab-btn" onclick="showTab('ano')">Ano inteiro</button>
+    </div>
+
+    <!-- Painel: mês específico -->
+    <div class="period-panel active" id="panel-mes">
+      <div class="months-grid">
+        <button type="button" class="month-btn active" data-mes="1"  onclick="selectMonth(this)">Janeiro</button>
+        <button type="button" class="month-btn" data-mes="2"  onclick="selectMonth(this)">Fevereiro</button>
+        <button type="button" class="month-btn" data-mes="3"  onclick="selectMonth(this)">Março</button>
+        <button type="button" class="month-btn" data-mes="4"  onclick="selectMonth(this)">Abril</button>
+        <button type="button" class="month-btn" data-mes="5"  onclick="selectMonth(this)">Maio</button>
+        <button type="button" class="month-btn" data-mes="6"  onclick="selectMonth(this)">Junho</button>
+        <button type="button" class="month-btn" data-mes="7"  onclick="selectMonth(this)">Julho</button>
+        <button type="button" class="month-btn" data-mes="8"  onclick="selectMonth(this)">Agosto</button>
+        <button type="button" class="month-btn" data-mes="9"  onclick="selectMonth(this)">Setembro</button>
+        <button type="button" class="month-btn" data-mes="10" onclick="selectMonth(this)">Outubro</button>
+        <button type="button" class="month-btn" data-mes="11" onclick="selectMonth(this)">Novembro</button>
+        <button type="button" class="month-btn" data-mes="12" onclick="selectMonth(this)">Dezembro</button>
+      </div>
+    </div>
+
+    <!-- Painel: intervalo -->
+    <div class="period-panel" id="panel-intervalo">
+      <div class="row">
+        <div>
+          <label>De</label>
+          <select id="mesInicioSelect">
+            <option value="1">Janeiro</option>
+            <option value="2">Fevereiro</option>
+            <option value="3">Março</option>
+            <option value="4">Abril</option>
+            <option value="5">Maio</option>
+            <option value="6">Junho</option>
+            <option value="7">Julho</option>
+            <option value="8">Agosto</option>
+            <option value="9">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+          </select>
+        </div>
+        <div>
+          <label>Até</label>
+          <select id="mesFimSelect">
+            <option value="1">Janeiro</option>
+            <option value="2">Fevereiro</option>
+            <option value="3">Março</option>
+            <option value="4">Abril</option>
+            <option value="5">Maio</option>
+            <option value="6">Junho</option>
+            <option value="7">Julho</option>
+            <option value="8">Agosto</option>
+            <option value="9">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12" selected>Dezembro</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Painel: ano inteiro -->
+    <div class="period-panel" id="panel-ano">
+      <p style="font-size:13px; color:#666; margin-bottom:16px; padding: 12px; background:#f5f5f5; border-radius:8px;">
+        Todos os registros do ano selecionado serão incluídos no relatório.
+      </p>
+    </div>
+
+    <label>Planilha Excel (.xlsx)</label>
+    <input type="file" name="planilha" accept=".xlsx" required>
+
+    <button type="submit">Gerar PDF</button>
+  </form>
+</div>
+
+<script>
+  let modoAtual = 'mes';
+  let mesSelecionado = 1;
+
+  function showTab(modo) {
+    modoAtual = modo;
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', ['mes','intervalo','ano'][i] === modo);
+    });
+    document.querySelectorAll('.period-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + modo).classList.add('active');
+    document.getElementById('modoInput').value = modo;
+  }
+
+  function selectMonth(btn) {
+    document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    mesSelecionado = parseInt(btn.dataset.mes);
+  }
+
+  function prepareForm() {
+    if (modoAtual === 'mes') {
+      document.getElementById('mesInput').value = mesSelecionado;
+      document.getElementById('mesInicioInput').value = mesSelecionado;
+      document.getElementById('mesFimInput').value = mesSelecionado;
+    } else if (modoAtual === 'intervalo') {
+      const ini = parseInt(document.getElementById('mesInicioSelect').value);
+      const fim = parseInt(document.getElementById('mesFimSelect').value);
+      if (ini > fim) { alert('O mês inicial não pode ser maior que o final.'); return false; }
+      document.getElementById('mesInput').value = ini;
+      document.getElementById('mesInicioInput').value = ini;
+      document.getElementById('mesFimInput').value = fim;
+    } else {
+      document.getElementById('mesInput').value = 0;
+      document.getElementById('mesInicioInput').value = 1;
+      document.getElementById('mesFimInput').value = 12;
+    }
+    return true;
+  }
+</script>
+</body>
+</html>
