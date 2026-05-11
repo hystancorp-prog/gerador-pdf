@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hystan — Entrar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --dark: #1a1a1a; --mid: #404040; --light: #f5f5f3; --border: #e0e0dd; --white: #ffffff; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--light); min-height: 100vh; display: flex; }
+
+    .auth-left {
+      flex: 1; background: var(--dark); color: white;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 48px; position: relative; overflow: hidden;
+    }
+    .auth-left::before {
+      content: '';
+      position: absolute; bottom: -100px; right: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    }
+    .auth-logo { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: white; text-decoration: none; }
+    .auth-quote { max-width: 360px; }
+    .auth-quote blockquote { font-size: 22px; font-family: 'Syne', sans-serif; font-weight: 600; line-height: 1.5; color: rgba(255,255,255,0.9); margin-bottom: 20px; }
+    .auth-quote cite { font-size: 13px; color: rgba(255,255,255,0.4); font-style: normal; }
+    .auth-features { display: flex; flex-direction: column; gap: 14px; }
+    .auth-feature { display: flex; gap: 12px; align-items: center; font-size: 14px; color: rgba(255,255,255,0.6); }
+    .auth-feature::before { content: '✓'; color: #22c55e; font-weight: 700; flex-shrink: 0; }
+
+    .auth-right {
+      width: 480px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 48px; background: var(--white);
+    }
+    .auth-form-wrap { width: 100%; max-width: 360px; }
+    .auth-title { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+    .auth-sub { font-size: 14px; color: #888; margin-bottom: 32px; }
+
+    /* Toggle */
+    .toggle-wrap { display: flex; background: var(--light); border-radius: 10px; padding: 4px; margin-bottom: 32px; }
+    .toggle-btn { flex: 1; padding: 9px; text-align: center; font-size: 14px; font-weight: 500; border: none; background: transparent; border-radius: 8px; cursor: pointer; color: #888; transition: all .2s; font-family: 'DM Sans', sans-serif; }
+    .toggle-btn.active { background: var(--white); color: var(--dark); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+
+    /* Form */
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 13px; font-weight: 500; color: var(--mid); margin-bottom: 6px; }
+    input[type=email], input[type=password], input[type=text] {
+      width: 100%; padding: 12px 14px;
+      border: 1px solid var(--border); border-radius: 10px;
+      font-size: 15px; font-family: 'DM Sans', sans-serif;
+      color: var(--dark); background: var(--white);
+      transition: border-color .2s;
+      outline: none;
+    }
+    input:focus { border-color: var(--dark); }
+    .btn-submit {
+      width: 100%; padding: 13px; background: var(--dark); color: white;
+      border: none; border-radius: 10px; font-size: 15px; font-weight: 600;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: all .2s; margin-top: 8px;
+    }
+    .btn-submit:hover { background: var(--mid); }
+    .btn-submit:disabled { opacity: .5; cursor: not-allowed; }
+    .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .divider span { font-size: 12px; color: #aaa; }
+    .auth-footer-text { text-align: center; font-size: 13px; color: #888; margin-top: 24px; }
+    .auth-footer-text a { color: var(--dark); font-weight: 600; text-decoration: none; }
+
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--dark); color: white; padding: 14px 20px;
+      border-radius: 10px; font-size: 14px; font-weight: 500;
+      transform: translateY(80px); opacity: 0;
+      transition: all .3s; z-index: 999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.error { background: #dc2626; }
+
+    @media (max-width: 768px) {
+      .auth-left { display: none; }
+      .auth-right { width: 100%; padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="auth-left">
+  <a href="index.html" class="auth-logo">HYSTAN</a>
+  <div class="auth-quote">
+    <blockquote>"Antes eu gastava horas. Agora levo segundos para entregar o relatório ao meu contador."</blockquote>
+    <cite>— Ana Martins, Clínica Estética AM</cite>
+  </div>
+  <div class="auth-features">
+    <div class="auth-feature">Relatórios PDF profissionais em segundos</div>
+    <div class="auth-feature">Filtro por mês, intervalo ou ano inteiro</div>
+    <div class="auth-feature">Sem instalação, funciona no navegador</div>
+    <div class="auth-feature">Cancele quando quiser</div>
+  </div>
+</div>
+
+<div class="auth-right">
+  <div class="auth-form-wrap">
+    <h1 class="auth-title" id="form-title">Bem-vindo de volta</h1>
+    <p class="auth-sub" id="form-sub">Entre na sua conta para continuar</p>
+
+    <div class="toggle-wrap">
+      <button class="toggle-btn active" id="btn-login" onclick="showLogin()">Entrar</button>
+      <button class="toggle-btn" id="btn-signup" onclick="showSignup()">Criar conta</button>
+    </div>
+
+    <form id="auth-form" onsubmit="handleSubmit(event)">
+      <div class="form-group" id="name-group" style="display:none;">
+        <label>Nome completo</label>
+        <input type="text" id="name" placeholder="Seu nome">
+      </div>
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" id="email" placeholder="seu@email.com" required>
+      </div>
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" id="password" placeholder="••••••••" required minlength="6">
+      </div>
+      <button class="btn-submit" type="submit" id="submit-btn">Entrar</button>
+    </form>
+
+    <div class="auth-footer-text" id="toggle-text">
+      Não tem conta? <a href="#" onclick="showSignup(); return false;">Criar conta grátis</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('signup') === 'true') showSignup();
+
+  function showLogin() {
+    document.getElementById('form-title').textContent = 'Bem-vindo de volta';
+    document.getElementById('form-sub').textContent = 'Entre na sua conta para continuar';
+    document.getElementById('btn-login').classList.add('active');
+    document.getElementById('btn-signup').classList.remove('active');
+    document.getElementById('name-group').style.display = 'none';
+    document.getElementById('submit-btn').textContent = 'Entrar';
+    document.getElementById('toggle-text').innerHTML = 'Não tem conta? <a href="#" onclick="showSignup(); return false;">Criar conta grátis</a>';
+  }
+
+  function showSignup() {
+    document.getElementById('form-title').textContent = 'Criar conta grátis';
+    document.getElementById('form-sub').textContent = 'Comece a gerar relatórios agora';
+    document.getElementById('btn-signup').classList.add('active');
+    document.getElementById('btn-login').classList.remove('active');
+    document.getElementById('name-group').style.display = 'block';
+    document.getElementById('submit-btn').textContent = 'Criar conta';
+    document.getElementById('toggle-text').innerHTML = 'Já tem conta? <a href="#" onclick="showLogin(); return false;">Entrar</a>';
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Aguarde...';
+
+    // Simulação de login — substituir por chamada real de API
+    setTimeout(() => {
+      showToast('Login realizado com sucesso!');
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+    }, 1200);
+  }
+
+  function showToast(msg, error = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (error ? ' error' : '');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+</script>
+</body>
+</html>

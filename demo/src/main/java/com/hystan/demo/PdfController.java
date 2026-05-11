@@ -10,9 +10,22 @@ import java.util.List;
 @Controller
 public class PdfController {
 
+    // Rota para a Landing Page
     @GetMapping("/")
     public String index() {
         return "index";
+    }
+
+    // Rota para a Tela de Auth (Login/Cadastro)
+    @GetMapping("/auth")
+    public String auth() {
+        return "auth";
+    }
+
+    // Rota para o Dashboard
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "dashboard";
     }
 
     @PostMapping("/gerar-pdf")
