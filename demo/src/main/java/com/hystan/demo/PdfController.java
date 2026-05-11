@@ -1,32 +1,13 @@
 package com.hystan.demo;
 
 import org.springframework.http.*;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.util.List;
 
-@Controller
+@RestController
 public class PdfController {
-
-    // Rota para a Landing Page
-    @GetMapping("/")
-    public String index() {
-        return "index";
-    }
-
-    // Rota para a Tela de Auth (Login/Cadastro)
-    @GetMapping("/auth")
-    public String auth() {
-        return "auth";
-    }
-
-    // Rota para o Dashboard
-    @GetMapping("/dashboard")
-    public String dashboard() {
-        return "dashboard";
-    }
 
     @PostMapping("/gerar-pdf")
     public ResponseEntity<byte[]> gerarPdf(
