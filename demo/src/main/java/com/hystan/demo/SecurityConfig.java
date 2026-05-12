@@ -10,6 +10,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final OAuthService oAuthService;
+
+    public SecurityConfig(OAuthService oAuthService) {
+        this.oAuthService = oAuthService;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -24,6 +30,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth -> oauth
+                .userInfoEndpoint(u -> u.userService(oAuthService))
                 .defaultSuccessUrl("/dashboard.html", true)
                 .failureUrl("/auth.html?error=true")
             )
