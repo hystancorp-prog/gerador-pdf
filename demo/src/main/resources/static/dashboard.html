@@ -420,7 +420,8 @@
 
   // Verifica se tem plano para assinar
 window.addEventListener('load', async () => {
-    const plano = sessionStorage.getItem('plano_escolhido');
+    const params = new URLSearchParams(window.location.search);
+    const plano = params.get('plano') || sessionStorage.getItem('plano_escolhido');
     if (plano) {
         sessionStorage.removeItem('plano_escolhido');
         const formData = new FormData();

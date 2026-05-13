@@ -30,7 +30,7 @@ public class StripeController {
 
             SessionCreateParams params = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
-                .setSuccessUrl("https://gerador-pdf-production-76f7.up.railway.app/dashboard.html?sucesso=true")
+                .setSuccessUrl("https://gerador-pdf-production-76f7.up.railway.app/dashboard.html?pago=true")
                 .setCancelUrl("https://gerador-pdf-production-76f7.up.railway.app/index.html")
                 .addLineItem(
                     SessionCreateParams.LineItem.builder()
