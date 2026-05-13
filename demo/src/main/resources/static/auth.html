@@ -189,11 +189,21 @@
   // Redireciona para dashboard se já fez login
 if (localStorage.getItem('logging_in') === 'true') {
     localStorage.removeItem('logging_in');
-    fetch('/gerar-pdf', {method: 'GET'}).then(r => {
-        if (r.status !== 403 && r.status !== 401) {
+    const plano = localStorage.getItem('plano_escolhido');
+    if (plano) {
+        localStorage.removeItem('plano_escolhido');
+        setTimeout(async () => {
+            const formData = new FormData();
+            formData.append('plano', plano);
+            const resp = await fetch('/criar-checkout', {method: 'POST', body: formData});
+            const data = await resp.json();
+            window.location.href = data.url;
+        }, 500);
+    } else {
+        setTimeout(() => {
             window.location.href = '/dashboard.html';
-        }
-    }).catch(() => {});
+        }, 500);
+    }
 }
 </script>
 </body>

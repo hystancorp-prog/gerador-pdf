@@ -442,26 +442,11 @@
 
   // Stripe placeholder
   async function stripeCheckout(plan) {
-    try {
-        const formData = new FormData();
-        formData.append('plano', plan);
-        
-        const resp = await fetch('/criar-checkout', {
-            method: 'POST',
-            body: formData
-        });
-        
-        if (!resp.ok) {
-            window.location.href = '/auth.html';
-            return;
-        }
-        
-        const data = await resp.json();
-        window.location.href = data.url;
-    } catch(e) {
-        window.location.href = '/auth.html';
-    }
+    localStorage.setItem('plano_escolhido', plan);
+    localStorage.setItem('logging_in', 'true');
+    window.location.href = '/oauth2/authorization/google';
 }
+
 </script>
 </body>
 </html>
