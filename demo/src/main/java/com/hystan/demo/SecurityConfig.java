@@ -26,7 +26,7 @@ public class SecurityConfig {
             .oauth2Login(oauth -> oauth
                 .loginPage("/auth.html")
                 .userInfoEndpoint(u -> u.userService(oAuthService))
-                .defaultSuccessUrl("/dashboard.html", true)
+                .defaultSuccessUrl("/app", true)
                 .failureUrl("/auth.html?error=true")
             )
             .logout(logout -> logout

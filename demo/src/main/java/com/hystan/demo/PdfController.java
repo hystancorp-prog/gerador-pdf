@@ -8,6 +8,14 @@ import java.util.List;
 
 @RestController
 public class PdfController {
+    
+    @GetMapping("/app")
+    public org.springframework.http.ResponseEntity<Void> app() {
+        return org.springframework.http.ResponseEntity
+            .status(302)
+            .header("Location", "/dashboard.html")
+            .build();
+    }
 
     @PostMapping("/gerar-pdf")
     public ResponseEntity<byte[]> gerarPdf(
