@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -24,6 +25,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+            .securityContext(ctx -> ctx
+                .securityContextRepository(new HttpSessionSecurityContextRepository())
+                .requireExplicitSave(false)
+            )
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
             )
@@ -38,10 +43,6 @@ public class SecurityConfig {
                 .permitAll()
             );
 
-            http.sessionManagement(session -> session
-    .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
-);
-
         return http.build();
     }
 
@@ -52,6 +53,7 @@ public class SecurityConfig {
             public void onAuthenticationSuccess(HttpServletRequest request,
                     HttpServletResponse response,
                     Authentication authentication) throws java.io.IOException {
+                System.out.println("=== LOGIN SUCESSO: " + authentication.getName());
                 response.sendRedirect("/dashboard.html");
             }
         };
