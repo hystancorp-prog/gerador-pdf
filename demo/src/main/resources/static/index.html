@@ -441,10 +441,27 @@
   reveals.forEach(r => observer.observe(r));
 
   // Stripe placeholder
-  function stripeCheckout(plan) {
-    alert('Integração Stripe em breve! Plano: ' + (plan === 'pro' ? 'Pro R$57/mês' : 'Básico R$37/mês'));
-    // Substituir por: window.location.href = 'SEU_STRIPE_CHECKOUT_URL';
-  }
+  async function stripeCheckout(plan) {
+    try {
+        const formData = new FormData();
+        formData.append('plano', plan);
+        
+        const resp = await fetch('/criar-checkout', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!resp.ok) {
+            window.location.href = '/auth.html';
+            return;
+        }
+        
+        const data = await resp.json();
+        window.location.href = data.url;
+    } catch(e) {
+        window.location.href = '/auth.html';
+    }
+}
 </script>
 </body>
 </html>

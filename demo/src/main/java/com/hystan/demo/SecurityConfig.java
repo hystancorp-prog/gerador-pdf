@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .requestMatchers("/", "/index.html", "/auth.html",
                                  "/hystan.png", "/hystan_white.png",
                                  "/login", "/oauth2/**").permitAll()
-                .requestMatchers("/dashboard.html", "/gerar-pdf").authenticated()
+                .requestMatchers("/dashboard.html", "/gerar-pdf", "/criar-checkout").authenticated()
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth -> oauth
