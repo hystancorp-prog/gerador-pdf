@@ -433,7 +433,7 @@ window.addEventListener('load', async () => {
 });
 
   renderHistory();
-  
+
 </script>
 <!-- POPUP DE PLANOS -->
 <div id="paywall" style="display:none; position:fixed; inset:0; z-index:9999; backdrop-filter:blur(8px); background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
@@ -465,28 +465,29 @@ async function assinar(plano) {
         const formData = new FormData();
         formData.append('plano', plano);
         const resp = await fetch('/criar-checkout', {method:'POST', body:formData});
+        if (!resp.ok) {
+            const err = await resp.json();
+            alert('Erro: ' + (err.error || 'Tente novamente'));
+            return;
+        }
         const data = await resp.json();
         window.location.href = data.url;
     } catch(e) {
-        alert('Erro ao abrir pagamento. Tente novamente.');
+        alert('Erro ao abrir pagamento: ' + e.message);
     }
 }
 
-// Verifica se usuário tem plano ativo
 window.addEventListener('load', () => {
     const pago = new URLSearchParams(window.location.search).get('pago');
     const temPlano = localStorage.getItem('hystan_plano');
-    
     if (pago === 'true') {
         localStorage.setItem('hystan_plano', 'ativo');
         return;
     }
-    
     if (!temPlano) {
         document.getElementById('paywall').style.display = 'flex';
     }
 });
-
 </script>
 </body>
 </html>

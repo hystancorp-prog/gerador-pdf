@@ -24,9 +24,13 @@ public class StripeController {
     public ResponseEntity<Map<String, String>> criarCheckout(
             @RequestParam("plano") String plano) {
         try {
-            Stripe.apiKey = stripeSecretKey.trim();
+            String key = stripeSecretKey.trim().replaceAll("[\\r\\n\\t]", "");
+            System.out.println("=== STRIPE KEY LEN: " + key.length());
+            System.out.println("=== STRIPE KEY: [" + key + "]");
+            Stripe.apiKey = key;
 
-            String priceId = plano.equals("pro") ? pricePro : priceBasico;
+            String priceId = plano.equals("pro") ? pricePro.trim() : priceBasico.trim();
+            System.out.println("=== PRICE ID: [" + priceId + "]");
 
             SessionCreateParams params = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
@@ -48,7 +52,9 @@ public class StripeController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).build();
+            Map<String, String> err = new HashMap<>();
+            err.put("error", e.getMessage());
+            return ResponseEntity.status(500).body(err);
         }
     }
 }
