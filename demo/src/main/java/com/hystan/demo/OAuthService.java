@@ -16,17 +16,28 @@ public class OAuthService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest request) {
-        OAuth2User user = super.loadUser(request);
+        try {
+            OAuth2User user = super.loadUser(request);
 
-        String email = user.getAttribute("email");
-        String nome  = user.getAttribute("name");
-        String foto  = user.getAttribute("picture");
+            String email = user.getAttribute("email");
+            String nome  = user.getAttribute("name");
+            String foto  = user.getAttribute("picture");
 
-        repo.findByEmail(email).orElseGet(() -> {
-            Usuario novo = new Usuario(email, nome, foto);
-            return repo.save(novo);
-        });
+            System.out.println("=== LOGIN GOOGLE ===");
+            System.out.println("Email: " + email);
+            System.out.println("Nome: " + nome);
 
-        return user;
+            repo.findByEmail(email).orElseGet(() -> {
+                Usuario novo = new Usuario(email, nome, foto);
+                return repo.save(novo);
+            });
+
+            return user;
+
+        } catch (Exception e) {
+            System.out.println("=== ERRO NO LOGIN ===");
+            e.printStackTrace();
+            throw e;
+        }
     }
 }
