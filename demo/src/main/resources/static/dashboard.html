@@ -433,6 +433,60 @@ window.addEventListener('load', async () => {
 });
 
   renderHistory();
+  
+</script>
+<!-- POPUP DE PLANOS -->
+<div id="paywall" style="display:none; position:fixed; inset:0; z-index:9999; backdrop-filter:blur(8px); background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+  <div style="background:white; border-radius:20px; padding:48px; max-width:560px; width:90%; text-align:center; box-shadow:0 40px 80px rgba(0,0,0,0.3);">
+    <div style="font-size:13px; font-weight:600; color:#999; text-transform:uppercase; letter-spacing:.1em; margin-bottom:12px;">Escolha seu plano</div>
+    <h2 style="font-family:'Syne',sans-serif; font-size:28px; font-weight:800; margin-bottom:8px;">Comece a gerar relatórios</h2>
+    <p style="color:#888; font-size:15px; margin-bottom:32px;">Escolha o plano ideal para o seu negócio</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;">
+      <div style="border:1px solid #e0e0dd; border-radius:16px; padding:28px; cursor:pointer; transition:all .2s;" onclick="assinar('basico')" onmouseover="this.style.borderColor='#1a1a1a'" onmouseout="this.style.borderColor='#e0e0dd'">
+        <div style="font-size:11px; font-weight:600; color:#999; text-transform:uppercase; margin-bottom:12px;">Essencial</div>
+        <div style="font-family:'Syne',sans-serif; font-size:36px; font-weight:800; color:#1a1a1a;">R$37<span style="font-size:16px; font-weight:400; color:#999;">,90/mês</span></div>
+        <div style="font-size:13px; color:#666; margin:12px 0 20px;">Até 20 relatórios/mês</div>
+        <button style="width:100%; padding:12px; border:1px solid #1a1a1a; border-radius:10px; background:white; font-size:14px; font-weight:600; cursor:pointer;">Assinar Essencial</button>
+      </div>
+      <div style="border:2px solid #1a1a1a; border-radius:16px; padding:28px; background:#1a1a1a; color:white; cursor:pointer;" onclick="assinar('pro')">
+        <div style="font-size:11px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-bottom:12px;">Business</div>
+        <div style="font-family:'Syne',sans-serif; font-size:36px; font-weight:800;">R$57<span style="font-size:16px; font-weight:400; opacity:.6;">,90/mês</span></div>
+        <div style="font-size:13px; color:rgba(255,255,255,0.6); margin:12px 0 20px;">Relatórios ilimitados</div>
+        <button style="width:100%; padding:12px; border:none; border-radius:10px; background:white; color:#1a1a1a; font-size:14px; font-weight:600; cursor:pointer;">Assinar Business</button>
+      </div>
+    </div>
+    <div style="font-size:12px; color:#aaa;">Cancele quando quiser · Sem contratos</div>
+  </div>
+</div>
+
+<script>
+async function assinar(plano) {
+    try {
+        const formData = new FormData();
+        formData.append('plano', plano);
+        const resp = await fetch('/criar-checkout', {method:'POST', body:formData});
+        const data = await resp.json();
+        window.location.href = data.url;
+    } catch(e) {
+        alert('Erro ao abrir pagamento. Tente novamente.');
+    }
+}
+
+// Verifica se usuário tem plano ativo
+window.addEventListener('load', () => {
+    const pago = new URLSearchParams(window.location.search).get('pago');
+    const temPlano = localStorage.getItem('hystan_plano');
+    
+    if (pago === 'true') {
+        localStorage.setItem('hystan_plano', 'ativo');
+        return;
+    }
+    
+    if (!temPlano) {
+        document.getElementById('paywall').style.display = 'flex';
+    }
+});
+
 </script>
 </body>
 </html>
