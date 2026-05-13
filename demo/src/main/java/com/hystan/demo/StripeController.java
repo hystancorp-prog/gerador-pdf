@@ -24,7 +24,7 @@ public class StripeController {
     public ResponseEntity<Map<String, String>> criarCheckout(
             @RequestParam("plano") String plano) {
         try {
-            Stripe.apiKey = stripeSecretKey;
+            Stripe.apiKey = stripeSecretKey.trim();
 
             String priceId = plano.equals("pro") ? pricePro : priceBasico;
 
