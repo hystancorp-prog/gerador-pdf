@@ -151,10 +151,10 @@
   <img src="/hystan.png" alt="Hystan Logo" style="height: 32px; width: auto; display: block;">
   <div class="user-info">
     <div style="text-align: right; line-height: 1.2;">
-      <div style="font-size: 13px; font-weight: 600; color: var(--dark);">Davi</div>
-      <div style="font-size: 11px; color: #aaa;">Plano Pro</div>
+      <div style="font-size: 13px; font-weight: 600; color: var(--dark);" id="user-name">Carregando...</div>
+      <div style="font-size: 11px; color: #aaa;" id="user-plan">-</div>
     </div>
-    <button class="btn-logout-top" onclick="window.location.href='auth.html'">Sair</button>
+    <button class="btn-logout-top" onclick="logout()">Sair</button>
   </div>
 </header>
 
@@ -283,30 +283,37 @@
 
 <div class="toast" id="toast"></div>
 
-<script>
-  const API = 'https://gerador-pdf-production-76f7.up.railway.app';
-  let selectedFile = null;
-  let selectedMonth = 1;
-  let currentPeriod = 'mes';
-  let history = JSON.parse(localStorage.getItem('hystan_history') || '[]');
-  let totalReports = parseInt(localStorage.getItem('hystan_total') || '0');
+<script type="module">
+  // Firebase Auth
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
-  updateStats();
+const firebaseConfig = {
+  apiKey: "AIzaSyBgSfuXg-JAnb5h1hjnC5IPW_dolgoBmq0",
+  authDomain: "hystan-859f8.firebaseapp.com",
+  projectId: "hystan-859f8",
+  storageBucket: "hystan-859f8.firebasestorage.app",
+  messagingSenderId: "922392046948",
+  appId: "1:922392046948:web:6f1e27fd18a43a9224de71"
+};
 
-  const dropzone = document.getElementById('dropzone');
-  const fileInput = document.getElementById('file-input');
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
-  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
-  dropzone.addEventListener('drop', e => {
-    e.preventDefault(); dropzone.classList.remove('drag');
-    const file = e.dataTransfer.files[0];
-    if (file && file.name.endsWith('.xlsx')) setFile(file);
-    else showToast('Apenas arquivos .xlsx são aceitos', true);
-  });
-  fileInput.addEventListener('change', () => {
-    if (fileInput.files[0]) setFile(fileInput.files[0]);
-  });
+// Verifica se está logado
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = '/auth.html';
+    return;
+  }
+  document.getElementById('user-name').textContent = user.displayName || user.email;
+  document.getElementById('user-plan').textContent = 'Plano Business';
+});
+
+window.logout = async function() {
+  await signOut(auth);
+  window.location.href = '/auth.html';
+};
 
   function setFile(file) {
     selectedFile = file;

@@ -1,64 +1,22 @@
 package com.hystan.demo;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final OAuthService oAuthService;
-
-    public SecurityConfig(OAuthService oAuthService) {
-        this.oAuthService = oAuthService;
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-            .securityContext(ctx -> ctx
-                .securityContextRepository(new HttpSessionSecurityContextRepository())
-                .requireExplicitSave(false)
-            )
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
-            )
-            .oauth2Login(oauth -> oauth
-                .loginPage("/auth.html")
-                .userInfoEndpoint(u -> u.userService(oAuthService))
-                .successHandler(successHandler())
-                .failureUrl("/auth.html?error=true")
-                .authorizationEndpoint(auth -> auth
-                .authorizationRequestRepository(new CookieOAuth2RequestRepository())
-                )
-            )
-            .logout(logout -> logout
-                .logoutSuccessUrl("/index.html")
-                .permitAll()
             );
-
         return http.build();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler successHandler() {
-        return new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request,
-                    HttpServletResponse response,
-                    Authentication authentication) throws java.io.IOException {
-                System.out.println("=== LOGIN SUCESSO: " + authentication.getName());
-                response.sendRedirect("/dashboard.html");
-            }
-        };
     }
 }
