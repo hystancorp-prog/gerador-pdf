@@ -20,14 +20,17 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/gerar-pdf")
+                .ignoringRequestMatchers("/gerar-pdf", "/criar-checkout")
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/index.html", "/auth.html",
-                                 "/hystan.png", "/hystan_white.png",
-                                 "/login", "/oauth2/**").permitAll()
-                .requestMatchers("/dashboard.html", "/gerar-pdf", "/criar-checkout").authenticated()
-                .anyRequest().authenticated()
+                .requestMatchers(
+                    "/", "/index.html", "/auth.html",
+                    "/hystan.png", "/hystan_white.png",
+                    "/login", "/oauth2/**", "/error"
+                ).permitAll()
+                .requestMatchers("/dashboard.html", "/gerar-pdf", "/criar-checkout")
+                .authenticated()
+                .anyRequest().permitAll()
             )
             .oauth2Login(oauth -> oauth
                 .userInfoEndpoint(u -> u.userService(oAuthService))
@@ -35,7 +38,7 @@ public class SecurityConfig {
                 .failureUrl("/auth.html?error=true")
             )
             .logout(logout -> logout
-                .logoutSuccessUrl("/auth.html")
+                .logoutSuccessUrl("/index.html")
                 .permitAll()
             );
 
