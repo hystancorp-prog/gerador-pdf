@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
             )
             .oauth2Login(oauth -> oauth
+                .loginPage("/auth.html")
                 .userInfoEndpoint(u -> u.userService(oAuthService))
                 .defaultSuccessUrl("/dashboard.html", true)
                 .failureUrl("/auth.html?error=true")
