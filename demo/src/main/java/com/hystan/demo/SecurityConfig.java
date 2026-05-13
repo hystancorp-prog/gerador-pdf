@@ -19,17 +19,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/gerar-pdf", "/criar-checkout")
-            )
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/", "/index.html", "/auth.html",
-                    "/hystan.png", "/hystan_white.png",
-                    "/login", "/oauth2/**", "/error"
-                ).permitAll()
-                .requestMatchers("/dashboard.html", "/gerar-pdf", "/criar-checkout")
-                .authenticated()
                 .anyRequest().permitAll()
             )
             .oauth2Login(oauth -> oauth
