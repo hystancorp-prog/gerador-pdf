@@ -32,22 +32,45 @@
       align-items: center; justify-content: center;
       padding: 48px; background: var(--white);
     }
-    .auth-form-wrap { width: 100%; max-width: 360px; text-align: center; }
+    .auth-form-wrap { width: 100%; max-width: 360px; }
     .auth-title { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
-    .auth-sub { font-size: 14px; color: #888; margin-bottom: 40px; }
+    .auth-sub { font-size: 14px; color: #888; margin-bottom: 32px; }
+
+    .toggle-wrap { display: flex; background: var(--light); border-radius: 10px; padding: 4px; margin-bottom: 28px; }
+    .toggle-btn { flex: 1; padding: 9px; text-align: center; font-size: 14px; font-weight: 500; border: none; background: transparent; border-radius: 8px; cursor: pointer; color: #888; transition: all .2s; font-family: 'DM Sans', sans-serif; }
+    .toggle-btn.active { background: var(--white); color: var(--dark); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 13px; font-weight: 500; color: var(--mid); margin-bottom: 6px; }
+    input[type=email], input[type=password], input[type=text] {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
+      font-size: 15px; font-family: 'DM Sans', sans-serif; color: var(--dark);
+      background: var(--white); transition: border-color .2s; outline: none;
+    }
+    input:focus { border-color: var(--dark); }
+    .btn-submit {
+      width: 100%; padding: 13px; background: var(--dark); color: white;
+      border: none; border-radius: 10px; font-size: 15px; font-weight: 600;
+      cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .2s; margin-top: 4px;
+    }
+    .btn-submit:hover { background: var(--mid); }
+    .btn-submit:disabled { opacity: .5; cursor: not-allowed; }
+
+    .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .divider span { font-size: 12px; color: #aaa; }
 
     .btn-google {
       display: flex; align-items: center; justify-content: center; gap: 12px;
-      width: 100%; padding: 14px; background: white; color: #333;
-      border: 1.5px solid #e0e0dd; border-radius: 12px;
+      width: 100%; padding: 13px; background: white; color: #333;
+      border: 1.5px solid #e0e0dd; border-radius: 10px;
       font-size: 15px; font-weight: 600; cursor: pointer;
       transition: all .2s; font-family: 'DM Sans', sans-serif;
-      text-decoration: none;
     }
-    .btn-google:hover { border-color: #1a1a1a; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .btn-google:hover { border-color: #1a1a1a; }
 
-    .loading { display: none; text-align: center; margin-top: 20px; font-size: 14px; color: #888; }
-    .error-msg { display: none; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 12px; border-radius: 8px; font-size: 13px; margin-top: 16px; }
+    .error-msg { display: none; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-top: 12px; }
+    .name-group { display: none; }
 
     @media (max-width: 768px) {
       .auth-left { display: none; }
@@ -73,23 +96,42 @@
 
 <div class="auth-right">
   <div class="auth-form-wrap">
-    <h1 class="auth-title">Bem-vindo à Hystan</h1>
-    <p class="auth-sub">Entre com sua conta Google para começar</p>
+    <h1 class="auth-title" id="form-title">Bem-vindo de volta</h1>
+    <p class="auth-sub" id="form-sub">Entre na sua conta para continuar</p>
+
+    <div class="toggle-wrap">
+      <button class="toggle-btn active" id="btn-login" onclick="showLogin()">Entrar</button>
+      <button class="toggle-btn" id="btn-signup" onclick="showSignup()">Criar conta</button>
+    </div>
+
+    <div class="form-group name-group" id="name-group">
+      <label>Nome completo</label>
+      <input type="text" id="name" placeholder="Seu nome">
+    </div>
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" id="email" placeholder="seu@email.com">
+    </div>
+    <div class="form-group">
+      <label>Senha</label>
+      <input type="password" id="password" placeholder="••••••••">
+    </div>
+    <button class="btn-submit" id="submit-btn" onclick="handleSubmit()">Entrar</button>
+
+    <div class="divider"><span>ou</span></div>
 
     <button class="btn-google" onclick="loginGoogle()">
-      <img src="https://www.google.com/favicon.ico" style="width:18px;">
+      <img src="https://www.google.com/favicon.ico" style="width:16px;">
       Entrar com Google
     </button>
 
-    <div class="loading" id="loading">Entrando...</div>
     <div class="error-msg" id="error-msg"></div>
   </div>
 </div>
 
-<!-- Firebase -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+  import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyBgSfuXg-JAnb5h1hjnC5IPW_dolgoBmq0",
@@ -104,33 +146,73 @@
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-  // Se já está logado, vai direto pro dashboard
   onAuthStateChanged(auth, (user) => {
-    if (user) {
-      window.location.href = '/dashboard.html';
-    }
+    if (user) window.location.href = '/dashboard.html';
   });
 
-  window.loginGoogle = async function() {
-    const loading = document.getElementById('loading');
+  window.showLogin = function() {
+    document.getElementById('form-title').textContent = 'Bem-vindo de volta';
+    document.getElementById('form-sub').textContent = 'Entre na sua conta para continuar';
+    document.getElementById('btn-login').classList.add('active');
+    document.getElementById('btn-signup').classList.remove('active');
+    document.getElementById('name-group').style.display = 'none';
+    document.getElementById('submit-btn').textContent = 'Entrar';
+  };
+
+  window.showSignup = function() {
+    document.getElementById('form-title').textContent = 'Criar conta grátis';
+    document.getElementById('form-sub').textContent = 'Comece a gerar relatórios agora';
+    document.getElementById('btn-signup').classList.add('active');
+    document.getElementById('btn-login').classList.remove('active');
+    document.getElementById('name-group').style.display = 'block';
+    document.getElementById('submit-btn').textContent = 'Criar conta';
+  };
+
+  window.handleSubmit = async function() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
     const errorMsg = document.getElementById('error-msg');
-    loading.style.display = 'block';
+    const btn = document.getElementById('submit-btn');
+    const isLogin = document.getElementById('btn-login').classList.contains('active');
+
     errorMsg.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Aguarde...';
 
     try {
-      const result = await signInWithPopup(auth, provider);
-      const token = await result.user.getIdToken();
-      
-      // Salva token para o dashboard usar
-      sessionStorage.setItem('firebase_token', token);
-      sessionStorage.setItem('user_name', result.user.displayName);
-      sessionStorage.setItem('user_email', result.user.email);
-      
+      if (isLogin) {
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        const name = document.getElementById('name').value.trim();
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(cred.user, { displayName: name });
+      }
       window.location.href = '/dashboard.html';
-    } catch (error) {
-      loading.style.display = 'none';
+    } catch (e) {
+      btn.disabled = false;
+      btn.textContent = isLogin ? 'Entrar' : 'Criar conta';
       errorMsg.style.display = 'block';
-      errorMsg.textContent = 'Erro ao entrar. Tente novamente.';
+      if (e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found') {
+        errorMsg.textContent = 'Email ou senha incorretos.';
+      } else if (e.code === 'auth/email-already-in-use') {
+        errorMsg.textContent = 'Este email já está cadastrado.';
+      } else if (e.code === 'auth/weak-password') {
+        errorMsg.textContent = 'Senha muito fraca. Use no mínimo 6 caracteres.';
+      } else {
+        errorMsg.textContent = 'Erro ao entrar. Tente novamente.';
+      }
+    }
+  };
+
+  window.loginGoogle = async function() {
+    const errorMsg = document.getElementById('error-msg');
+    errorMsg.style.display = 'none';
+    try {
+      await signInWithPopup(auth, provider);
+      window.location.href = '/dashboard.html';
+    } catch (e) {
+      errorMsg.style.display = 'block';
+      errorMsg.textContent = 'Erro ao entrar com Google. Tente novamente.';
     }
   };
 </script>
