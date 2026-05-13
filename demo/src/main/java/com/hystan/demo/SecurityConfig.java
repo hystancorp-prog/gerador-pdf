@@ -37,6 +37,9 @@ public class SecurityConfig {
                 .userInfoEndpoint(u -> u.userService(oAuthService))
                 .successHandler(successHandler())
                 .failureUrl("/auth.html?error=true")
+                .authorizationEndpoint(auth -> auth
+                .authorizationRequestRepository(new CookieOAuth2RequestRepository())
+                )
             )
             .logout(logout -> logout
                 .logoutSuccessUrl("/index.html")
