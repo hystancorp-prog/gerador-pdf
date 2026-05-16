@@ -1,42 +1,33 @@
 package com.hystan.demo;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class RateLimiter {
 
-    private static class Counter {
-        final AtomicInteger count = new AtomicInteger(0);
-        volatile long windowStart = System.currentTimeMillis();
-    }
-
-    private final ConcurrentHashMap<String, Counter> counters = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, long[]> cache = new ConcurrentHashMap<>();
 
     /**
-     * Fixed-window rate limiter, keyed by (ip + endpoint).
-     * Thread-safe per-key via synchronized on the Counter object.
+     * Verifica se a chave está dentro do limite.
+     * @param key       identificador único (ex: IP + ":checkout")
+     * @param maxRequests número máximo de requisições permitidas na janela
+     * @param windowMs  tamanho da janela em milissegundos
+     * @return true se permitido, false se limite atingido
      */
     public boolean isAllowed(String key, int maxRequests, long windowMs) {
         long now = System.currentTimeMillis();
-        Counter c = counters.computeIfAbsent(key, k -> new Counter());
-        synchronized (c) {
-            if (now - c.windowStart >= windowMs) {
-                c.windowStart = now;
-                c.count.set(1);
-                return true;
-            }
-            return c.count.incrementAndGet() <= maxRequests;
-        }
-    }
 
-    // Prevent unbounded map growth — remove entries idle for more than 2 windows
-    @Scheduled(fixedDelay = 60_000)
-    public void cleanup() {
-        long now = System.currentTimeMillis();
-        counters.entrySet().removeIf(e -> now - e.getValue().windowStart > 120_000);
+        cache.compute(key, (k, val) -> {
+            if (val == null || now - val[1] > windowMs) {
+                // Nova janela — reseta contador
+                return new long[]{1, now};
+            }
+            val[0]++;
+            return val;
+        });
+
+        long[] entry = cache.get(key);
+        return entry[0] <= maxRequests;
     }
 }
