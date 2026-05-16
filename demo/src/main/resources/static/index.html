@@ -344,14 +344,23 @@
       <div id="thumb-index" style="position:absolute; top:4px; left:4px; width:20px; height:20px; background:white; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,0.2); transition:transform .25s; pointer-events:none;"></div>
     </label>
     <span style="font-size:14px; font-weight:500; color:#888;" id="lbl-anual">Anual</span>
-    <span id="badge-anual-index" style="display:none; background:#dcfce7; color:#16a34a; font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px;">Economize 21%</span>
+  </div>
+  <!-- Badge abaixo com animação suave -->
+  <div style="text-align:center; margin-top:10px; height:26px;">
+    <span id="badge-anual-index"
+      style="display:inline-block; background:#dcfce7; color:#16a34a;
+             font-size:12px; font-weight:700; padding:4px 14px; border-radius:999px;
+             opacity:0; transform:translateY(-8px);
+             transition: opacity .3s ease, transform .3s ease;">
+      🎉 Economize 21% no plano anual
+    </span>
   </div>
 
   <!-- 3 CARDS -->
-  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:960px; margin:40px auto 0;" class="reveal">
+  <div id="pricing-grid-index" style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:960px; margin:40px auto 0;" class="reveal">
 
     <!-- TRIAL -->
-    <div class="plan-card" style="display:flex; flex-direction:column;">
+    <div class="plan-card" id="card-trial-index" style="display:flex; flex-direction:column;">
       <div class="plan-badge">Grátis</div>
       <div class="plan-name">Trial</div>
       <div class="plan-price" style="font-size:40px;">R$0</div>
@@ -487,13 +496,32 @@
     const track = document.getElementById('track-index');
     const thumb = document.getElementById('thumb-index');
     const badge = document.getElementById('badge-anual-index');
+    const cardTrial = document.getElementById('card-trial-index');
+    const grid = document.getElementById('pricing-grid-index');
 
+    // Toggle visual
     track.style.background = isAnual ? '#1a1a1a' : '#e0e0dd';
     thumb.style.transform = isAnual ? 'translateX(24px)' : 'translateX(0)';
-    badge.style.display = isAnual ? 'inline-block' : 'none';
+    document.getElementById('lbl-mensal').style.fontWeight = isAnual ? '500' : '600';
     document.getElementById('lbl-mensal').style.color = isAnual ? '#888' : '#1a1a1a';
-    document.getElementById('lbl-anual').style.color   = isAnual ? '#1a1a1a' : '#888';
+    document.getElementById('lbl-anual').style.fontWeight = isAnual ? '600' : '500';
+    document.getElementById('lbl-anual').style.color = isAnual ? '#1a1a1a' : '#888';
 
+    // Badge animado
+    badge.style.opacity = isAnual ? '1' : '0';
+    badge.style.transform = isAnual ? 'translateY(0)' : 'translateY(-8px)';
+
+    // Esconde trial no anual
+    if (cardTrial) {
+      cardTrial.style.transition = 'opacity .3s';
+      cardTrial.style.opacity = isAnual ? '0' : '1';
+      cardTrial.style.pointerEvents = isAnual ? 'none' : 'auto';
+      setTimeout(() => { cardTrial.style.display = isAnual ? 'none' : 'flex'; }, isAnual ? 300 : 0);
+      if (!isAnual) setTimeout(() => { cardTrial.style.opacity = '1'; }, 10);
+    }
+    if (grid) grid.style.gridTemplateColumns = isAnual ? 'repeat(2,1fr)' : 'repeat(3,1fr)';
+
+    // Preços
     document.getElementById('preco-ess-index').innerHTML = isAnual
       ? 'R$29<span>/mês</span>' : 'R$37<span>/mês</span>';
     document.getElementById('preco-bus-index').innerHTML = isAnual

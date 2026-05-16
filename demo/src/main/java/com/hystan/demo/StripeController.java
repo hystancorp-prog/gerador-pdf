@@ -22,44 +22,72 @@ public class StripeController {
     @Value("${STRIPE_SECRET_KEY}")
     private String stripeSecretKey;
 
+    // Planos mensais
     @Value("${STRIPE_PRICE_BASICO}")
-    private String priceBasico;
+    private String priceEssencial;
 
     @Value("${STRIPE_PRICE_PRO}")
-    private String pricePro;
+    private String priceBusiness;
+
+    // Planos anuais — adicione estas variáveis no Railway também
+    @Value("${STRIPE_PRICE_BASICO_ANUAL:#{null}}")
+    private String priceEssencialAnual;
+
+    @Value("${STRIPE_PRICE_PRO_ANUAL:#{null}}")
+    private String priceBusinessAnual;
 
     @PostMapping("/criar-checkout")
     public ResponseEntity<Map<String, String>> criarCheckout(
             @RequestParam("plano") String plano,
             HttpServletRequest request) {
 
+        // Rate limiting
         if (!rateLimiter.isAllowed(request.getRemoteAddr() + ":checkout", RATE_LIMIT, WINDOW_MS)) {
             Map<String, String> err = new HashMap<>();
             err.put("error", "Muitas requisições. Tente novamente em instantes.");
             return ResponseEntity.status(429).body(err);
         }
+
         try {
-            String key = stripeSecretKey.trim().replaceAll("[\\r\\n\\t]", "");
-            Stripe.apiKey = key;
+            Stripe.apiKey = stripeSecretKey.trim().replaceAll("[\\r\\n\\t]", "");
 
-            String priceId = plano.equals("pro") ? pricePro.trim() : priceBasico.trim();
+            // Mapeia nome do plano para price ID
+            String priceId = resolverPriceId(plano.trim().toLowerCase());
 
-            SessionCreateParams params = SessionCreateParams.builder()
+            if (priceId == null || priceId.isBlank()) {
+                Map<String, String> err = new HashMap<>();
+                err.put("error", "Plano inválido ou não configurado: " + plano);
+                return ResponseEntity.status(400).body(err);
+            }
+
+            // Trial de 7 dias só nos planos mensais
+            boolean temTrial = !plano.contains("anual");
+
+            SessionCreateParams.Builder builder = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
                 .setSuccessUrl("https://gerador-pdf-production-76f7.up.railway.app/dashboard.html?pago=true")
-                .setCancelUrl("https://gerador-pdf-production-76f7.up.railway.app/index.html")
+                .setCancelUrl("https://gerador-pdf-production-76f7.up.railway.app/planos.html")
                 .addLineItem(
                     SessionCreateParams.LineItem.builder()
                         .setPrice(priceId)
                         .setQuantity(1L)
                         .build()
-                )
-                .build();
+                );
 
-            Session session = Session.create(params);
+            // Adiciona trial de 7 dias se for plano mensal
+            if (temTrial) {
+                builder.setSubscriptionData(
+                    SessionCreateParams.SubscriptionData.builder()
+                        .setTrialPeriodDays(7L)
+                        .build()
+                );
+            }
+
+            SessionCreateParams params = builder.build();
+            Session sessionObj = Session.create(params);
 
             Map<String, String> response = new HashMap<>();
-            response.put("url", session.getUrl());
+            response.put("url", sessionObj.getUrl());
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
@@ -67,5 +95,18 @@ public class StripeController {
             err.put("error", "Erro ao criar sessão de pagamento. Tente novamente.");
             return ResponseEntity.status(500).body(err);
         }
+    }
+
+    private String resolverPriceId(String plano) {
+        return switch (plano) {
+            case "essencial"       -> priceEssencial;
+            case "pro"             -> priceBusiness;
+            case "essencial_anual" -> priceEssencialAnual;
+            case "pro_anual"       -> priceBusinessAnual;
+            // compatibilidade com nomes antigos
+            case "basico"          -> priceEssencial;
+            case "basico_anual"    -> priceEssencialAnual;
+            default                -> null;
+        };
     }
 }

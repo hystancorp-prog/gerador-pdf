@@ -402,14 +402,23 @@
       <div class="switch-thumb"></div>
     </label>
     <span class="billing-label" id="label-anual">Anual</span>
-    <span class="discount-badge" id="badge-desconto" style="display:none;">Economize 21%</span>
+  </div>
+  <!-- Badge abaixo com animação suave — igual Notion/Linear -->
+  <div style="text-align:center; margin-top:-20px; margin-bottom:24px; height:26px;">
+    <span id="badge-desconto"
+      style="display:inline-block; background:#dcfce7; color:#16a34a;
+             font-size:12px; font-weight:700; padding:4px 14px; border-radius:999px;
+             opacity:0; transform:translateY(-8px);
+             transition: opacity .3s ease, transform .3s ease;">
+      🎉 Economize 21% no plano anual
+    </span>
   </div>
 
   <!-- CARDS DE PLANOS -->
   <div class="pricing-grid">
 
-    <!-- GRATUITO -->
-    <div class="plan-card">
+    <!-- GRATUITO — só aparece no mensal -->
+    <div class="plan-card" id="card-trial">
       <div class="plan-name-tag">Grátis</div>
       <div class="plan-name">Trial</div>
       <div class="plan-price-wrap">
@@ -549,7 +558,27 @@
     // Labels
     document.getElementById('label-mensal').classList.toggle('active', !isAnual);
     document.getElementById('label-anual').classList.toggle('active', isAnual);
-    document.getElementById('badge-desconto').style.display = isAnual ? 'inline-block' : 'none';
+
+    // Badge com animação suave
+    const badge = document.getElementById('badge-desconto');
+    if (isAnual) {
+      badge.style.opacity = '1';
+      badge.style.transform = 'translateY(0)';
+    } else {
+      badge.style.opacity = '0';
+      badge.style.transform = 'translateY(-8px)';
+    }
+
+    // Esconde card Trial no anual
+    const cardTrial = document.getElementById('card-trial');
+    cardTrial.style.transition = 'opacity .3s ease';
+    cardTrial.style.opacity = isAnual ? '0' : '1';
+    cardTrial.style.pointerEvents = isAnual ? 'none' : 'auto';
+    setTimeout(() => { cardTrial.style.display = isAnual ? 'none' : 'flex'; }, isAnual ? 300 : 0);
+    if (!isAnual) { setTimeout(() => { cardTrial.style.opacity = '1'; }, 10); }
+
+    // Grid: 2 colunas no anual, 3 no mensal
+    document.querySelector('.pricing-grid').style.gridTemplateColumns = isAnual ? '1fr 1fr' : '1fr 1fr 1fr';
 
     // Preços
     document.getElementById('preco-essencial').innerHTML = isAnual ? precos.essencial.anual : precos.essencial.mensal;
@@ -570,7 +599,6 @@
   }
 
   function comecarTrial() {
-    // Trial gratuito — só marca no localStorage e libera o dashboard
     localStorage.setItem('hystan_plano', 'trial');
     localStorage.setItem('hystan_trial_inicio', Date.now());
     window.location.href = '/dashboard.html';
@@ -578,15 +606,31 @@
 
   async function assinar(plano) {
     try {
+      // Pega token Firebase para autenticar no backend
+      const auth = window._auth;
+      const user = auth && auth.currentUser;
+      const token = user ? await user.getIdToken() : null;
+
       const suffix = isAnual ? '_anual' : '';
       const formData = new FormData();
       formData.append('plano', plano + suffix);
-      const resp = await fetch('/criar-checkout', { method: 'POST', body: formData });
+
+      const headers = {};
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+
+      const resp = await fetch('/criar-checkout', {
+        method: 'POST',
+        headers,
+        body: formData
+      });
+
       if (!resp.ok) {
-        const err = await resp.json();
-        alert('Erro: ' + (err.error || 'Tente novamente'));
+        let msg = 'Tente novamente';
+        try { const err = await resp.json(); msg = err.error || msg; } catch {}
+        alert('Erro: ' + msg);
         return;
       }
+
       const data = await resp.json();
       window.location.href = data.url;
     } catch (e) {
@@ -595,8 +639,7 @@
   }
 
   function toggleFaq(el) {
-    const item = el.parentElement;
-    item.classList.toggle('open');
+    el.parentElement.classList.toggle('open');
   }
 </script>
 
