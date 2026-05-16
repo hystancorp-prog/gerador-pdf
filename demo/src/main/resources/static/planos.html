@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hystan — Planos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark: #1a1a1a;
+      --mid: #404040;
+      --light: #f5f5f3;
+      --border: #e0e0dd;
+      --white: #ffffff;
+      --green: #22c55e;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--light);
+      min-height: 100vh;
+      color: var(--dark);
+    }
+
+    /* TOPBAR */
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .btn-back {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #888;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'DM Sans', sans-serif;
+      text-decoration: none;
+    }
+    .btn-back:hover { border-color: var(--dark); color: var(--dark); }
+
+    /* MAIN */
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 20px 80px;
+    }
+
+    /* HEADER */
+    .page-header {
+      text-align: center;
+      margin-bottom: 48px;
+      animation: fadeUp .5s ease both;
+    }
+    .page-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 16px;
+    }
+    .page-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .page-sub {
+      font-size: 16px;
+      color: #777;
+      max-width: 420px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* TOGGLE MENSAL/ANUAL */
+    .billing-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 48px;
+      animation: fadeUp .5s .1s ease both;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+    .billing-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #888;
+      transition: color .2s;
+    }
+    .billing-label.active { color: var(--dark); font-weight: 600; }
+
+    /* SWITCH TOGGLE */
+    .switch {
+      position: relative;
+      width: 52px;
+      height: 28px;
+      cursor: pointer;
+    }
+    .switch input { display: none; }
+    .switch-track {
+      position: absolute;
+      inset: 0;
+      background: var(--border);
+      border-radius: 999px;
+      transition: background .25s;
+    }
+    .switch input:checked + .switch-track { background: var(--dark); }
+    .switch-thumb {
+      position: absolute;
+      top: 4px; left: 4px;
+      width: 20px; height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: transform .25s cubic-bezier(.4,0,.2,1);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .switch input:checked ~ .switch-thumb { transform: translateX(24px); }
+
+    .discount-badge {
+      background: #dcfce7;
+      color: #16a34a;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: .04em;
+    }
+
+    /* PRICING GRID */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      animation: fadeUp .5s .2s ease both;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    .plan-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+    .plan-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.08);
+    }
+    .plan-card.featured {
+      background: var(--dark);
+      border-color: var(--dark);
+      color: white;
+      transform: scale(1.02);
+    }
+    .plan-card.featured:hover {
+      transform: scale(1.02) translateY(-4px);
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--dark);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 999px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .plan-card.featured .popular-badge {
+      background: white;
+      color: var(--dark);
+    }
+
+    .plan-name-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #999;
+      margin-bottom: 8px;
+    }
+    .plan-card.featured .plan-name-tag { color: rgba(255,255,255,0.4); }
+
+    .plan-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .plan-price-wrap { margin-bottom: 4px; }
+    .plan-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+    .plan-price .cents {
+      font-size: 18px;
+      font-weight: 400;
+      opacity: .6;
+      letter-spacing: 0;
+    }
+    .plan-price-period {
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 6px;
+    }
+    .plan-card.featured .plan-price-period { color: rgba(255,255,255,0.4); }
+
+    .plan-trial {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 24px;
+      min-height: 18px;
+    }
+    .plan-card.featured .plan-trial { color: #86efac; }
+
+    .plan-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 24px;
+    }
+    .plan-card.featured .plan-divider { background: rgba(255,255,255,0.12); }
+
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+      flex: 1;
+    }
+    .plan-features li {
+      font-size: 13px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: var(--mid);
+      line-height: 1.4;
+    }
+    .plan-card.featured .plan-features li { color: rgba(255,255,255,0.75); }
+    .plan-features li::before {
+      content: '✓';
+      font-weight: 700;
+      color: var(--green);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .plan-card.featured .plan-features li::before { color: #86efac; }
+    .plan-features li.muted { color: #ccc; }
+    .plan-features li.muted::before { content: '—'; color: #ccc; font-weight: 400; }
+    .plan-card.featured .plan-features li.muted { color: rgba(255,255,255,0.25); }
+    .plan-card.featured .plan-features li.muted::before { color: rgba(255,255,255,0.25); }
+
+    .btn-plan {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'DM Sans', sans-serif;
+      border: none;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--dark);
+    }
+    .btn-outline:hover { border-color: var(--dark); background: var(--light); }
+    .btn-dark {
+      background: var(--dark);
+      color: white;
+    }
+    .btn-dark:hover { background: var(--mid); }
+    .btn-white {
+      background: white;
+      color: var(--dark);
+    }
+    .btn-white:hover { background: #f0f0ee; }
+
+    /* GARANTIA */
+    .guarantee {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 13px;
+      color: #aaa;
+      animation: fadeUp .5s .3s ease both;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+    .guarantee span { color: var(--mid); font-weight: 500; }
+
+    /* FAQ RÁPIDO */
+    .faq {
+      max-width: 600px;
+      margin: 60px auto 0;
+      animation: fadeUp .5s .4s ease both;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+    .faq-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .faq-item {
+      border-top: 1px solid var(--border);
+      padding: 16px 0;
+    }
+    .faq-item:last-child { border-bottom: 1px solid var(--border); }
+    .faq-q {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-q::after { content: '+'; font-size: 18px; color: #aaa; font-weight: 400; transition: transform .2s; }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.7;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease, padding .3s;
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding-top: 10px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .topbar { padding: 16px 20px; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .plan-card.featured { transform: none; }
+      .plan-card.featured:hover { transform: translateY(-4px); }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <img src="/hystan.png" alt="Hystan Logo" style="height: 32px; width: auto; display: block;">
+  <a href="/dashboard.html" class="btn-back">← Voltar ao dashboard</a>
+</header>
+
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-tag">Planos e preços</div>
+    <h1 class="page-title">Simples, transparente<br>e sem surpresas</h1>
+    <p class="page-sub">Comece grátis por 7 dias. Cancele quando quiser. Sem contratos.</p>
+  </div>
+
+  <!-- TOGGLE MENSAL/ANUAL -->
+  <div class="billing-toggle">
+    <span class="billing-label active" id="label-mensal">Mensal</span>
+    <label class="switch">
+      <input type="checkbox" id="toggle-anual" onchange="alternarPlano()">
+      <div class="switch-track"></div>
+      <div class="switch-thumb"></div>
+    </label>
+    <span class="billing-label" id="label-anual">Anual</span>
+    <span class="discount-badge" id="badge-desconto" style="display:none;">Economize 21%</span>
+  </div>
+
+  <!-- CARDS DE PLANOS -->
+  <div class="pricing-grid">
+
+    <!-- GRATUITO -->
+    <div class="plan-card">
+      <div class="plan-name-tag">Grátis</div>
+      <div class="plan-name">Trial</div>
+      <div class="plan-price-wrap">
+        <div class="plan-price">R$0<span class="cents"></span></div>
+      </div>
+      <div class="plan-price-period">por 7 dias</div>
+      <div class="plan-trial">✦ Sem cobrar cartão agora</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Até 5 relatórios no período</li>
+        <li>Filtro por mês específico</li>
+        <li>Download em PDF</li>
+        <li class="muted">Logo da empresa no PDF</li>
+        <li class="muted">Filtro por intervalo ou ano</li>
+        <li class="muted">Suporte prioritário</li>
+      </ul>
+      <button class="btn-plan btn-outline" onclick="comecarTrial()">Começar grátis</button>
+    </div>
+
+    <!-- ESSENCIAL -->
+    <div class="plan-card featured">
+      <div class="popular-badge">MAIS POPULAR</div>
+      <div class="plan-name-tag">Essencial</div>
+      <div class="plan-name">Plano Essencial</div>
+      <div class="plan-price-wrap">
+        <div class="plan-price" id="preco-essencial">R$37<span class="cents">,90</span></div>
+      </div>
+      <div class="plan-price-period" id="periodo-essencial">por mês · cobrado mensalmente</div>
+      <div class="plan-trial" id="trial-essencial">✦ 7 dias grátis · cancele antes de cobrar</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Até 20 relatórios por mês</li>
+        <li>Filtro por mês e intervalo</li>
+        <li>Download em PDF</li>
+        <li>Suporte por e-mail</li>
+        <li class="muted">Logo da empresa no PDF</li>
+        <li class="muted">Suporte prioritário</li>
+      </ul>
+      <button class="btn-plan btn-white" onclick="assinar('essencial')">Começar com 7 dias grátis</button>
+    </div>
+
+    <!-- BUSINESS -->
+    <div class="plan-card">
+      <div class="plan-name-tag">Business</div>
+      <div class="plan-name">Plano Business</div>
+      <div class="plan-price-wrap">
+        <div class="plan-price" id="preco-business">R$57<span class="cents">,90</span></div>
+      </div>
+      <div class="plan-price-period" id="periodo-business">por mês · cobrado mensalmente</div>
+      <div class="plan-trial" id="trial-business">&nbsp;</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Relatórios ilimitados</li>
+        <li>Logo da empresa no PDF</li>
+        <li>Filtro por ano completo</li>
+        <li>Suporte prioritário</li>
+        <li>Histórico de relatórios</li>
+        <li>Múltiplos usuários (em breve)</li>
+      </ul>
+      <button class="btn-plan btn-dark" onclick="assinar('pro')">Assinar Business</button>
+    </div>
+
+  </div>
+
+  <div class="guarantee">
+    <span>Garantia de 7 dias</span> · Cancele quando quiser · Sem taxas ocultas · Sem contratos
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq">
+    <div class="faq-title">Dúvidas frequentes</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">O trial exige cartão de crédito?</div>
+      <div class="faq-a">Sim, pedimos o cartão para garantir a continuidade do serviço após os 7 dias. Mas você não é cobrado nada agora — o débito só acontece no 8º dia, se não cancelar antes.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Como cancelo antes de ser cobrado?</div>
+      <div class="faq-a">Pelo dashboard, na seção "Meu Plano", você pode cancelar a qualquer momento com um clique. Sem burocracia.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Qual a diferença entre Essencial e Business?</div>
+      <div class="faq-a">O Essencial tem limite de 20 relatórios por mês e suporte por e-mail. O Business é ilimitado, inclui a logo da sua empresa no PDF, filtro por ano inteiro e suporte prioritário.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">O plano anual tem desconto?</div>
+      <div class="faq-a">Sim! No plano anual você economiza 21%: Essencial por R$29,90/mês e Business por R$45,90/mês, cobrados uma vez por ano.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Posso mudar de plano depois?</div>
+      <div class="faq-a">Sim, você pode fazer upgrade ou downgrade a qualquer momento. A diferença é cobrada ou creditada proporcionalmente.</div>
+    </div>
+  </div>
+
+</main>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBgSfuXg-JAnb5h1hjnC5IPW_dolgoBmq0",
+    authDomain: "hystan-859f8.firebaseapp.com",
+    projectId: "hystan-859f8",
+    storageBucket: "hystan-859f8.firebasestorage.app",
+    messagingSenderId: "922392046948",
+    appId: "1:922392046948:web:6f1e27fd18a43a9224de71"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Se não estiver logado, manda pro auth
+  onAuthStateChanged(auth, (user) => {
+    if (!user) window.location.href = '/auth.html';
+  });
+
+  // Expõe auth para funções globais
+  window._auth = auth;
+</script>
+
+<script>
+  let isAnual = false;
+
+  const precos = {
+    essencial: { mensal: 'R$37<span class="cents">,90</span>', anual: 'R$29<span class="cents">,90</span>' },
+    business:  { mensal: 'R$57<span class="cents">,90</span>', anual: 'R$45<span class="cents">,90</span>' }
+  };
+
+  function alternarPlano() {
+    isAnual = document.getElementById('toggle-anual').checked;
+
+    // Labels
+    document.getElementById('label-mensal').classList.toggle('active', !isAnual);
+    document.getElementById('label-anual').classList.toggle('active', isAnual);
+    document.getElementById('badge-desconto').style.display = isAnual ? 'inline-block' : 'none';
+
+    // Preços
+    document.getElementById('preco-essencial').innerHTML = isAnual ? precos.essencial.anual : precos.essencial.mensal;
+    document.getElementById('preco-business').innerHTML  = isAnual ? precos.business.anual  : precos.business.mensal;
+
+    // Períodos
+    document.getElementById('periodo-essencial').textContent = isAnual
+      ? 'por mês · cobrado anualmente (R$358,80/ano)'
+      : 'por mês · cobrado mensalmente';
+    document.getElementById('periodo-business').textContent = isAnual
+      ? 'por mês · cobrado anualmente (R$550,80/ano)'
+      : 'por mês · cobrado mensalmente';
+
+    // Trial só no mensal
+    document.getElementById('trial-essencial').innerHTML = isAnual
+      ? '&nbsp;'
+      : '✦ 7 dias grátis · cancele antes de cobrar';
+  }
+
+  function comecarTrial() {
+    // Trial gratuito — só marca no localStorage e libera o dashboard
+    localStorage.setItem('hystan_plano', 'trial');
+    localStorage.setItem('hystan_trial_inicio', Date.now());
+    window.location.href = '/dashboard.html';
+  }
+
+  async function assinar(plano) {
+    try {
+      const suffix = isAnual ? '_anual' : '';
+      const formData = new FormData();
+      formData.append('plano', plano + suffix);
+      const resp = await fetch('/criar-checkout', { method: 'POST', body: formData });
+      if (!resp.ok) {
+        const err = await resp.json();
+        alert('Erro: ' + (err.error || 'Tente novamente'));
+        return;
+      }
+      const data = await resp.json();
+      window.location.href = data.url;
+    } catch (e) {
+      alert('Erro ao abrir pagamento: ' + e.message);
+    }
+  }
+
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    item.classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>

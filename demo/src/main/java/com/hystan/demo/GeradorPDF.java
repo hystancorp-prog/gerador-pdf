@@ -38,7 +38,7 @@ public class GeradorPDF {
         c.beginText();
         c.setFont(fonteBold, 20);
         c.newLineAtOffset(xNome, y);
-        c.showText(nomeEmpresa);
+        c.showText(sanitize(nomeEmpresa, 80));
         c.endText();
 
         c.beginText();
@@ -70,10 +70,10 @@ public class GeradorPDF {
 
         c.setNonStrokingColor(Color.WHITE);
         c.setFont(fonteBold, 11);
-        escrever(c, 55,  y + 2, "Nome");
-        escrever(c, 255, y + 2, "Servico");
-        escrever(c, 420, y + 2, "Data");
-        escrever(c, 490, y + 2, "Valor");
+        escrever(c, 55,  y + 2, "Nome", 60);
+        escrever(c, 255, y + 2, "Servico", 60);
+        escrever(c, 420, y + 2, "Data", 20);
+        escrever(c, 490, y + 2, "Valor", 20);
         c.setNonStrokingColor(Color.BLACK);
 
         y -= 25;
@@ -92,10 +92,10 @@ public class GeradorPDF {
             }
 
             c.setNonStrokingColor(Color.BLACK);
-            escrever(c, 55,  y + 2, linha[0]);
-            escrever(c, 255, y + 2, linha[1]);
-            escrever(c, 420, y + 2, linha[3]);
-            escrever(c, 490, y + 2, "R$" + linha[2]);
+            escrever(c, 55,  y + 2, linha[0], 50);
+            escrever(c, 255, y + 2, linha[1], 50);
+            escrever(c, 420, y + 2, linha[3], 20);
+            escrever(c, 490, y + 2, "R$" + linha[2], 20);
 
             total += Double.parseDouble(linha[2].replace(",", "."));
             y -= 22;
@@ -109,19 +109,26 @@ public class GeradorPDF {
         y -= 20;
 
         c.setFont(fonteBold, 12);
-        escrever(c, 380, y, "Total:");
-        escrever(c, 490, y, String.format("R$%.2f", total));
+        escrever(c, 380, y, "Total:", 20);
+        escrever(c, 490, y, String.format("R$%.2f", total), 20);
 
         c.close();
         doc.save(saida);
         doc.close();
     }
 
-    private static void escrever(PDPageContentStream c, float x, float y, String texto)
+    private static void escrever(PDPageContentStream c, float x, float y, String texto, int maxLen)
             throws Exception {
         c.beginText();
         c.newLineAtOffset(x, y);
-        c.showText(texto);
+        c.showText(sanitize(texto, maxLen));
         c.endText();
+    }
+
+    // Strip control characters and truncate — prevents layout breaks and encoding issues
+    private static String sanitize(String input, int maxLen) {
+        if (input == null) return "";
+        String s = input.replaceAll("[\\x00-\\x1F\\x7F]", "").trim();
+        return s.length() > maxLen ? s.substring(0, maxLen) : s;
     }
 }

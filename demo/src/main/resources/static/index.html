@@ -334,35 +334,71 @@
     <h2 class="section-title">Simples e sem surpresas</h2>
     <p class="section-sub" style="margin: 0 auto;">Cancele quando quiser. Sem taxa de setup. Sem contratos.</p>
   </div>
-  <div class="pricing-grid">
-    <div class="plan-card reveal">
-      <div class="plan-badge">Básico</div>
+
+  <!-- TOGGLE MENSAL/ANUAL -->
+  <div style="display:flex; align-items:center; justify-content:center; gap:14px; margin-top:36px;" class="reveal">
+    <span style="font-size:14px; font-weight:600; color:var(--dark);" id="lbl-mensal">Mensal</span>
+    <label style="position:relative; width:52px; height:28px; cursor:pointer; display:block;">
+      <input type="checkbox" id="toggle-anual-index" onchange="alternarBilling()" style="display:none;">
+      <div id="track-index" style="position:absolute; inset:0; background:#e0e0dd; border-radius:999px; transition:background .25s;"></div>
+      <div id="thumb-index" style="position:absolute; top:4px; left:4px; width:20px; height:20px; background:white; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,0.2); transition:transform .25s; pointer-events:none;"></div>
+    </label>
+    <span style="font-size:14px; font-weight:500; color:#888;" id="lbl-anual">Anual</span>
+    <span id="badge-anual-index" style="display:none; background:#dcfce7; color:#16a34a; font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px;">Economize 21%</span>
+  </div>
+
+  <!-- 3 CARDS -->
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:960px; margin:40px auto 0;" class="reveal">
+
+    <!-- TRIAL -->
+    <div class="plan-card" style="display:flex; flex-direction:column;">
+      <div class="plan-badge">Grátis</div>
+      <div class="plan-name">Trial</div>
+      <div class="plan-price" style="font-size:40px;">R$0</div>
+      <div class="plan-desc">7 dias · sem cobrar agora</div>
+      <ul class="plan-features" style="flex:1;">
+        <li>Até 5 relatórios no período</li>
+        <li>Filtro por mês específico</li>
+        <li>Download em PDF</li>
+      </ul>
+      <button class="btn-plan btn-plan-outline" onclick="irParaPlanos()">Começar grátis</button>
+    </div>
+
+    <!-- ESSENCIAL -->
+    <div class="plan-card featured" style="display:flex; flex-direction:column;">
+      <div class="plan-badge">Mais popular</div>
       <div class="plan-name">Plano Essencial</div>
-      <div class="plan-price">R$37<span>/mês</span></div>
-      <div class="plan-desc">Ideal para quem está começando</div>
-      <ul class="plan-features">
+      <div class="plan-price" id="preco-ess-index">R$37<span>/mês</span></div>
+      <div class="plan-desc" id="desc-ess-index">7 dias grátis · depois R$37,90/mês</div>
+      <ul class="plan-features" style="flex:1;">
         <li>Até 20 relatórios por mês</li>
         <li>Filtro por mês e intervalo</li>
         <li>Download em PDF</li>
         <li>Suporte por e-mail</li>
       </ul>
-      <button class="btn-plan btn-plan-outline" onclick="stripeCheckout('basic')">Começar agora</button>
+      <button class="btn-plan btn-plan-white" onclick="irParaPlanos()">Começar com 7 dias grátis</button>
     </div>
-    <div class="plan-card featured reveal">
-      <div class="plan-badge">Pro</div>
+
+    <!-- BUSINESS -->
+    <div class="plan-card" style="display:flex; flex-direction:column;">
+      <div class="plan-badge">Completo</div>
       <div class="plan-name">Plano Business</div>
-      <div class="plan-price">R$57<span>/mês</span></div>
-      <div class="plan-desc">Para quem precisa de mais volume</div>
-      <ul class="plan-features">
+      <div class="plan-price" id="preco-bus-index">R$57<span>/mês</span></div>
+      <div class="plan-desc" id="desc-bus-index">Cobrado mensalmente</div>
+      <ul class="plan-features" style="flex:1;">
         <li>Relatórios ilimitados</li>
         <li>Logo da empresa no PDF</li>
         <li>Filtro por ano completo</li>
         <li>Suporte prioritário</li>
         <li>Histórico de relatórios</li>
       </ul>
-      <button class="btn-plan btn-plan-white" onclick="stripeCheckout('pro')">Assinar Pro</button>
+      <button class="btn-plan btn-plan-outline" onclick="irParaPlanos()">Assinar Business</button>
     </div>
+
   </div>
+  <p style="text-align:center; font-size:13px; color:#aaa; margin-top:28px;">
+    Cancele quando quiser · Sem contratos · Sem taxas ocultas
+  </p>
 </section>
 
 <!-- DEPOIMENTOS -->
@@ -440,11 +476,33 @@
   }, { threshold: 0.1 });
   reveals.forEach(r => observer.observe(r));
 
-  // Stripe placeholder
-  async function stripeCheckout(plan) {
-    sessionStorage.setItem('plano_escolhido', plan);
+  // Redireciona para página de planos
+  function irParaPlanos() {
     window.location.href = '/auth.html';
-}
+  }
+
+  // Toggle mensal/anual na landing
+  function alternarBilling() {
+    const isAnual = document.getElementById('toggle-anual-index').checked;
+    const track = document.getElementById('track-index');
+    const thumb = document.getElementById('thumb-index');
+    const badge = document.getElementById('badge-anual-index');
+
+    track.style.background = isAnual ? '#1a1a1a' : '#e0e0dd';
+    thumb.style.transform = isAnual ? 'translateX(24px)' : 'translateX(0)';
+    badge.style.display = isAnual ? 'inline-block' : 'none';
+    document.getElementById('lbl-mensal').style.color = isAnual ? '#888' : '#1a1a1a';
+    document.getElementById('lbl-anual').style.color   = isAnual ? '#1a1a1a' : '#888';
+
+    document.getElementById('preco-ess-index').innerHTML = isAnual
+      ? 'R$29<span>/mês</span>' : 'R$37<span>/mês</span>';
+    document.getElementById('preco-bus-index').innerHTML = isAnual
+      ? 'R$45<span>/mês</span>' : 'R$57<span>/mês</span>';
+    document.getElementById('desc-ess-index').textContent = isAnual
+      ? 'Cobrado anualmente (R$358,80/ano)' : '7 dias grátis · depois R$37,90/mês';
+    document.getElementById('desc-bus-index').textContent = isAnual
+      ? 'Cobrado anualmente (R$550,80/ano)' : 'Cobrado mensalmente';
+  }
 
 </script>
 </body>
