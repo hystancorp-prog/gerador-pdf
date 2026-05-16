@@ -13,6 +13,7 @@ import java.util.*;
 @RestController
 public class StripeController {
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(StripeController.class);
     private static final int  RATE_LIMIT = 5;
     private static final long WINDOW_MS  = 60_000L;
 
@@ -91,6 +92,7 @@ public class StripeController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
+            log.error("Erro Stripe: ", e);
             Map<String, String> err = new HashMap<>();
             err.put("error", "Erro ao criar sessão de pagamento. Tente novamente.");
             return ResponseEntity.status(500).body(err);
