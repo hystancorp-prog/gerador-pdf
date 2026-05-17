@@ -49,26 +49,42 @@ public class WebhookController {
             switch (event.getType()) {
 
                 case "checkout.session.completed" -> {
-                    Session session = (Session) event.getDataObjectDeserializer()
-                            .getObject().orElseThrow();
+                    var deserializer = event.getDataObjectDeserializer();
+                    if (deserializer.getObject().isEmpty()) {
+                        log.warn("Evento {} sem objeto deserializável, ignorando", event.getType());
+                        break;
+                    }
+                    Session session = (Session) deserializer.getObject().get();
                     handleCheckoutCompleted(session);
                 }
 
                 case "customer.subscription.updated" -> {
-                    Subscription sub = (Subscription) event.getDataObjectDeserializer()
-                            .getObject().orElseThrow();
+                    var deserializer = event.getDataObjectDeserializer();
+                    if (deserializer.getObject().isEmpty()) {
+                        log.warn("Evento {} sem objeto deserializável, ignorando", event.getType());
+                        break;
+                    }
+                    Subscription sub = (Subscription) deserializer.getObject().get();
                     handleSubscriptionUpdated(sub);
                 }
 
                 case "customer.subscription.deleted" -> {
-                    Subscription sub = (Subscription) event.getDataObjectDeserializer()
-                            .getObject().orElseThrow();
+                    var deserializer = event.getDataObjectDeserializer();
+                    if (deserializer.getObject().isEmpty()) {
+                        log.warn("Evento {} sem objeto deserializável, ignorando", event.getType());
+                        break;
+                    }
+                    Subscription sub = (Subscription) deserializer.getObject().get();
                     handleSubscriptionDeleted(sub);
                 }
 
                 case "invoice.payment_failed" -> {
-                    Invoice invoice = (Invoice) event.getDataObjectDeserializer()
-                            .getObject().orElseThrow();
+                    var deserializer = event.getDataObjectDeserializer();
+                    if (deserializer.getObject().isEmpty()) {
+                        log.warn("Evento {} sem objeto deserializável, ignorando", event.getType());
+                        break;
+                    }
+                    Invoice invoice = (Invoice) deserializer.getObject().get();
                     handlePaymentFailed(invoice);
                 }
 
