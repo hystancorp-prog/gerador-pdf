@@ -42,7 +42,6 @@ public class LeitorPlanilha {
                 Cell celulaNome = linha.getCell(0);
                 if (celulaNome == null || formatter.formatCellValue(celulaNome).isBlank()) continue;
 
-                // Skip rows with missing value (col 2) instead of throwing NPE
                 Cell celulaValor = linha.getCell(2);
                 if (celulaValor == null) continue;
 
@@ -52,7 +51,15 @@ public class LeitorPlanilha {
                 String nome    = formatter.formatCellValue(linha.getCell(0));
                 String servico = formatter.formatCellValue(linha.getCell(1));
 
-                double valorNum = celulaValor.getNumericCellValue();
+                double valorNum;
+                if (celulaValor.getCellType() == CellType.NUMERIC) {
+                    valorNum = celulaValor.getNumericCellValue();
+                } else {
+                    String raw = formatter.formatCellValue(celulaValor)
+                        .replace("R$", "").replace(".", "").replace(",", ".");
+                    try { valorNum = Double.parseDouble(raw.trim()); }
+                    catch (NumberFormatException e) { continue; }
+                }
                 String valor    = String.format("%.2f", valorNum);
 
                 LocalDate data;

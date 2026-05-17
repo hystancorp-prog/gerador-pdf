@@ -25,10 +25,8 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/gerar-pdf", "/criar-checkout").authenticated()
-                // Stripe não manda token Firebase — precisa ser público
-                .requestMatchers("/webhook/stripe").permitAll()
-                .anyRequest().permitAll()
+                .requestMatchers("/webhook/stripe", "/*.html", "/*.png", "/*.ico", "/").permitAll()
+                .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwt -> jwt.decoder(firebaseJwtDecoder()))
@@ -45,7 +43,11 @@ public class SecurityConfig {
         String issuer = "https://securetoken.google.com/" + firebaseProjectId;
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(
             new JwtTimestampValidator(),
-            new JwtIssuerValidator(issuer)
+            new JwtIssuerValidator(issuer),
+            new JwtClaimValidator<Object>("aud", aud -> {
+                if (aud instanceof java.util.List) return ((java.util.List<?>) aud).contains(firebaseProjectId);
+                return firebaseProjectId.equals(String.valueOf(aud));
+            })
         );
         decoder.setJwtValidator(validator);
         return decoder;

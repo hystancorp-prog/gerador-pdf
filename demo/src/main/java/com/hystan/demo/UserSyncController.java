@@ -23,7 +23,7 @@ public class UserSyncController {
         if (auth == null) return ResponseEntity.status(401).build();
 
         String uid = auth.getName();
-        String email = body.get("email");
+        String email = ((org.springframework.security.oauth2.jwt.Jwt) auth.getPrincipal()).getClaimAsString("email");
         String nome = body.get("nome");
         String foto = body.get("foto");
 

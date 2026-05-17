@@ -3,6 +3,7 @@ package com.hystan.demo;
 import com.stripe.Stripe;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,27 +38,30 @@ public class StripeController {
     @Value("${STRIPE_PRICE_PRO_ANUAL:#{null}}")
     private String priceBusinessAnual;
 
+    @PostConstruct
+    private void init() {
+        Stripe.apiKey = stripeSecretKey.trim().replaceAll("[\\r\\n\\t]", "");
+    }
+
     @PostMapping("/criar-checkout")
     public ResponseEntity<Map<String, String>> criarCheckout(
             @RequestParam("plano") String plano,
             HttpServletRequest request) {
 
         // Rate limiting
-        if (!rateLimiter.isAllowed(request.getRemoteAddr() + ":checkout", RATE_LIMIT, WINDOW_MS)) {
+        if (!rateLimiter.isAllowed(RateLimiter.getClientIp(request) + ":checkout", RATE_LIMIT, WINDOW_MS)) {
             Map<String, String> err = new HashMap<>();
             err.put("error", "Muitas requisições. Tente novamente em instantes.");
             return ResponseEntity.status(429).body(err);
         }
 
         try {
-            Stripe.apiKey = stripeSecretKey.trim().replaceAll("[\\r\\n\\t]", "");
-
             // Mapeia nome do plano para price ID
             String priceId = resolverPriceId(plano.trim().toLowerCase());
 
             if (priceId == null || priceId.isBlank()) {
                 Map<String, String> err = new HashMap<>();
-                err.put("error", "Plano inválido ou não configurado: " + plano);
+                err.put("error", "Plano inválido. Tente novamente.");
                 return ResponseEntity.status(400).body(err);
             }
 

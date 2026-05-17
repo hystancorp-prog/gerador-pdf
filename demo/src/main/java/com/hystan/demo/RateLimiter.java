@@ -1,12 +1,28 @@
 package com.hystan.demo;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
+
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class RateLimiter {
 
+    private static final long CLEANUP_THRESHOLD_MS = 5 * 60_000L;
+
     private final ConcurrentHashMap<String, long[]> cache = new ConcurrentHashMap<>();
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
+        Thread t = new Thread(r, "rate-limiter-cleanup");
+        t.setDaemon(true);
+        return t;
+    });
+
+    public RateLimiter() {
+        scheduler.scheduleAtFixedRate(this::evictStaleEntries, 5, 5, TimeUnit.MINUTES);
+    }
 
     /**
      * Verifica se a chave está dentro do limite.
@@ -29,5 +45,18 @@ public class RateLimiter {
 
         long[] entry = cache.get(key);
         return entry[0] <= maxRequests;
+    }
+
+    public static String getClientIp(HttpServletRequest request) {
+        String forwarded = request.getHeader("X-Forwarded-For");
+        if (forwarded != null && !forwarded.isBlank()) {
+            return forwarded.split(",")[0].trim();
+        }
+        return request.getRemoteAddr();
+    }
+
+    private void evictStaleEntries() {
+        long now = System.currentTimeMillis();
+        cache.entrySet().removeIf(e -> now - e.getValue()[1] > CLEANUP_THRESHOLD_MS);
     }
 }

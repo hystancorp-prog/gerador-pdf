@@ -38,7 +38,7 @@ public class PdfController {
             @RequestParam("mesFim") int mesFim,
             HttpServletRequest request) {
 
-        if (!rateLimiter.isAllowed(request.getRemoteAddr() + ":gerar-pdf", RATE_LIMIT, WINDOW_MS)) {
+        if (!rateLimiter.isAllowed(RateLimiter.getClientIp(request) + ":gerar-pdf", RATE_LIMIT, WINDOW_MS)) {
             return ResponseEntity.status(429)
                 .body("Muitas requisições. Tente novamente em instantes.".getBytes());
         }
