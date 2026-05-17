@@ -438,7 +438,7 @@
     .user-plan-badge { font-size: 11px; color: var(--text-2); }
 
     /* ── CONTENT ── */
-    .content { flex: 1; padding: 32px; width: 100%; }
+    .content { flex: 1; padding: 32px; width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto; }
     .page { display: none; }
     .page.is-active { display: block; }
 
@@ -535,6 +535,30 @@
       margin-bottom: 20px;
       letter-spacing: -0.01em;
     }
+
+    /* ── CHART CARD ── */
+    .chart-card { padding: 24px 28px 20px; }
+    .chart-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+    .chart-card .card-title { margin-bottom: 2px; }
+    .chart-subtitle { font-size: 12px; color: var(--text-3); }
+    .chart-wrap { position: relative; width: 100%; }
+    .chart-canvas { display: block; width: 100%; height: 180px; cursor: crosshair; }
+    .chart-tooltip {
+      position: absolute;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 6px;
+      pointer-events: none;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 100ms ease;
+    }
+    .chart-tooltip.is-visible { opacity: 1; }
 
     /* ── DROPZONE ── */
     .dropzone {
@@ -1046,6 +1070,19 @@
         </div>
       </div>
 
+      <div class="card chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="card-title">Relatórios gerados</div>
+            <div class="chart-subtitle" id="chart-subtitle">Últimos 6 meses</div>
+          </div>
+        </div>
+        <div class="chart-wrap" id="chart-wrap">
+          <canvas id="chart-canvas" class="chart-canvas"></canvas>
+          <div class="chart-tooltip" id="chart-tooltip"></div>
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-title">Novo Relatório</div>
 
@@ -1400,6 +1437,7 @@
     document.querySelectorAll('.theme-btn').forEach(btn => {
       btn.classList.toggle('is-active', btn.dataset.themeVal === t);
     });
+    drawChart();
   }
 
   (function initTheme() {
@@ -1669,6 +1707,7 @@
       return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
     }).length;
     document.getElementById('stat-month').textContent = monthCount;
+    drawChart();
   }
 
   /* ── HISTORY RENDER ── */
@@ -1755,8 +1794,162 @@
     }, 3500);
   }
 
+  /* ── CHART ── */
+  function isDarkMode() {
+    const t = document.documentElement.getAttribute('data-theme');
+    if (t === 'dark') return true;
+    if (t === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function drawChart() {
+    const canvas = document.getElementById('chart-canvas');
+    if (!canvas) return;
+
+    const dark       = isDarkMode();
+    const lineColor  = dark ? 'rgba(255,255,255,0.88)' : 'rgba(26,26,26,0.82)';
+    const labelColor = dark ? 'rgba(255,255,255,0.28)' : 'rgba(0,0,0,0.3)';
+    const gradTop    = dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)';
+    const dotFill    = dark ? '#111111' : '#ffffff';
+
+    const dpr = window.devicePixelRatio || 1;
+    const W   = canvas.clientWidth;
+    const H   = 180;
+    if (W === 0) return;
+
+    canvas.width  = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    canvas.style.height = H + 'px';
+
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, W, H);
+
+    const PAD = { top: 14, bot: 28, left: 34, right: 12 };
+    const cW  = W - PAD.left - PAD.right;
+    const cH  = H - PAD.top - PAD.bot;
+
+    /* build 6-month buckets */
+    const now = new Date();
+    const buckets = [];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      buckets.push({ label: MONTHS_PT_SHORT[d.getMonth()], year: d.getFullYear(), month: d.getMonth(), count: 0 });
+    }
+    reportHistory.forEach(h => {
+      if (!h.timestamp) return;
+      const d = new Date(h.timestamp);
+      const b = buckets.find(bk => bk.month === d.getMonth() && bk.year === d.getFullYear());
+      if (b) b.count++;
+    });
+
+    const maxVal = Math.max(...buckets.map(b => b.count), 1);
+    const n = buckets.length;
+
+    const pts = buckets.map((b, i) => ({
+      x:     PAD.left + (n < 2 ? cW / 2 : (i / (n - 1)) * cW),
+      y:     PAD.top + (1 - b.count / maxVal) * cH,
+      value: b.count,
+      label: b.label
+    }));
+
+    /* area fill */
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < pts.length; i++) {
+      const cpx = (pts[i - 1].x + pts[i].x) / 2;
+      ctx.bezierCurveTo(cpx, pts[i - 1].y, cpx, pts[i].y, pts[i].x, pts[i].y);
+    }
+    ctx.lineTo(pts[n - 1].x, PAD.top + cH);
+    ctx.lineTo(pts[0].x,     PAD.top + cH);
+    ctx.closePath();
+    const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + cH);
+    grad.addColorStop(0, gradTop);
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    /* line */
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < pts.length; i++) {
+      const cpx = (pts[i - 1].x + pts[i].x) / 2;
+      ctx.bezierCurveTo(cpx, pts[i - 1].y, cpx, pts[i].y, pts[i].x, pts[i].y);
+    }
+    ctx.strokeStyle = lineColor;
+    ctx.lineWidth   = 2;
+    ctx.lineJoin    = 'round';
+    ctx.lineCap     = 'round';
+    ctx.stroke();
+
+    /* X labels */
+    ctx.font      = '500 11px \'DM Sans\', sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = labelColor;
+    pts.forEach(p => ctx.fillText(p.label, p.x, H - 7));
+
+    /* Y labels */
+    ctx.font      = '400 10px \'DM Sans\', sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillStyle = labelColor;
+    ctx.fillText(String(maxVal), PAD.left - 7, PAD.top + 4);
+    if (maxVal >= 2) {
+      ctx.fillText(String(Math.round(maxVal / 2)), PAD.left - 7, PAD.top + cH / 2 + 4);
+    }
+    ctx.fillText('0', PAD.left - 7, PAD.top + cH + 4);
+
+    /* dots */
+    pts.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle   = dotFill;
+      ctx.fill();
+      ctx.strokeStyle = lineColor;
+      ctx.lineWidth   = 2;
+      ctx.stroke();
+    });
+
+    canvas._chartPts = pts;
+  }
+
+  function initChartTooltip() {
+    const canvas  = document.getElementById('chart-canvas');
+    const tooltip = document.getElementById('chart-tooltip');
+    if (!canvas || !tooltip) return;
+
+    canvas.addEventListener('mousemove', e => {
+      const pts = canvas._chartPts;
+      if (!pts) return;
+      const rect = canvas.getBoundingClientRect();
+      const mx   = e.clientX - rect.left;
+      const my   = e.clientY - rect.top;
+
+      let nearest = null;
+      let minDist = Infinity;
+      pts.forEach(p => {
+        const d = Math.sqrt((p.x - mx) ** 2 + (p.y - my) ** 2);
+        if (d < minDist) { minDist = d; nearest = p; }
+      });
+
+      if (nearest && minDist < 30) {
+        tooltip.textContent   = nearest.value + (nearest.value === 1 ? ' relatório' : ' relatórios');
+        tooltip.style.left    = nearest.x + 'px';
+        tooltip.style.top     = (nearest.y - 38) + 'px';
+        tooltip.classList.add('is-visible');
+      } else {
+        tooltip.classList.remove('is-visible');
+      }
+    });
+
+    canvas.addEventListener('mouseleave', () => tooltip.classList.remove('is-visible'));
+  }
+
   /* ── INIT ── */
   updateStats();
+  initChartTooltip();
+  if (window.ResizeObserver) {
+    new ResizeObserver(() => drawChart()).observe(document.getElementById('chart-canvas'));
+  }
 })();
 </script>
 
