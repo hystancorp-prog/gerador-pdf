@@ -647,7 +647,14 @@
       formData.append('ano', ano);
       formData.append('mesInicio', mesInicio);
       formData.append('mesFim', mesFim);
-      const resp = await fetch(API + '/gerar-pdf', { method: 'POST', body: formData });
+      const user = window._firebaseUser;
+      const token = user ? await user.getIdToken() : null;
+
+      const resp = await fetch(API + '/gerar-pdf', {
+        method: 'POST',
+        headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+        body: formData
+      });
       if (!resp.ok) { const msg = await resp.text(); throw new Error(msg || 'Erro no servidor'); }
       const blob = await resp.blob();
       const url = URL.createObjectURL(blob);
