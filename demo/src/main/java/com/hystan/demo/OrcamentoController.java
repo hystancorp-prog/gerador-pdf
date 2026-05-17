@@ -1,0 +1,35 @@
+package com.hystan.demo;
+
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class OrcamentoController {
+
+    @Autowired
+    private RateLimiter rateLimiter;
+
+    @PostMapping("/gerar-orcamento")
+    public ResponseEntity<byte[]> gerarOrcamento(
+            @RequestBody OrcamentoRequest req,
+            HttpServletRequest request) {
+
+        if (!rateLimiter.isAllowed(
+                RateLimiter.getClientIp(request) + ":orcamento", 10, 60_000L))
+            return ResponseEntity.status(429)
+                .body("Muitas requisicoes. Tente novamente em instantes.".getBytes());
+
+        try {
+            byte[] pdf = GeradorOrcamentoPDF.gerar(req);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDisposition(
+                ContentDisposition.attachment().filename("orcamento.pdf").build());
+            return ResponseEntity.ok().headers(headers).body(pdf);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro interno.".getBytes());
+        }
+    }
+}

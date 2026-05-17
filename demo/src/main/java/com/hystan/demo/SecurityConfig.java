@@ -26,6 +26,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/webhook/stripe", "/*.html", "/*.png", "/*.ico", "/").permitAll()
+                .requestMatchers("/gerar-orcamento", "/gerar-recibo").authenticated()
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hystan — Orçamento</title>
+
+  <script>(function(){var t=localStorage.getItem('hystan_theme')||'system';document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sidebar-w: 240px;
+      --topbar-h: 56px;
+      --bg: #f5f5f3; --surface: #ffffff; --surface-2: #f7f7f5;
+      --border: #e0e0dd; --border-strong: #c8c8c4;
+      --text-1: #1a1a1a; --text-2: #888888; --text-3: #c0c0bc;
+      --btn-bg: #111111; --btn-text: #ffffff; --btn-hover: #2d2d2d;
+      --input-bg: #ffffff; --input-border: #e0e0dd; --input-focus: #1a1a1a;
+      --toast-bg: #111111; --toast-text: #ffffff;
+      --toast-success-bg: #15803d; --toast-error-bg: #dc2626;
+      --trial-bg: #111111; --trial-text: rgba(255,255,255,0.82);
+    }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) {
+        --bg: #0a0a0a; --surface: #111111; --surface-2: #1a1a1a;
+        --border: rgba(255,255,255,0.08); --border-strong: rgba(255,255,255,0.16);
+        --text-1: #ffffff; --text-2: rgba(255,255,255,0.5); --text-3: rgba(255,255,255,0.22);
+        --btn-bg: #ffffff; --btn-text: #0a0a0a; --btn-hover: rgba(255,255,255,0.88);
+        --input-bg: rgba(255,255,255,0.04); --input-border: rgba(255,255,255,0.1);
+        --input-focus: rgba(255,255,255,0.4);
+        --toast-bg: #2a2a2a; --trial-bg: rgba(255,255,255,0.06);
+        --trial-text: rgba(255,255,255,0.68);
+      }
+    }
+    html[data-theme="dark"] {
+      --bg: #0a0a0a; --surface: #111111; --surface-2: #1a1a1a;
+      --border: rgba(255,255,255,0.08); --border-strong: rgba(255,255,255,0.16);
+      --text-1: #ffffff; --text-2: rgba(255,255,255,0.5); --text-3: rgba(255,255,255,0.22);
+      --btn-bg: #ffffff; --btn-text: #0a0a0a; --btn-hover: rgba(255,255,255,0.88);
+      --input-bg: rgba(255,255,255,0.04); --input-border: rgba(255,255,255,0.1);
+      --input-focus: rgba(255,255,255,0.4);
+      --toast-bg: #2a2a2a; --trial-bg: rgba(255,255,255,0.06); --trial-text: rgba(255,255,255,0.68);
+    }
+    html[data-theme="light"] {
+      --bg: #f5f5f3; --surface: #ffffff; --surface-2: #f7f7f5;
+      --border: #e0e0dd; --border-strong: #c8c8c4;
+      --text-1: #1a1a1a; --text-2: #888888; --text-3: #c0c0bc;
+      --btn-bg: #111111; --btn-text: #ffffff; --btn-hover: #2d2d2d;
+      --input-bg: #ffffff; --input-border: #e0e0dd; --input-focus: #1a1a1a;
+      --toast-bg: #111111; --toast-text: #ffffff;
+      --toast-success-bg: #15803d; --toast-error-bg: #dc2626;
+      --trial-bg: #111111; --trial-text: rgba(255,255,255,0.82);
+    }
+
+    html { height: 100%; }
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--text-1);
+      min-height: 100vh; display: flex; flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      transition: background 200ms ease, color 200ms ease;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w); background: #111111;
+      position: fixed; top: 0; left: 0; bottom: 0; z-index: 300;
+      display: flex; flex-direction: column;
+      transition: transform 260ms cubic-bezier(0.4,0,0.2,1);
+    }
+    .sidebar-logo { padding: 20px 20px 18px; border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; }
+    .sidebar-nav {
+      flex: 1; padding: 12px 10px; display: flex; flex-direction: column;
+      gap: 1px; overflow-y: auto;
+    }
+    .nav-section-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.25); padding: 12px 8px 6px; user-select: none;
+    }
+    .nav-item {
+      position: relative; display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px 9px 12px;
+      border-width: 1px 1px 1px 2px; border-style: solid; border-color: transparent;
+      border-radius: 8px;
+      font-family: 'Syne', sans-serif; font-size: 13.5px; font-weight: 500;
+      color: rgba(255,255,255,0.52); background: transparent;
+      cursor: pointer; width: 100%; text-align: left; text-decoration: none;
+      transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+      outline: none; overflow: hidden;
+    }
+    .nav-item::before {
+      content: ''; position: absolute; inset: 0; border-radius: 8px;
+      background: linear-gradient(120deg,
+        rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.12) 20%,
+        rgba(200,200,200,0.08) 40%, rgba(255,255,255,0.15) 60%,
+        rgba(180,180,180,0.06) 80%, rgba(255,255,255,0.04) 100%);
+      background-size: 300% 300%; opacity: 0; z-index: 0;
+      pointer-events: none; transition: opacity 150ms ease;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.9); }
+    .nav-item.is-active {
+      background: transparent; color: #ffffff; font-weight: 600;
+      border-color: rgba(255,255,255,0.12); border-left-color: rgba(255,255,255,0.7);
+    }
+    .nav-item.is-active::before { opacity: 1; animation: iridescent 4s ease infinite; }
+    .nav-item > span { position: relative; z-index: 1; }
+    @keyframes iridescent {
+      0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
+    }
+    .nav-icon { width: 16px; height: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .nav-spacer { flex: 1; min-height: 16px; }
+    .sidebar-plan {
+      margin: 12px; padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+      background: rgba(255,255,255,0.03); flex-shrink: 0;
+    }
+    .sidebar-plan-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 4px; }
+    .sidebar-plan-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 2px; }
+    .sidebar-plan-sub { font-size: 11px; color: rgba(255,255,255,0.38); }
+
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.48); backdrop-filter: blur(3px); z-index: 299;
+    }
+    .sidebar-overlay.is-visible { display: block; }
+
+    /* ── APP WRAPPER ── */
+    .app-wrapper { margin-left: var(--sidebar-w); width: calc(100% - var(--sidebar-w)); display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      height: var(--topbar-h); background: var(--surface); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px; position: sticky; top: 0; z-index: 200; flex-shrink: 0;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .btn-hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      color: var(--text-1); padding: 6px; border-radius: 6px;
+      align-items: center; justify-content: center; transition: background 150ms ease;
+    }
+    .btn-hamburger:hover { background: var(--surface-2); }
+    .topbar-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--text-1); letter-spacing: -0.02em; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .theme-toggle { display: flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 3px; gap: 2px; }
+    .theme-btn { padding: 4px 10px; border-radius: 6px; border: none; background: transparent; color: var(--text-2); font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: background 150ms ease, color 150ms ease; white-space: nowrap; }
+    .theme-btn.is-active { background: var(--surface); color: var(--text-1); font-weight: 600; }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: #111111; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; font-family: 'DM Sans', sans-serif; flex-shrink: 0; }
+    .user-details { line-height: 1.3; text-align: right; }
+    .user-name { font-size: 13px; font-weight: 600; color: var(--text-1); }
+    .user-plan-badge { font-size: 11px; color: var(--text-2); }
+
+    /* ── CONTENT ── */
+    .content { flex: 1; padding: 32px; width: 100%; max-width: 900px; margin-left: auto; margin-right: auto; }
+
+    /* ── CARD ── */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin-bottom: 20px; }
+    .card-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-1); margin-bottom: 20px; letter-spacing: -0.01em; }
+    .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; margin-top: 24px; }
+    .section-label:first-of-type { margin-top: 0; }
+
+    /* ── FORM ── */
+    .form-row { display: grid; gap: 16px; margin-bottom: 16px; }
+    .form-row-2 { grid-template-columns: 1fr 1fr; }
+    .form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2); }
+    input[type="text"], input[type="number"], input[type="date"], select, textarea {
+      padding: 10px 13px; border: 1px solid var(--input-border); border-radius: 8px;
+      font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text-1);
+      background: var(--input-bg); outline: none;
+      transition: border-color 200ms ease; -webkit-appearance: none; appearance: none;
+    }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center; padding-right: 34px;
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    input:focus, select:focus, textarea:focus { border-color: var(--input-focus); }
+
+    /* ── ITEMS TABLE ── */
+    .items-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+    .items-table th {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-3); text-align: left; padding: 0 10px 10px;
+    }
+    .items-table td { padding: 6px 10px; vertical-align: middle; }
+    .items-table td:first-child { padding-left: 0; }
+    .items-table th:first-child { padding-left: 0; }
+    .items-table tr.item-row td { border-top: 1px solid var(--border); }
+    .items-table input { width: 100%; }
+    .col-desc { width: 45%; }
+    .col-qty  { width: 12%; }
+    .col-unit { width: 20%; }
+    .col-total{ width: 15%; }
+    .col-del  { width: 8%; }
+    .td-total-val { font-weight: 600; color: var(--text-1); font-size: 13px; padding-top: 14px; }
+    .btn-remove {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-3); padding: 4px; border-radius: 4px;
+      display: flex; align-items: center;
+      transition: color 150ms ease, background 150ms ease;
+    }
+    .btn-remove:hover { color: #dc2626; background: rgba(220,38,38,0.06); }
+    .btn-add-item {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border: 1px solid var(--border);
+      border-radius: 8px; background: transparent; color: var(--text-2);
+      font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+      cursor: pointer; transition: all 150ms ease;
+    }
+    .btn-add-item:hover { border-color: var(--border-strong); color: var(--text-1); }
+
+    .total-summary {
+      display: flex; justify-content: flex-end; align-items: center; gap: 16px;
+      padding: 14px 0 0; border-top: 1px solid var(--border); margin-top: 4px;
+    }
+    .total-label { font-size: 13px; color: var(--text-2); }
+    .total-value { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--text-1); letter-spacing: -0.02em; }
+
+    /* ── BUTTON ── */
+    .btn-generate {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 15px; background: var(--btn-bg); color: var(--btn-text);
+      border: none; border-radius: 12px; font-family: 'Syne', sans-serif;
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      transition: background 150ms ease, transform 150ms ease;
+      margin-top: 24px; letter-spacing: -0.01em;
+    }
+    .btn-generate:hover:not(:disabled) { background: var(--btn-hover); transform: translateY(-1px); }
+    .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-icon { display: flex; align-items: center; justify-content: center; }
+    .spinner { display: none; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.28); border-top-color: currentColor; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+    .btn-generate.is-loading .spinner { display: block; }
+    .btn-generate.is-loading .btn-icon { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── TOASTS ── */
+    .toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 8px; z-index: 10000; pointer-events: none; }
+    .toast { background: var(--toast-bg); color: var(--toast-text); padding: 13px 18px; border-radius: 10px; font-size: 14px; font-weight: 500; transform: translateY(14px); opacity: 0; transition: transform 300ms ease, opacity 300ms ease; max-width: 340px; line-height: 1.4; }
+    .toast.is-visible { transform: translateY(0); opacity: 1; }
+    .toast.is-success { background: var(--toast-success-bg); }
+    .toast.is-error { background: var(--toast-error-bg); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.is-open { transform: translateX(0); }
+      .app-wrapper { margin-left: 0; }
+      .btn-hamburger { display: flex; }
+      .content { padding: 20px 16px; }
+      .topbar { padding: 0 16px; }
+      .form-row-2, .form-row-3 { grid-template-columns: 1fr; }
+      .user-details { display: none; }
+      .theme-toggle .theme-btn:not(.is-active) { display: none; }
+    }
+    @media (max-width: 480px) { .theme-toggle { display: none; } }
+  </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <img src="/hystan_white.png" alt="Hystan" style="height:28px;width:auto;display:block;">
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+
+    <a class="nav-item" href="/dashboard.html">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1.5" y="1.5" width="5" height="5" rx="1.2"/>
+          <rect x="9.5" y="1.5" width="5" height="5" rx="1.2"/>
+          <rect x="1.5" y="9.5" width="5" height="5" rx="1.2"/>
+          <rect x="9.5" y="9.5" width="5" height="5" rx="1.2"/>
+        </svg>
+      </span>
+      <span>Dashboard</span>
+    </a>
+
+    <a class="nav-item is-active" href="/orcamento.html">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 1.5H4a1.5 1.5 0 0 0-1.5 1.5v10A1.5 1.5 0 0 0 4 14.5h8A1.5 1.5 0 0 0 13.5 13V5L10 1.5z"/>
+          <polyline points="10 1.5 10 5.5 13.5 5.5"/>
+          <line x1="5.5" y1="8.5" x2="10.5" y2="8.5"/>
+          <line x1="5.5" y1="11" x2="8.5" y2="11"/>
+        </svg>
+      </span>
+      <span>Orçamento</span>
+    </a>
+
+    <a class="nav-item" href="/recibo.html">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 1.5v13l2.5-1.5 2.5 1.5 2.5-1.5L13 14.5V1.5"/>
+          <line x1="6" y1="6" x2="10" y2="6"/>
+          <line x1="6" y1="9" x2="10" y2="9"/>
+        </svg>
+      </span>
+      <span>Recibo</span>
+    </a>
+
+    <a class="nav-item" href="/dashboard.html">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="8" r="6.5"/>
+          <polyline points="8 4.5 8 8 10.5 10.5"/>
+        </svg>
+      </span>
+      <span>Histórico</span>
+    </a>
+
+    <div class="nav-section-label" style="margin-top:8px;">Conta</div>
+
+    <a class="nav-item" href="/dashboard.html">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="8" r="2.4"/>
+          <path d="M8 1.5v1.2M8 13.3v1.2M1.5 8h1.2M13.3 8h1.2M3.4 3.4l.85.85M11.75 11.75l.85.85M3.4 12.6l.85-.85M11.75 4.25l.85-.85"/>
+        </svg>
+      </span>
+      <span>Configurações</span>
+    </a>
+
+    <div class="nav-spacer"></div>
+  </nav>
+  <div class="sidebar-plan">
+    <div class="sidebar-plan-label">Seu plano</div>
+    <div class="sidebar-plan-name" id="sidebar-plan-name">—</div>
+    <div class="sidebar-plan-sub" id="sidebar-plan-sub">—</div>
+  </div>
+</aside>
+
+<div class="app-wrapper">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="btn-hamburger" id="btn-hamburger" aria-label="Abrir menu">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <line x1="3" y1="6" x2="17" y2="6"/>
+          <line x1="3" y1="10" x2="17" y2="10"/>
+          <line x1="3" y1="14" x2="17" y2="14"/>
+        </svg>
+      </button>
+      <span class="topbar-title">Orçamento</span>
+    </div>
+    <div class="topbar-right">
+      <div class="theme-toggle" id="theme-toggle" role="group" aria-label="Tema">
+        <button class="theme-btn" data-theme-val="light">Light</button>
+        <button class="theme-btn" data-theme-val="dark">Dark</button>
+        <button class="theme-btn" data-theme-val="system">System</button>
+      </div>
+      <div class="user-avatar" id="user-avatar">?</div>
+      <div class="user-details">
+        <div class="user-name" id="user-name">Carregando...</div>
+        <div class="user-plan-badge" id="user-plan">—</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="card">
+      <div class="card-title">Gerar Orçamento PDF</div>
+
+      <div class="section-label">Prestador</div>
+      <div class="form-row form-row-3">
+        <div class="form-group">
+          <label class="form-label" for="prestador-nome">Nome *</label>
+          <input type="text" id="prestador-nome" placeholder="Sua empresa ou nome">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="prestador-cnpj">CNPJ / CPF</label>
+          <input type="text" id="prestador-cnpj" placeholder="00.000.000/0001-00">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="prestador-tel">Telefone</label>
+          <input type="text" id="prestador-tel" placeholder="(11) 99999-9999">
+        </div>
+      </div>
+
+      <div class="section-label">Cliente</div>
+      <div class="form-row form-row-2">
+        <div class="form-group">
+          <label class="form-label" for="cliente-nome">Nome *</label>
+          <input type="text" id="cliente-nome" placeholder="Nome do cliente">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cliente-cnpj">CNPJ / CPF</label>
+          <input type="text" id="cliente-cnpj" placeholder="00.000.000/0001-00">
+        </div>
+      </div>
+
+      <div class="section-label">Itens do Orçamento</div>
+      <table class="items-table" id="items-table">
+        <thead>
+          <tr>
+            <th class="col-desc">Descrição</th>
+            <th class="col-qty">Qtd</th>
+            <th class="col-unit">Valor Unit. (R$)</th>
+            <th class="col-total">Total</th>
+            <th class="col-del"></th>
+          </tr>
+        </thead>
+        <tbody id="items-body"></tbody>
+      </table>
+
+      <button class="btn-add-item" id="btn-add-item" type="button">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="7" y1="2" x2="7" y2="12"/>
+          <line x1="2" y1="7" x2="12" y2="7"/>
+        </svg>
+        Adicionar item
+      </button>
+
+      <div class="total-summary">
+        <span class="total-label">Total geral:</span>
+        <span class="total-value" id="total-geral">R$ 0,00</span>
+      </div>
+
+      <div class="section-label">Informações Adicionais</div>
+      <div class="form-row form-row-2">
+        <div class="form-group">
+          <label class="form-label" for="validade">Validade da proposta</label>
+          <select id="validade">
+            <option value="7">7 dias</option>
+            <option value="15">15 dias</option>
+            <option value="30" selected>30 dias</option>
+            <option value="60">60 dias</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="observacoes">Observações</label>
+          <textarea id="observacoes" placeholder="Condições de pagamento, prazo de entrega..."></textarea>
+        </div>
+      </div>
+
+      <button class="btn-generate" id="btn-generate" type="button">
+        <span class="spinner"></span>
+        <span class="btn-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.5 2H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5.5L9.5 2z"/>
+            <polyline points="9.5 2 9.5 5.5 13 5.5"/>
+            <line x1="6" y1="9" x2="10" y2="9"/>
+            <line x1="6" y1="11.5" x2="8.5" y2="11.5"/>
+          </svg>
+        </span>
+        <span id="btn-text">Gerar Orçamento PDF</span>
+      </button>
+    </div>
+  </main>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ── FIREBASE ── -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBgSfuXg-JAnb5h1hjnC5IPW_dolgoBmq0",
+    authDomain: "hystan-859f8.firebaseapp.com",
+    projectId: "hystan-859f8",
+    storageBucket: "hystan-859f8.firebasestorage.app",
+    messagingSenderId: "922392046948",
+    appId: "1:922392046948:web:6f1e27fd18a43a9224de71"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = '/auth.html'; return; }
+    window._firebaseUser = user;
+    const name = user.displayName || user.email.split('@')[0];
+    document.getElementById('user-name').textContent = name;
+    document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();
+    const plano = localStorage.getItem('hystan_plano');
+    document.getElementById('user-plan').textContent = plano === 'ativo' ? 'Plano Ativo' : plano === 'trial' ? 'Trial' : '—';
+    document.getElementById('sidebar-plan-name').textContent = plano === 'ativo' ? 'Plano Business' : plano === 'trial' ? 'Trial' : '—';
+    document.getElementById('sidebar-plan-sub').textContent = plano === 'ativo' ? 'Relatórios ilimitados' : '';
+  });
+</script>
+
+<!-- ── APP ── -->
+<script>
+(function () {
+  'use strict';
+
+  const sidebar        = document.getElementById('sidebar');
+  const sidebarOverlay = document.getElementById('sidebar-overlay');
+  const btnGenerate    = document.getElementById('btn-generate');
+  const btnText        = document.getElementById('btn-text');
+  const toastContainer = document.getElementById('toast-container');
+  const itemsBody      = document.getElementById('items-body');
+  const totalGeralEl   = document.getElementById('total-geral');
+
+  // ── THEME
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('hystan_theme', t);
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('is-active', b.dataset.themeVal === t));
+  }
+  applyTheme(localStorage.getItem('hystan_theme') || 'system');
+  document.querySelectorAll('.theme-btn').forEach(b => b.addEventListener('click', () => applyTheme(b.dataset.themeVal)));
+
+  // ── SIDEBAR
+  document.getElementById('btn-hamburger').addEventListener('click', () => {
+    sidebar.classList.add('is-open'); sidebarOverlay.classList.add('is-visible');
+  });
+  sidebarOverlay.addEventListener('click', () => {
+    sidebar.classList.remove('is-open'); sidebarOverlay.classList.remove('is-visible');
+  });
+
+  // ── ITEMS
+  let itemCount = 0;
+
+  function addItem() {
+    itemCount++;
+    const id = 'item-' + itemCount;
+    const tr = document.createElement('tr');
+    tr.className = 'item-row';
+    tr.dataset.id = id;
+    tr.innerHTML = `
+      <td class="col-desc">
+        <input type="text" placeholder="Descrição do serviço/produto" data-field="desc">
+      </td>
+      <td class="col-qty">
+        <input type="number" min="1" value="1" data-field="qty">
+      </td>
+      <td class="col-unit">
+        <input type="number" min="0" step="0.01" value="0" data-field="unit">
+      </td>
+      <td class="col-total td-total-val" data-field="total">R$ 0,00</td>
+      <td class="col-del">
+        <button class="btn-remove" type="button" aria-label="Remover item">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="2" y1="2" x2="12" y2="12"/>
+            <line x1="12" y1="2" x2="2" y2="12"/>
+          </svg>
+        </button>
+      </td>
+    `;
+
+    tr.querySelector('[data-field="qty"]').addEventListener('input', () => recalcRow(tr));
+    tr.querySelector('[data-field="unit"]').addEventListener('input', () => recalcRow(tr));
+    tr.querySelector('.btn-remove').addEventListener('click', () => {
+      tr.remove();
+      recalcTotal();
+    });
+
+    itemsBody.appendChild(tr);
+    recalcTotal();
+  }
+
+  function recalcRow(tr) {
+    const qty  = parseFloat(tr.querySelector('[data-field="qty"]').value)  || 0;
+    const unit = parseFloat(tr.querySelector('[data-field="unit"]').value) || 0;
+    const total = qty * unit;
+    tr.querySelector('[data-field="total"]').textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
+    recalcTotal();
+  }
+
+  function recalcTotal() {
+    let sum = 0;
+    itemsBody.querySelectorAll('.item-row').forEach(tr => {
+      const qty  = parseFloat(tr.querySelector('[data-field="qty"]').value)  || 0;
+      const unit = parseFloat(tr.querySelector('[data-field="unit"]').value) || 0;
+      sum += qty * unit;
+    });
+    totalGeralEl.textContent = 'R$ ' + sum.toFixed(2).replace('.', ',');
+  }
+
+  document.getElementById('btn-add-item').addEventListener('click', addItem);
+  addItem(); // começa com 1 item
+
+  // ── GERAÇÃO
+  btnGenerate.addEventListener('click', async () => {
+    const prestadorNome = document.getElementById('prestador-nome').value.trim();
+    const clienteNome   = document.getElementById('cliente-nome').value.trim();
+    if (!prestadorNome) { showToast('Informe o nome do prestador.', 'error'); return; }
+    if (!clienteNome)   { showToast('Informe o nome do cliente.', 'error'); return; }
+
+    const rows = itemsBody.querySelectorAll('.item-row');
+    if (rows.length === 0) { showToast('Adicione pelo menos um item.', 'error'); return; }
+
+    const itens = [];
+    let valid = true;
+    rows.forEach(tr => {
+      const desc = tr.querySelector('[data-field="desc"]').value.trim();
+      const qty  = parseInt(tr.querySelector('[data-field="qty"]').value, 10) || 0;
+      const unit = parseFloat(tr.querySelector('[data-field="unit"]').value) || 0;
+      if (!desc) { valid = false; }
+      itens.push({ descricao: desc, quantidade: qty, valorUnitario: unit });
+    });
+    if (!valid) { showToast('Preencha a descrição de todos os itens.', 'error'); return; }
+
+    const payload = {
+      prestadorNome,
+      prestadorCnpj:     document.getElementById('prestador-cnpj').value.trim(),
+      prestadorTelefone: document.getElementById('prestador-tel').value.trim(),
+      clienteNome,
+      clienteCnpj:  document.getElementById('cliente-cnpj').value.trim(),
+      validadeDias: document.getElementById('validade').value,
+      observacoes:  document.getElementById('observacoes').value.trim(),
+      itens
+    };
+
+    btnGenerate.disabled = true;
+    btnGenerate.classList.add('is-loading');
+    btnText.textContent = 'Processando...';
+
+    try {
+      const user  = window._firebaseUser;
+      const token = user ? await user.getIdToken() : null;
+      const resp  = await fetch('/gerar-orcamento', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': 'Bearer ' + token } : {})
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!resp.ok) {
+        let msg = 'Erro no servidor';
+        try { msg = await resp.text(); } catch (_) {}
+        throw new Error(msg);
+      }
+
+      const blob = await resp.blob();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = 'orcamento-' + prestadorNome.replace(/[^a-zA-Z0-9]/g, '_') + '.pdf';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      showToast('Orçamento gerado com sucesso!', 'success');
+
+    } catch (err) {
+      const msg = err.message && err.message.length < 120 ? err.message : 'Erro ao gerar orçamento.';
+      showToast(msg, 'error');
+    } finally {
+      btnGenerate.disabled = false;
+      btnGenerate.classList.remove('is-loading');
+      btnText.textContent = 'Gerar Orçamento PDF';
+    }
+  });
+
+  // ── TOASTS
+  function showToast(msg, variant) {
+    const toast = document.createElement('div');
+    toast.className = 'toast' + (variant === 'success' ? ' is-success' : variant === 'error' ? ' is-error' : '');
+    toast.textContent = msg;
+    toastContainer.appendChild(toast);
+    requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.add('is-visible')));
+    setTimeout(() => {
+      toast.classList.remove('is-visible');
+      setTimeout(() => toast.remove(), 350);
+    }, 3500);
+  }
+})();
+</script>
+
+</body>
+</html>
