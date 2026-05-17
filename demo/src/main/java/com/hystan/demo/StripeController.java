@@ -66,8 +66,8 @@ public class StripeController {
 
             SessionCreateParams.Builder builder = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
-                .setSuccessUrl("https://gerador-pdf-production-76f7.up.railway.app/dashboard.html?pago=true")
-                .setCancelUrl("https://gerador-pdf-production-76f7.up.railway.app/planos.html")
+                .setSuccessUrl("https://hystancorp.up.railway.app/dashboard.html?pago=true")
+                .setCancelUrl("https://hystancorp.up.railway.app/planos.html")
                 .addLineItem(
                     SessionCreateParams.LineItem.builder()
                         .setPrice(priceId)
