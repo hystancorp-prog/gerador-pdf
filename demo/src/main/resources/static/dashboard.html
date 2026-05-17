@@ -323,6 +323,7 @@
     /* ── APP WRAPPER ── */
     .app-wrapper {
       margin-left: var(--sidebar-w);
+      width: calc(100% - var(--sidebar-w));
       display: flex;
       flex-direction: column;
       min-height: 100vh;
@@ -437,7 +438,7 @@
     .user-plan-badge { font-size: 11px; color: var(--text-2); }
 
     /* ── CONTENT ── */
-    .content { flex: 1; padding: 32px; max-width: 980px; }
+    .content { flex: 1; padding: 32px; width: 100%; }
     .page { display: none; }
     .page.is-active { display: block; }
 
