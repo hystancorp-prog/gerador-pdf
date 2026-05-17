@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class PdfController {
@@ -60,7 +61,7 @@ public class PdfController {
         File pdfTemp = null;
         try {
             temp = File.createTempFile("planilha", ".xlsx");
-            file.transferTo(temp);
+            file.transferTo(Objects.requireNonNull(temp));
 
             // 3. Magic bytes check — never trust extension or Content-Type alone
             try (FileInputStream fis = new FileInputStream(temp)) {

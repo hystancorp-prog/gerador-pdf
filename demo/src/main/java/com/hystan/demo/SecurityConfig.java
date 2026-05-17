@@ -26,6 +26,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/gerar-pdf", "/criar-checkout").authenticated()
+                // Stripe não manda token Firebase — precisa ser público
+                .requestMatchers("/webhook/stripe").permitAll()
                 .anyRequest().permitAll()
             )
             .oauth2ResourceServer(oauth2 -> oauth2
@@ -40,7 +42,6 @@ public class SecurityConfig {
             .withJwkSetUri(jwkSetUri)
             .build();
 
-        // Validate issuer so tokens from other Firebase projects are rejected
         String issuer = "https://securetoken.google.com/" + firebaseProjectId;
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(
             new JwtTimestampValidator(),
