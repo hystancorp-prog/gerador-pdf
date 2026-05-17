@@ -1505,7 +1505,27 @@
   });
 
   /* ── PLAN VERIFICATION ── */
-  window.verificarPlano = function verificarPlano() {
+  window.verificarPlano = async function verificarPlano() {
+    const user = window._firebaseUser;
+    if (user) {
+      try {
+        const token = await user.getIdToken();
+        const resp = await fetch('/meu-plano', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data.status === 'ativo' || data.status === 'trial') {
+            localStorage.setItem('hystan_plano', data.status === 'trial' ? 'trial' : 'ativo');
+            setupUI(data.status === 'trial' ? 'trial' : 'ativo');
+            return;
+          }
+        }
+      } catch (_) {
+        // fallback para localStorage
+      }
+    }
+
     const plano = localStorage.getItem('hystan_plano');
     const trialInicio = parseInt(localStorage.getItem('hystan_trial_inicio') || '0', 10);
     const params = new URLSearchParams(window.location.search);
