@@ -4,221 +4,971 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hystan — Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <script>(function(){var t=localStorage.getItem('hystan_theme')||'system';document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── THEME VARIABLES ── */
     :root {
-      --dark: #1a1a1a; --mid: #404040; --light: #f5f5f3;
-      --border: #e0e0dd; --white: #ffffff; --sidebar-w: 240px;
+      --sidebar-w: 240px;
+      --topbar-h: 56px;
+
+      --bg: #f5f5f3;
+      --surface: #ffffff;
+      --surface-2: #f7f7f5;
+      --border: #e0e0dd;
+      --border-strong: #c8c8c4;
+
+      --text-1: #1a1a1a;
+      --text-2: #888888;
+      --text-3: #c0c0bc;
+
+      --btn-bg: #111111;
+      --btn-text: #ffffff;
+      --btn-hover: #2d2d2d;
+
+      --input-bg: #ffffff;
+      --input-border: #e0e0dd;
+      --input-focus: #1a1a1a;
+
+      --tab-active-bg: #111111;
+      --tab-active-text: #ffffff;
+
+      --badge-ok-bg: #dcfce7;
+      --badge-ok-text: #15803d;
+
+      --promo-bg: #111111;
+      --promo-text: #ffffff;
+      --promo-sub: rgba(255,255,255,0.6);
+      --promo-btn-bg: #ffffff;
+      --promo-btn-text: #111111;
+
+      --danger-text: #dc2626;
+      --danger-border: rgba(220,38,38,0.28);
+      --danger-hover: rgba(220,38,38,0.06);
+
+      --modal-bg: #ffffff;
+      --modal-cancel-bg: #f3f3f1;
+      --modal-cancel-text: #555555;
+      --modal-shadow: 0 24px 64px rgba(0,0,0,0.14);
+
+      --toast-bg: #111111;
+      --toast-text: #ffffff;
+      --toast-success-bg: #15803d;
+      --toast-error-bg: #dc2626;
+
+      --trial-bg: #111111;
+      --trial-text: rgba(255,255,255,0.82);
     }
-    body { font-family: 'DM Sans', sans-serif; background: var(--light); min-height: 100vh; display: flex; }
+
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) {
+        --bg: #0a0a0a;
+        --surface: #111111;
+        --surface-2: #1a1a1a;
+        --border: rgba(255,255,255,0.08);
+        --border-strong: rgba(255,255,255,0.16);
+        --text-1: #ffffff;
+        --text-2: rgba(255,255,255,0.5);
+        --text-3: rgba(255,255,255,0.22);
+        --btn-bg: #ffffff;
+        --btn-text: #0a0a0a;
+        --btn-hover: rgba(255,255,255,0.88);
+        --input-bg: rgba(255,255,255,0.04);
+        --input-border: rgba(255,255,255,0.1);
+        --input-focus: rgba(255,255,255,0.4);
+        --tab-active-bg: #ffffff;
+        --tab-active-text: #0a0a0a;
+        --badge-ok-bg: rgba(21,128,61,0.2);
+        --badge-ok-text: #4ade80;
+        --promo-bg: rgba(255,255,255,0.06);
+        --promo-text: #ffffff;
+        --promo-sub: rgba(255,255,255,0.5);
+        --promo-btn-bg: #ffffff;
+        --promo-btn-text: #0a0a0a;
+        --danger-text: #f87171;
+        --danger-border: rgba(248,113,113,0.24);
+        --danger-hover: rgba(248,113,113,0.07);
+        --modal-bg: #1c1c1c;
+        --modal-cancel-bg: #111111;
+        --modal-cancel-text: rgba(255,255,255,0.55);
+        --modal-shadow: 0 24px 64px rgba(0,0,0,0.55);
+        --toast-bg: #2a2a2a;
+        --trial-bg: rgba(255,255,255,0.06);
+        --trial-text: rgba(255,255,255,0.68);
+      }
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface-2: #1a1a1a;
+      --border: rgba(255,255,255,0.08);
+      --border-strong: rgba(255,255,255,0.16);
+      --text-1: #ffffff;
+      --text-2: rgba(255,255,255,0.5);
+      --text-3: rgba(255,255,255,0.22);
+      --btn-bg: #ffffff;
+      --btn-text: #0a0a0a;
+      --btn-hover: rgba(255,255,255,0.88);
+      --input-bg: rgba(255,255,255,0.04);
+      --input-border: rgba(255,255,255,0.1);
+      --input-focus: rgba(255,255,255,0.4);
+      --tab-active-bg: #ffffff;
+      --tab-active-text: #0a0a0a;
+      --badge-ok-bg: rgba(21,128,61,0.2);
+      --badge-ok-text: #4ade80;
+      --promo-bg: rgba(255,255,255,0.06);
+      --promo-text: #ffffff;
+      --promo-sub: rgba(255,255,255,0.5);
+      --promo-btn-bg: #ffffff;
+      --promo-btn-text: #0a0a0a;
+      --danger-text: #f87171;
+      --danger-border: rgba(248,113,113,0.24);
+      --danger-hover: rgba(248,113,113,0.07);
+      --modal-bg: #1c1c1c;
+      --modal-cancel-bg: #111111;
+      --modal-cancel-text: rgba(255,255,255,0.55);
+      --modal-shadow: 0 24px 64px rgba(0,0,0,0.55);
+      --toast-bg: #2a2a2a;
+      --trial-bg: rgba(255,255,255,0.06);
+      --trial-text: rgba(255,255,255,0.68);
+    }
+
+    html[data-theme="light"] {
+      --bg: #f5f5f3;
+      --surface: #ffffff;
+      --surface-2: #f7f7f5;
+      --border: #e0e0dd;
+      --border-strong: #c8c8c4;
+      --text-1: #1a1a1a;
+      --text-2: #888888;
+      --text-3: #c0c0bc;
+      --btn-bg: #111111;
+      --btn-text: #ffffff;
+      --btn-hover: #2d2d2d;
+      --input-bg: #ffffff;
+      --input-border: #e0e0dd;
+      --input-focus: #1a1a1a;
+      --tab-active-bg: #111111;
+      --tab-active-text: #ffffff;
+      --badge-ok-bg: #dcfce7;
+      --badge-ok-text: #15803d;
+      --promo-bg: #111111;
+      --promo-text: #ffffff;
+      --promo-sub: rgba(255,255,255,0.6);
+      --promo-btn-bg: #ffffff;
+      --promo-btn-text: #111111;
+      --danger-text: #dc2626;
+      --danger-border: rgba(220,38,38,0.28);
+      --danger-hover: rgba(220,38,38,0.06);
+      --modal-bg: #ffffff;
+      --modal-cancel-bg: #f3f3f1;
+      --modal-cancel-text: #555555;
+      --modal-shadow: 0 24px 64px rgba(0,0,0,0.14);
+      --toast-bg: #111111;
+      --toast-text: #ffffff;
+      --toast-success-bg: #15803d;
+      --toast-error-bg: #dc2626;
+      --trial-bg: #111111;
+      --trial-text: rgba(255,255,255,0.82);
+    }
+
+    /* ── BASE ── */
+    html { height: 100%; }
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      transition: background 200ms ease, color 200ms ease;
+    }
 
     /* ── SIDEBAR ── */
     .sidebar {
-      width: var(--sidebar-w); background: var(--dark); min-height: 100vh;
-      display: flex; flex-direction: column; position: fixed;
-      top: 0; left: 0; bottom: 0; z-index: 200; transition: transform .25s ease;
+      width: var(--sidebar-w);
+      background: #111111;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      transition: transform 260ms cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .sidebar-logo { padding: 24px 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .sidebar-nav { flex: 1; padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; }
+    .sidebar-logo {
+      padding: 20px 20px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    .sidebar-logo-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 19px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.03em;
+    }
+    .sidebar-nav {
+      flex: 1;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      overflow-y: auto;
+    }
     .nav-section-label {
-      font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-      color: rgba(255,255,255,0.25); padding: 12px 8px 6px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      padding: 12px 8px 6px;
+      user-select: none;
     }
     .nav-item {
-      display: flex; align-items: center; gap: 10px; padding: 10px 12px;
-      border-radius: 8px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.55);
-      cursor: pointer; transition: all .15s; border: none; background: transparent;
-      width: 100%; text-align: left; font-family: 'DM Sans', sans-serif; text-decoration: none;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px 9px 14px;
+      border-radius: 8px;
+      font-family: 'Syne', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.52);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      text-decoration: none;
+      transition: background 150ms ease, color 150ms ease;
+      outline: none;
     }
-    .nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.9); }
-    .nav-item.active { background: rgba(255,255,255,0.12); color: white; font-weight: 600; }
-    .nav-item.danger:hover { background: rgba(220,38,38,0.15); color: #fca5a5; }
-    .nav-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+    .nav-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: #ffffff;
+      border-radius: 0 2px 2px 0;
+      opacity: 0;
+      transition: opacity 150ms ease;
+    }
+    .nav-item:hover {
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.9);
+    }
+    .nav-item.is-active {
+      background: rgba(255,255,255,0.06);
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .nav-item.is-active::before { opacity: 1; }
+    .nav-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-spacer { flex: 1; min-height: 16px; }
     .sidebar-plan {
-      margin: 12px; padding: 14px; background: rgba(255,255,255,0.06);
-      border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);
+      margin: 12px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      flex-shrink: 0;
     }
-    .sidebar-plan-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
-    .sidebar-plan-name { font-size: 14px; font-weight: 700; color: white; margin-bottom: 2px; }
-    .sidebar-plan-sub { font-size: 11px; color: rgba(255,255,255,0.4); }
-    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 199; }
-    .sidebar-overlay.show { display: block; }
+    .sidebar-plan-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-bottom: 4px;
+    }
+    .sidebar-plan-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+    .sidebar-plan-sub { font-size: 11px; color: rgba(255,255,255,0.38); }
 
-    /* ── WRAPPER ── */
-    .app-wrapper { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    /* ── SIDEBAR OVERLAY ── */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.48);
+      backdrop-filter: blur(3px);
+      z-index: 299;
+    }
+    .sidebar-overlay.is-visible { display: block; }
 
-    /* TOPBAR */
+    /* ── APP WRAPPER ── */
+    .app-wrapper {
+      margin-left: var(--sidebar-w);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── TRIAL BANNER ── */
+    .trial-banner {
+      display: none;
+      background: var(--trial-bg);
+      color: var(--trial-text);
+      padding: 10px 28px;
+      font-size: 13px;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      flex-shrink: 0;
+    }
+    .trial-banner.is-visible { display: flex; }
+    .trial-banner a {
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.38);
+      padding-bottom: 1px;
+      transition: border-color 150ms ease;
+    }
+    .trial-banner a:hover { border-color: #ffffff; }
+
+    /* ── TOPBAR ── */
     .topbar {
-      background: var(--white); border-bottom: 1px solid var(--border);
-      padding: 14px 32px; display: flex; justify-content: space-between;
-      align-items: center; position: sticky; top: 0; z-index: 100;
+      height: var(--topbar-h);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      flex-shrink: 0;
     }
     .topbar-left { display: flex; align-items: center; gap: 12px; }
-    .btn-menu { display: none; background: none; border: none; cursor: pointer; font-size: 20px; color: var(--dark); padding: 4px; }
-    .topbar-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--dark); }
-    .user-info { display: flex; align-items: center; gap: 12px; }
+    .btn-hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-1);
+      padding: 6px;
+      border-radius: 6px;
+      align-items: center;
+      justify-content: center;
+      transition: background 150ms ease;
+    }
+    .btn-hamburger:hover { background: var(--surface-2); }
+    .topbar-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-1);
+      letter-spacing: -0.02em;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+
+    /* Theme toggle */
+    .theme-toggle {
+      display: flex;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .theme-btn {
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-2);
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 150ms ease, color 150ms ease;
+      white-space: nowrap;
+    }
+    .theme-btn.is-active {
+      background: var(--surface);
+      color: var(--text-1);
+      font-weight: 600;
+    }
+
+    /* User info */
     .user-avatar {
-      width: 32px; height: 32px; border-radius: 50%; background: var(--dark); color: white;
-      display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #111111;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      flex-shrink: 0;
     }
-    .user-details { text-align: right; line-height: 1.2; }
-    .user-name { font-size: 13px; font-weight: 600; color: var(--dark); }
-    .user-plan-badge { font-size: 11px; color: #aaa; }
+    .user-details { line-height: 1.3; text-align: right; }
+    .user-name { font-size: 13px; font-weight: 600; color: var(--text-1); }
+    .user-plan-badge { font-size: 11px; color: var(--text-2); }
 
-    /* TRIAL BANNER */
-    .trial-banner {
-      display: none; background: var(--dark); color: white;
-      padding: 10px 32px; font-size: 13px; text-align: center;
-      gap: 12px; align-items: center; justify-content: center;
-    }
-    .trial-banner.show { display: flex; }
-    .trial-banner a { color: white; font-weight: 700; text-decoration: underline; cursor: pointer; }
-
-    /* CONTENT */
-    .content { padding: 32px; max-width: 960px; }
+    /* ── CONTENT ── */
+    .content { flex: 1; padding: 32px; max-width: 980px; }
     .page { display: none; }
-    .page.active { display: block; }
+    .page.is-active { display: block; }
 
-    /* STATS */
-    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
-    .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
-    .stat-label { font-size: 11px; font-weight: 500; color: #999; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
-    .stat-value { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800; color: var(--dark); }
-    .stat-sub { font-size: 12px; color: #aaa; margin-top: 4px; }
-
-    /* CARDS */
-    .card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin-bottom: 20px; }
-    .card-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--dark); margin-bottom: 20px; }
-
-    /* UPGRADE CARD */
-    .upgrade-card {
-      background: var(--dark); color: white; border-radius: 16px; padding: 24px 28px;
-      display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 20px;
+    /* ── STATS GRID ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
     }
-    .upgrade-card h3 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; margin-bottom: 3px; }
-    .upgrade-card p { font-size: 13px; color: rgba(255,255,255,0.6); }
-    .btn-upgrade { padding: 10px 20px; background: white; color: var(--dark); border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 24px;
+    }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      margin-bottom: 10px;
+    }
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--text-1);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .stat-value-sm {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-1);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .stat-sub { font-size: 12px; color: var(--text-3); margin-top: 6px; }
 
-    /* DROPZONE */
+    /* ── PROMO CARD ── */
+    .promo-card {
+      display: none;
+      background: var(--promo-bg);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .promo-card.is-visible { display: flex; }
+    .promo-card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--promo-text);
+      margin-bottom: 3px;
+      letter-spacing: -0.01em;
+    }
+    .promo-card-sub { font-size: 13px; color: var(--promo-sub); }
+    .btn-promo {
+      padding: 9px 18px;
+      background: var(--promo-btn-bg);
+      color: var(--promo-btn-text);
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: opacity 150ms ease;
+    }
+    .btn-promo:hover { opacity: 0.86; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-1);
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── DROPZONE ── */
     .dropzone {
-      border: 2px dashed var(--border); border-radius: 12px; padding: 44px 24px;
-      text-align: center; cursor: pointer; transition: all .2s; background: var(--light);
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 44px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 200ms ease, background 200ms ease;
+      background: var(--surface-2);
+      user-select: none;
     }
-    .dropzone:hover, .dropzone.drag { border-color: var(--dark); background: #f0f0ee; }
-    .dropzone.has-file { border-color: #22c55e; background: #f0fdf4; border-style: solid; }
-    .drop-icon { font-size: 32px; margin-bottom: 10px; }
-    .drop-title { font-size: 15px; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
-    .drop-sub { font-size: 13px; color: #aaa; }
-    .drop-file-name { font-size: 13px; font-weight: 600; color: #16a34a; margin-top: 8px; }
-    #file-input { display: none; }
+    .dropzone:hover, .dropzone.is-drag {
+      border-style: solid;
+      border-color: var(--border-strong);
+      background: var(--surface);
+    }
+    .dropzone.is-file {
+      border-style: solid;
+      border-color: #16a34a;
+      background: rgba(22,163,74,0.04);
+    }
+    .drop-icon {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 12px;
+      color: var(--text-3);
+      transition: color 200ms ease;
+    }
+    .dropzone:hover .drop-icon, .dropzone.is-drag .drop-icon { color: var(--text-2); }
+    .dropzone.is-file .drop-icon { color: #16a34a; }
+    .drop-title { font-size: 15px; font-weight: 600; color: var(--text-1); margin-bottom: 4px; }
+    .drop-sub { font-size: 13px; color: var(--text-2); }
+    .drop-filename {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #16a34a;
+      margin-top: 10px;
+    }
+    .dropzone.is-file .drop-filename { display: flex; }
 
-    /* PERIOD */
-    .period-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-    .tab { padding: 7px 16px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: var(--white); color: #888; transition: all .15s; font-family: 'DM Sans', sans-serif; }
-    .tab.active { background: var(--dark); color: white; border-color: var(--dark); }
+    /* ── PERIOD ── */
+    .period-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      margin: 28px 0 10px;
+    }
+    .period-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+    .tab {
+      padding: 7px 15px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-2);
+      transition: all 150ms ease;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .tab:hover { border-color: var(--border-strong); color: var(--text-1); }
+    .tab.is-active {
+      background: var(--tab-active-bg);
+      color: var(--tab-active-text);
+      border-color: var(--tab-active-bg);
+    }
     .period-panel { display: none; }
-    .period-panel.active { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
-    .months-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; width: 100%; }
-    .month-btn { padding: 9px 6px; border-radius: 7px; border: 1px solid var(--border); font-size: 12px; cursor: pointer; background: var(--white); color: #888; transition: all .15s; font-family: 'DM Sans', sans-serif; text-align: center; }
-    .month-btn.active { background: var(--dark); color: white; border-color: var(--dark); }
-    .month-btn:hover:not(.active) { border-color: var(--mid); color: var(--dark); }
+    .period-panel.is-active { display: block; }
+    .months-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+    }
+    .month-btn {
+      padding: 10px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-2);
+      transition: all 150ms ease;
+      font-family: 'DM Sans', sans-serif;
+      text-align: center;
+    }
+    .month-btn:hover:not(.is-active) { border-color: var(--border-strong); color: var(--text-1); }
+    .month-btn.is-active {
+      background: var(--tab-active-bg);
+      color: var(--tab-active-text);
+      border-color: var(--tab-active-bg);
+    }
+    .period-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-top: 14px;
+    }
+
+    /* ── FORM ── */
     .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: 11px; font-weight: 500; color: #999; text-transform: uppercase; letter-spacing: .06em; }
-    select, input[type=number], input[type=text] { padding: 10px 13px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--dark); background: var(--white); outline: none; transition: border-color .2s; }
-    select:focus, input:focus { border-color: var(--dark); }
-    .btn-generate { width: 100%; padding: 15px; background: var(--dark); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; }
-    .btn-generate:hover { background: var(--mid); transform: translateY(-1px); }
-    .btn-generate:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin .7s linear infinite; display: none; }
+    .form-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-2);
+    }
+    select,
+    input[type="number"],
+    input[type="text"] {
+      padding: 10px 13px;
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-1);
+      background: var(--input-bg);
+      outline: none;
+      transition: border-color 200ms ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 34px;
+    }
+    select:focus, input[type="number"]:focus, input[type="text"]:focus { border-color: var(--input-focus); }
+    .empresa-group { margin-top: 20px; max-width: 420px; }
+
+    /* ── GENERATE BUTTON ── */
+    .btn-generate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 15px;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      border: none;
+      border-radius: 12px;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 150ms ease, transform 150ms ease;
+      margin-top: 24px;
+      letter-spacing: -0.01em;
+    }
+    .btn-generate:hover:not(:disabled) {
+      background: var(--btn-hover);
+      transform: translateY(-1px);
+    }
+    .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-icon { display: flex; align-items: center; justify-content: center; }
+    .spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.28);
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+    .btn-generate.is-loading .spinner { display: block; }
+    .btn-generate.is-loading .btn-icon { display: none; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* HISTORY */
+    /* ── HISTORY ── */
+    .history-empty {
+      text-align: center;
+      padding: 52px 24px;
+    }
+    .history-empty-icon {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto 12px;
+      color: var(--text-3);
+    }
+    .history-empty p { font-size: 14px; color: var(--text-3); }
     .history-table { width: 100%; border-collapse: collapse; }
-    .history-table th { font-size: 11px; font-weight: 500; color: #999; text-transform: uppercase; letter-spacing: .06em; text-align: left; padding: 0 14px 10px; }
-    .history-table td { padding: 13px 14px; border-top: 1px solid var(--border); font-size: 13px; color: var(--mid); }
-    .history-table tr:hover td { background: #fcfcfb; }
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #dcfce7; color: #16a34a; }
-    .empty-state { text-align: center; padding: 40px; color: #aaa; font-size: 14px; }
+    .history-table th {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      text-align: left;
+      padding: 0 16px 12px;
+    }
+    .history-table td {
+      padding: 13px 16px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-2);
+      vertical-align: middle;
+    }
+    .history-table tr:hover td { background: var(--surface-2); }
+    .td-company { font-weight: 600; color: var(--text-1); }
+    .badge-ok {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--badge-ok-bg);
+      color: var(--badge-ok-text);
+    }
 
-    /* CONFIGURAÇÕES */
-    .settings-section { margin-bottom: 24px; }
-    .settings-section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #999; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-    .settings-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--border); gap: 16px; }
+    /* ── SETTINGS ── */
+    .settings-section { margin-bottom: 4px; }
+    .settings-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-3);
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4px;
+    }
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 16px;
+    }
     .settings-row:last-child { border-bottom: none; }
-    .settings-row-info h4 { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 2px; }
-    .settings-row-info p { font-size: 12px; color: #888; }
-    .btn-settings { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif; white-space: nowrap; flex-shrink: 0; }
-    .btn-settings-outline { background: transparent; border: 1px solid var(--border); color: var(--mid); }
-    .btn-settings-outline:hover { border-color: var(--dark); color: var(--dark); }
-    .btn-settings-danger { background: transparent; border: 1px solid #fecaca; color: #dc2626; }
-    .btn-settings-danger:hover { background: #fef2f2; }
-    .btn-settings-dark { background: var(--dark); border: none; color: white; }
-    .btn-settings-dark:hover { background: var(--mid); }
-    .plan-info-card { background: var(--light); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .plan-info-badge { display: inline-block; background: var(--dark); color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-bottom: 6px; }
-    .plan-info-name { font-size: 16px; font-weight: 700; color: var(--dark); }
-    .plan-info-sub { font-size: 12px; color: #888; margin-top: 2px; }
+    .settings-row-info h4 { font-size: 14px; font-weight: 600; color: var(--text-1); margin-bottom: 2px; }
+    .settings-row-info p { font-size: 12px; color: var(--text-2); }
+    .settings-row-info.is-value p { font-size: 14px; color: var(--text-1); font-weight: 400; }
+    .plan-info-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .plan-info-badge {
+      display: inline-flex;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      margin-bottom: 6px;
+    }
+    .plan-info-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-1);
+    }
+    .plan-info-sub { font-size: 12px; color: var(--text-2); margin-top: 2px; }
 
-    /* MODAL */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center; }
-    .modal-overlay.show { display: flex; }
-    .modal { background: white; border-radius: 16px; padding: 32px; max-width: 420px; width: 90%; box-shadow: 0 24px 60px rgba(0,0,0,0.2); }
-    .modal-icon { font-size: 32px; margin-bottom: 12px; }
-    .modal-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
-    .modal-text { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 24px; }
+    /* Settings buttons */
+    .btn-s {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 150ms ease;
+      border: 1px solid transparent;
+    }
+    .btn-s-outline { background: transparent; border-color: var(--border); color: var(--text-2); }
+    .btn-s-outline:hover { border-color: var(--border-strong); color: var(--text-1); }
+    .btn-s-dark { background: var(--btn-bg); color: var(--btn-text); }
+    .btn-s-dark:hover { background: var(--btn-hover); }
+    .btn-s-danger { background: transparent; border-color: var(--danger-border); color: var(--danger-text); }
+    .btn-s-danger:hover { background: var(--danger-hover); }
+
+    /* ── MODALS ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.38);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.is-visible { display: flex; }
+    .modal {
+      background: var(--modal-bg);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 420px;
+      width: calc(100% - 32px);
+      box-shadow: var(--modal-shadow);
+    }
+    .modal-icon { width: 40px; height: 40px; margin-bottom: 16px; color: var(--danger-text); }
+    .modal-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-1);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    .modal-body { font-size: 14px; color: var(--text-2); line-height: 1.65; margin-bottom: 24px; }
     .modal-actions { display: flex; gap: 10px; }
-    .modal-actions button { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; border: none; }
-    .btn-modal-cancel { background: var(--light); color: var(--mid); }
-    .btn-modal-confirm { background: #dc2626; color: white; }
+    .modal-actions button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      border: none;
+      transition: opacity 150ms ease;
+    }
+    .modal-actions button:hover { opacity: 0.84; }
+    .btn-modal-cancel { background: var(--modal-cancel-bg); color: var(--modal-cancel-text); }
+    .btn-modal-confirm { background: #dc2626; color: #ffffff; }
 
-    /* TOAST */
-    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--dark); color: white; padding: 13px 18px; border-radius: 10px; font-size: 14px; font-weight: 500; transform: translateY(80px); opacity: 0; transition: all .3s; z-index: 9998; }
-    .toast.show { transform: translateY(0); opacity: 1; }
-    .toast.error { background: #dc2626; }
-    .toast.success { background: #16a34a; }
+    /* ── TOASTS ── */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 10000;
+      pointer-events: none;
+    }
+    .toast {
+      background: var(--toast-bg);
+      color: var(--toast-text);
+      padding: 13px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      transform: translateY(14px);
+      opacity: 0;
+      transition: transform 300ms ease, opacity 300ms ease;
+      max-width: 340px;
+      line-height: 1.4;
+    }
+    .toast.is-visible { transform: translateY(0); opacity: 1; }
+    .toast.is-success { background: var(--toast-success-bg); }
+    .toast.is-error { background: var(--toast-error-bg); }
 
-    /* RESPONSIVE */
+    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); }
+      .sidebar.is-open { transform: translateX(0); }
       .app-wrapper { margin-left: 0; }
-      .btn-menu { display: block; }
+      .btn-hamburger { display: flex; }
       .stats-grid { grid-template-columns: 1fr 1fr; }
       .content { padding: 20px 16px; }
-      .topbar { padding: 14px 16px; }
-      .upgrade-card { flex-direction: column; text-align: center; }
+      .topbar { padding: 0 16px; }
+      .promo-card { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .user-details { display: none; }
+      .theme-toggle .theme-btn:not(.is-active) { display: none; }
     }
-    @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .period-tabs { flex-wrap: wrap; }
+      .theme-toggle { display: none; }
+    }
   </style>
 </head>
 <body>
 
-<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
 
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
-    <img src="/hystan.png" alt="Hystan" style="height:28px; width:auto;">
+    <div class="sidebar-logo-text">Hystan</div>
   </div>
-  <nav class="sidebar-nav">
+  <nav class="sidebar-nav" id="sidebar-nav">
     <div class="nav-section-label">Principal</div>
-    <button class="nav-item active" id="nav-dashboard" onclick="showPage('dashboard', this)">
-      <span class="nav-icon">▦</span> Dashboard
+
+    <button class="nav-item is-active" data-page="dashboard">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1.5" y="1.5" width="5" height="5" rx="1.2"/>
+          <rect x="9.5" y="1.5" width="5" height="5" rx="1.2"/>
+          <rect x="1.5" y="9.5" width="5" height="5" rx="1.2"/>
+          <rect x="9.5" y="9.5" width="5" height="5" rx="1.2"/>
+        </svg>
+      </span>
+      <span>Dashboard</span>
     </button>
-    <button class="nav-item" id="nav-historico" onclick="showPage('historico', this)">
-      <span class="nav-icon">◷</span> Histórico
+
+    <button class="nav-item" data-page="history">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="8" r="6.5"/>
+          <polyline points="8 4.5 8 8 10.5 10.5"/>
+        </svg>
+      </span>
+      <span>Histórico</span>
     </button>
+
     <div class="nav-section-label" style="margin-top:8px;">Conta</div>
-    <button class="nav-item" id="nav-configuracoes" onclick="showPage('configuracoes', this)">
-      <span class="nav-icon">⚙</span> Configurações
+
+    <button class="nav-item" data-page="settings">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="8" r="2.4"/>
+          <path d="M8 1.5v1.2M8 13.3v1.2M1.5 8h1.2M13.3 8h1.2M3.4 3.4l.85.85M11.75 11.75l.85.85M3.4 12.6l.85-.85M11.75 4.25l.85-.85"/>
+        </svg>
+      </span>
+      <span>Configurações</span>
     </button>
-    <button class="nav-item" onclick="irParaPlanos()">
-      <span class="nav-icon">◈</span> Planos
-    </button>
-    <div style="flex:1;"></div>
-    <button class="nav-item danger" onclick="logout()">
-      <span class="nav-icon">→</span> Sair
-    </button>
+
+    <div class="nav-spacer"></div>
   </nav>
   <div class="sidebar-plan">
     <div class="sidebar-plan-label">Seu plano</div>
@@ -228,35 +978,53 @@
 </aside>
 
 <div class="app-wrapper">
+
   <div class="trial-banner" id="trial-banner">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;opacity:0.7">
+      <circle cx="7" cy="7" r="5.5"/>
+      <line x1="7" y1="4.5" x2="7" y2="7.5"/>
+      <line x1="7" y1="9.5" x2="7.01" y2="9.5"/>
+    </svg>
     <span id="trial-msg">Você está no período de teste.</span>
-    <a onclick="irParaPlanos()">Assinar agora →</a>
+    <a href="/planos.html">Assinar agora</a>
   </div>
 
   <header class="topbar">
     <div class="topbar-left">
-      <button class="btn-menu" onclick="openSidebar()">☰</button>
-      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <button class="btn-hamburger" id="btn-hamburger" aria-label="Abrir menu">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <line x1="3" y1="6" x2="17" y2="6"/>
+          <line x1="3" y1="10" x2="17" y2="10"/>
+          <line x1="3" y1="14" x2="17" y2="14"/>
+        </svg>
+      </button>
+      <span class="topbar-title" id="topbar-title">Dashboard</span>
     </div>
-    <div class="user-info">
+    <div class="topbar-right">
+      <div class="theme-toggle" id="theme-toggle" role="group" aria-label="Tema">
+        <button class="theme-btn" data-theme-val="light">Light</button>
+        <button class="theme-btn" data-theme-val="dark">Dark</button>
+        <button class="theme-btn" data-theme-val="system">System</button>
+      </div>
+      <div class="user-avatar" id="user-avatar">?</div>
       <div class="user-details">
         <div class="user-name" id="user-name">Carregando...</div>
         <div class="user-plan-badge" id="user-plan">—</div>
       </div>
-      <div class="user-avatar" id="user-avatar">?</div>
     </div>
   </header>
 
-  <div class="content">
+  <main class="content">
 
-    <!-- PAGE: DASHBOARD -->
-    <div class="page active" id="page-dashboard">
-      <div class="upgrade-card" id="upgrade-card" style="display:none;">
+    <!-- ── PAGE: DASHBOARD ── -->
+    <div class="page is-active" id="page-dashboard">
+
+      <div class="promo-card" id="upgrade-card">
         <div>
-          <h3>Desbloqueie tudo</h3>
-          <p>Assine um plano e gere relatórios ilimitados.</p>
+          <div class="promo-card-title">Desbloqueie tudo</div>
+          <div class="promo-card-sub">Assine um plano e gere relatórios ilimitados.</div>
         </div>
-        <button class="btn-upgrade" onclick="irParaPlanos()">Ver planos →</button>
+        <button class="btn-promo" id="btn-ver-planos">Ver planos</button>
       </div>
 
       <div class="stats-grid">
@@ -272,51 +1040,66 @@
         </div>
         <div class="stat-card">
           <div class="stat-label">Plano</div>
-          <div class="stat-value" style="font-size:18px; padding-top:6px;" id="stat-plano">—</div>
+          <div class="stat-value-sm" id="stat-plano">—</div>
           <div class="stat-sub" id="stat-plano-sub">—</div>
         </div>
       </div>
 
       <div class="card">
         <div class="card-title">Novo Relatório</div>
-        <div class="dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
-          <div class="drop-icon">📂</div>
+
+        <div class="dropzone" id="dropzone">
+          <div class="drop-icon">
+            <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 26V10M12 18l8-8 8 8"/>
+              <path d="M6 32h28"/>
+            </svg>
+          </div>
           <div class="drop-title">Arraste sua planilha aqui</div>
           <div class="drop-sub">ou clique para selecionar · apenas .xlsx</div>
-          <div class="drop-file-name" id="file-name"></div>
+          <div class="drop-filename" id="drop-filename">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="2 7 5.5 10.5 12 3.5"/>
+            </svg>
+            <span id="drop-filename-text"></span>
+          </div>
         </div>
-        <input type="file" id="file-input" accept=".xlsx">
+        <input type="file" id="file-input" accept=".xlsx" style="display:none">
 
-        <div style="margin-top:28px;">
-          <div style="font-size:13px; font-weight:600; color:var(--mid); margin-bottom:10px;">Período</div>
-          <div class="period-tabs">
-            <button class="tab active" onclick="showPeriod('mes', this)">Mês específico</button>
-            <button class="tab" onclick="showPeriod('intervalo', this)">Intervalo</button>
-            <button class="tab" onclick="showPeriod('ano', this)">Ano completo</button>
+        <div class="period-label">Período</div>
+        <div class="period-tabs">
+          <button class="tab is-active" data-period="mes">Mês específico</button>
+          <button class="tab" data-period="intervalo">Intervalo</button>
+          <button class="tab" data-period="ano">Ano completo</button>
+        </div>
+
+        <div class="period-panel is-active" id="panel-mes">
+          <div class="months-grid">
+            <button class="month-btn is-active" data-mes="1">Jan</button>
+            <button class="month-btn" data-mes="2">Fev</button>
+            <button class="month-btn" data-mes="3">Mar</button>
+            <button class="month-btn" data-mes="4">Abr</button>
+            <button class="month-btn" data-mes="5">Mai</button>
+            <button class="month-btn" data-mes="6">Jun</button>
+            <button class="month-btn" data-mes="7">Jul</button>
+            <button class="month-btn" data-mes="8">Ago</button>
+            <button class="month-btn" data-mes="9">Set</button>
+            <button class="month-btn" data-mes="10">Out</button>
+            <button class="month-btn" data-mes="11">Nov</button>
+            <button class="month-btn" data-mes="12">Dez</button>
           </div>
-          <div class="period-panel active" id="panel-mes">
-            <div class="months-grid">
-              <button class="month-btn active" data-mes="1" onclick="selectMonth(this)">Jan</button>
-              <button class="month-btn" data-mes="2" onclick="selectMonth(this)">Fev</button>
-              <button class="month-btn" data-mes="3" onclick="selectMonth(this)">Mar</button>
-              <button class="month-btn" data-mes="4" onclick="selectMonth(this)">Abr</button>
-              <button class="month-btn" data-mes="5" onclick="selectMonth(this)">Mai</button>
-              <button class="month-btn" data-mes="6" onclick="selectMonth(this)">Jun</button>
-              <button class="month-btn" data-mes="7" onclick="selectMonth(this)">Jul</button>
-              <button class="month-btn" data-mes="8" onclick="selectMonth(this)">Ago</button>
-              <button class="month-btn" data-mes="9" onclick="selectMonth(this)">Set</button>
-              <button class="month-btn" data-mes="10" onclick="selectMonth(this)">Out</button>
-              <button class="month-btn" data-mes="11" onclick="selectMonth(this)">Nov</button>
-              <button class="month-btn" data-mes="12" onclick="selectMonth(this)">Dez</button>
-            </div>
-            <div class="form-group" style="margin-top:14px;">
-              <label>Ano</label>
-              <input type="number" id="ano-mes" value="2026" min="2020" max="2099" style="width:110px;">
-            </div>
-          </div>
-          <div class="period-panel" id="panel-intervalo">
+          <div class="period-row">
             <div class="form-group">
-              <label>Início</label>
+              <label class="form-label" for="ano-mes">Ano</label>
+              <input type="number" id="ano-mes" value="2026" min="2020" max="2099" style="width:110px">
+            </div>
+          </div>
+        </div>
+
+        <div class="period-panel" id="panel-intervalo">
+          <div class="period-row">
+            <div class="form-group">
+              <label class="form-label" for="mes-inicio">Início</label>
               <select id="mes-inicio">
                 <option value="1">Janeiro</option><option value="2">Fevereiro</option>
                 <option value="3">Março</option><option value="4">Abril</option>
@@ -327,7 +1110,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Término</label>
+              <label class="form-label" for="mes-fim">Término</label>
               <select id="mes-fim">
                 <option value="1">Janeiro</option><option value="2">Fevereiro</option>
                 <option value="3">Março</option><option value="4">Abril</option>
@@ -338,43 +1121,73 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Ano</label>
-              <input type="number" id="ano-intervalo" value="2026" min="2020" max="2099" style="width:90px;">
-            </div>
-          </div>
-          <div class="period-panel" id="panel-ano">
-            <div class="form-group">
-              <label>Ano de referência</label>
-              <input type="number" id="ano-total" value="2026" min="2020" max="2099" style="width:130px;">
+              <label class="form-label" for="ano-intervalo">Ano</label>
+              <input type="number" id="ano-intervalo" value="2026" min="2020" max="2099" style="width:100px">
             </div>
           </div>
         </div>
 
-        <div class="form-group" style="margin-top:20px;">
-          <label>Nome da Empresa no Relatório</label>
-          <input type="text" id="empresa" placeholder="Ex: Clínica Estética AM" style="max-width:380px;">
+        <div class="period-panel" id="panel-ano">
+          <div class="period-row">
+            <div class="form-group">
+              <label class="form-label" for="ano-total">Ano de referência</label>
+              <input type="number" id="ano-total" value="2026" min="2020" max="2099" style="width:130px">
+            </div>
+          </div>
         </div>
-        <button class="btn-generate" id="btn-generate" onclick="gerarPDF()">
-          <span class="spinner" id="spinner"></span>
+
+        <div class="form-group empresa-group">
+          <label class="form-label" for="empresa">Nome da empresa no relatório</label>
+          <input type="text" id="empresa" placeholder="Ex: Clínica Estética AM">
+        </div>
+
+        <button class="btn-generate" id="btn-generate">
+          <span class="spinner"></span>
+          <span class="btn-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.5 2H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5.5L9.5 2z"/>
+              <polyline points="9.5 2 9.5 5.5 13 5.5"/>
+              <line x1="6" y1="9" x2="10" y2="9"/>
+              <line x1="6" y1="11.5" x2="8.5" y2="11.5"/>
+            </svg>
+          </span>
           <span id="btn-text">Gerar Relatório PDF</span>
         </button>
       </div>
     </div>
 
-    <!-- PAGE: HISTÓRICO -->
-    <div class="page" id="page-historico">
+    <!-- ── PAGE: HISTORY ── -->
+    <div class="page" id="page-history">
       <div class="card">
         <div class="card-title">Histórico de Relatórios</div>
-        <div id="history-empty" class="empty-state">Você ainda não gerou nenhum relatório.</div>
-        <table class="history-table" id="history-table" style="display:none;">
-          <thead><tr><th>Empresa</th><th>Período</th><th>Data</th><th>Status</th></tr></thead>
+        <div class="history-empty" id="history-empty">
+          <div class="history-empty-icon">
+            <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="4" width="24" height="28" rx="3"/>
+              <line x1="12" y1="14" x2="24" y2="14"/>
+              <line x1="12" y1="20" x2="20" y2="20"/>
+            </svg>
+          </div>
+          <p>Você ainda não gerou nenhum relatório.</p>
+        </div>
+        <table class="history-table" id="history-table" style="display:none">
+          <thead>
+            <tr>
+              <th>Empresa</th>
+              <th>Período</th>
+              <th>Data</th>
+              <th>Status</th>
+            </tr>
+          </thead>
           <tbody id="history-body"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- PAGE: CONFIGURAÇÕES -->
-    <div class="page" id="page-configuracoes">
+    <!-- ── PAGE: SETTINGS ── -->
+    <div class="page" id="page-settings">
+
+      <!-- Subscription -->
       <div class="card">
         <div class="card-title">Assinatura</div>
         <div class="plan-info-card">
@@ -383,7 +1196,7 @@
             <div class="plan-info-name" id="cfg-plan-name">—</div>
             <div class="plan-info-sub" id="cfg-plan-sub">—</div>
           </div>
-          <button class="btn-settings btn-settings-outline" onclick="irParaPlanos()">Mudar plano</button>
+          <button class="btn-s btn-s-outline" id="btn-mudar-plano">Mudar plano</button>
         </div>
         <div class="settings-section">
           <div class="settings-section-title">Gerenciar</div>
@@ -392,96 +1205,112 @@
               <h4>Fazer upgrade</h4>
               <p>Acesse relatórios ilimitados e recursos exclusivos</p>
             </div>
-            <button class="btn-settings btn-settings-dark" onclick="irParaPlanos()">Ver planos</button>
+            <button class="btn-s btn-s-dark" id="btn-upgrade">Ver planos</button>
           </div>
           <div class="settings-row">
             <div class="settings-row-info">
               <h4>Cancelar assinatura</h4>
               <p>Você mantém acesso até o fim do período pago</p>
             </div>
-            <button class="btn-settings btn-settings-danger" onclick="confirmarCancelamento()">Cancelar plano</button>
+            <button class="btn-s btn-s-danger" id="btn-cancelar-plano">Cancelar plano</button>
           </div>
         </div>
       </div>
 
+      <!-- Account -->
       <div class="card">
         <div class="card-title">Conta</div>
         <div class="settings-section">
           <div class="settings-section-title">Informações</div>
           <div class="settings-row">
-            <div class="settings-row-info"><h4>Nome</h4><p id="cfg-user-name">—</p></div>
+            <div class="settings-row-info is-value">
+              <h4>Nome</h4>
+              <p id="cfg-user-name">—</p>
+            </div>
           </div>
           <div class="settings-row">
-            <div class="settings-row-info"><h4>E-mail</h4><p id="cfg-user-email">—</p></div>
+            <div class="settings-row-info is-value">
+              <h4>E-mail</h4>
+              <p id="cfg-user-email">—</p>
+            </div>
           </div>
           <div class="settings-row">
-            <div class="settings-row-info"><h4>Método de login</h4><p id="cfg-login-method">—</p></div>
+            <div class="settings-row-info is-value">
+              <h4>Método de login</h4>
+              <p id="cfg-login-method">—</p>
+            </div>
           </div>
         </div>
+      </div>
+
+      <!-- Danger zone -->
+      <div class="card">
+        <div class="card-title">Zona de perigo</div>
         <div class="settings-section">
-          <div class="settings-section-title">Zona de perigo</div>
           <div class="settings-row">
             <div class="settings-row-info">
               <h4>Sair da conta</h4>
               <p>Encerra sua sessão neste dispositivo</p>
             </div>
-            <button class="btn-settings btn-settings-outline" onclick="logout()">Sair</button>
+            <button class="btn-s btn-s-outline" id="btn-logout">Sair</button>
           </div>
           <div class="settings-row">
             <div class="settings-row-info">
               <h4>Limpar histórico local</h4>
-              <p>Remove o histórico salvo neste navegador</p>
+              <p>Remove o histórico de relatórios salvo neste navegador</p>
             </div>
-            <button class="btn-settings btn-settings-danger" onclick="confirmarLimparHistorico()">Limpar</button>
+            <button class="btn-s btn-s-danger" id="btn-limpar-historico">Limpar</button>
           </div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-title">Sobre</div>
-        <div class="settings-section">
-          <div class="settings-row">
-            <div class="settings-row-info"><h4>Versão</h4><p>Hystan v1.0 · Gerador de Relatórios PDF</p></div>
-          </div>
-          <div class="settings-row">
-            <div class="settings-row-info"><h4>Suporte</h4><p>suporte@hystan.com.br</p></div>
-            <a href="mailto:suporte@hystan.com.br" class="btn-settings btn-settings-outline" style="text-decoration:none;">Contato</a>
-          </div>
-        </div>
-      </div>
     </div>
-
-  </div>
+  </main>
 </div>
 
-<!-- MODAL CANCELAR -->
-<div class="modal-overlay" id="modal-cancelar">
-  <div class="modal">
-    <div class="modal-icon">⚠️</div>
-    <div class="modal-title">Cancelar assinatura?</div>
-    <div class="modal-text">Você continuará com acesso até o fim do período já pago. Após isso, sua conta volta ao plano gratuito.</div>
+<!-- ── MODAL: CANCELAR ASSINATURA ── -->
+<div class="modal-overlay" id="modal-cancel">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-cancel-title">
+    <div class="modal-icon">
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17.2 6.5L4 30a2 2 0 0 0 1.7 3h28.6A2 2 0 0 0 36 30L22.8 6.5a2 2 0 0 0-3.6 0z"/>
+        <line x1="20" y1="16" x2="20" y2="23"/>
+        <line x1="20" y1="27" x2="20.02" y2="27"/>
+      </svg>
+    </div>
+    <div class="modal-title" id="modal-cancel-title">Cancelar assinatura?</div>
+    <div class="modal-body">Você continuará com acesso até o fim do período já pago. Após isso, sua conta volta ao plano gratuito.</div>
     <div class="modal-actions">
-      <button class="btn-modal-cancel" onclick="fecharModal('modal-cancelar')">Manter plano</button>
-      <button class="btn-modal-confirm" onclick="executarCancelamento()">Sim, cancelar</button>
+      <button class="btn-modal-cancel" id="modal-cancel-close">Manter plano</button>
+      <button class="btn-modal-confirm" id="modal-cancel-confirm">Sim, cancelar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL LIMPAR -->
-<div class="modal-overlay" id="modal-historico">
-  <div class="modal">
-    <div class="modal-icon">🗑️</div>
-    <div class="modal-title">Limpar histórico?</div>
-    <div class="modal-text">Remove o histórico de relatórios deste navegador. Não afeta os PDFs já baixados.</div>
+<!-- ── MODAL: LIMPAR HISTÓRICO ── -->
+<div class="modal-overlay" id="modal-history">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-history-title">
+    <div class="modal-icon">
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 10 10 10 34 10"/>
+        <path d="M32 10l-2 22a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3L8 10"/>
+        <line x1="17" y1="18" x2="17" y2="28"/>
+        <line x1="23" y1="18" x2="23" y2="28"/>
+        <path d="M15 10V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/>
+      </svg>
+    </div>
+    <div class="modal-title" id="modal-history-title">Limpar histórico?</div>
+    <div class="modal-body">Remove o histórico de relatórios deste navegador. Não afeta os PDFs já baixados.</div>
     <div class="modal-actions">
-      <button class="btn-modal-cancel" onclick="fecharModal('modal-historico')">Cancelar</button>
-      <button class="btn-modal-confirm" onclick="executarLimparHistorico()">Sim, limpar</button>
+      <button class="btn-modal-cancel" id="modal-history-close">Cancelar</button>
+      <button class="btn-modal-confirm" id="modal-history-confirm">Sim, limpar</button>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast-container" id="toast-container"></div>
 
+<!-- ── FIREBASE ── -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
@@ -500,145 +1329,278 @@
 
   onAuthStateChanged(auth, (user) => {
     if (!user) { window.location.href = '/auth.html'; return; }
-    const nome = user.displayName || user.email.split('@')[0];
-    document.getElementById('user-name').textContent = nome;
-    document.getElementById('user-avatar').textContent = nome.charAt(0).toUpperCase();
+
+    window._firebaseUser = user;
+
+    const name = user.displayName || user.email.split('@')[0];
+    const initial = name.charAt(0).toUpperCase();
+
+    document.getElementById('user-name').textContent = name;
+    document.getElementById('user-avatar').textContent = initial;
     document.getElementById('cfg-user-name').textContent = user.displayName || '—';
     document.getElementById('cfg-user-email').textContent = user.email;
     document.getElementById('cfg-login-method').textContent =
       user.providerData[0]?.providerId === 'google.com' ? 'Google' : 'E-mail e senha';
-    window._firebaseUser = user;
+
     verificarPlano();
   });
 
-  window.logout = async () => {
+  window._doSignOut = async () => {
     await signOut(auth);
     localStorage.removeItem('hystan_plano');
     localStorage.removeItem('hystan_trial_inicio');
     window.location.href = '/auth.html';
   };
+</script>
 
-  function verificarPlano() {
+<!-- ── APP ── -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── STATE ── */
+  const MONTHS_PT_SHORT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const MONTHS_PT_LONG  = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const PAGE_TITLES = { dashboard: 'Dashboard', history: 'Histórico', settings: 'Configurações' };
+
+  let selectedFile = null;
+  let currentPeriod = 'mes';
+  let selectedMonth = new Date().getMonth() + 1;
+  let reportHistory = [];
+  let totalReports = 0;
+
+  try {
+    reportHistory = JSON.parse(localStorage.getItem('hystan_history') || '[]');
+    totalReports  = parseInt(localStorage.getItem('hystan_total') || '0', 10);
+  } catch (_) { /* ignore parse errors */ }
+
+  /* ── DOM REFS ── */
+  const sidebar          = document.getElementById('sidebar');
+  const sidebarOverlay   = document.getElementById('sidebar-overlay');
+  const topbarTitle      = document.getElementById('topbar-title');
+  const trialBanner      = document.getElementById('trial-banner');
+  const trialMsg         = document.getElementById('trial-msg');
+  const upgradeCard      = document.getElementById('upgrade-card');
+  const dropzone         = document.getElementById('dropzone');
+  const fileInput        = document.getElementById('file-input');
+  const dropFilename     = document.getElementById('drop-filename');
+  const dropFilenameText = document.getElementById('drop-filename-text');
+  const btnGenerate      = document.getElementById('btn-generate');
+  const btnText          = document.getElementById('btn-text');
+  const historyEmpty     = document.getElementById('history-empty');
+  const historyTable     = document.getElementById('history-table');
+  const historyBody      = document.getElementById('history-body');
+  const toastContainer   = document.getElementById('toast-container');
+
+  /* ── THEME ── */
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('hystan_theme', t);
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.classList.toggle('is-active', btn.dataset.themeVal === t);
+    });
+  }
+
+  (function initTheme() {
+    const t = localStorage.getItem('hystan_theme') || 'system';
+    applyTheme(t);
+  })();
+
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyTheme(btn.dataset.themeVal));
+  });
+
+  /* ── SIDEBAR ── */
+  function openSidebar() {
+    sidebar.classList.add('is-open');
+    sidebarOverlay.classList.add('is-visible');
+  }
+  function closeSidebar() {
+    sidebar.classList.remove('is-open');
+    sidebarOverlay.classList.remove('is-visible');
+  }
+
+  document.getElementById('btn-hamburger').addEventListener('click', openSidebar);
+  sidebarOverlay.addEventListener('click', closeSidebar);
+
+  /* ── NAVIGATION ── */
+  function navigate(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('is-active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('is-active'));
+    const pageEl = document.getElementById('page-' + page);
+    if (pageEl) pageEl.classList.add('is-active');
+    const navEl = document.querySelector(`.nav-item[data-page="${page}"]`);
+    if (navEl) navEl.classList.add('is-active');
+    topbarTitle.textContent = PAGE_TITLES[page] || 'Dashboard';
+    closeSidebar();
+    if (page === 'history') renderHistory();
+  }
+
+  document.querySelectorAll('.nav-item[data-page]').forEach(btn => {
+    btn.addEventListener('click', () => navigate(btn.dataset.page));
+  });
+
+  /* ── PLAN VERIFICATION ── */
+  window.verificarPlano = function verificarPlano() {
     const plano = localStorage.getItem('hystan_plano');
-    const trialInicio = parseInt(localStorage.getItem('hystan_trial_inicio') || '0');
-    const agora = Date.now();
-    const seteDias = 7 * 24 * 60 * 60 * 1000;
+    const trialInicio = parseInt(localStorage.getItem('hystan_trial_inicio') || '0', 10);
     const params = new URLSearchParams(window.location.search);
+
     if (params.get('pago') === 'true') {
       localStorage.setItem('hystan_plano', 'ativo');
       window.history.replaceState({}, '', '/dashboard.html');
-      configurarUI('ativo'); return;
+      setupUI('ativo');
+      return;
     }
-    if (!plano) { window.location.href = '/planos.html'; return; }
-    if (plano === 'trial') {
-      const diasRestantes = Math.ceil((seteDias - (agora - trialInicio)) / (1000 * 60 * 60 * 24));
-      if (agora - trialInicio > seteDias) { localStorage.removeItem('hystan_plano'); window.location.href = '/planos.html'; return; }
-      configurarUI('trial', diasRestantes); return;
-    }
-    if (plano === 'ativo') { configurarUI('ativo'); return; }
-    window.location.href = '/planos.html';
-  }
 
-  function configurarUI(plano, diasRestantes) {
-    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-    document.getElementById('stat-month-label').textContent = meses[new Date().getMonth()] + ' ' + new Date().getFullYear();
+    if (!plano) { window.location.href = '/planos.html'; return; }
+
     if (plano === 'trial') {
-      document.getElementById('user-plan').textContent = 'Trial · ' + diasRestantes + 'd';
-      document.getElementById('stat-plano').textContent = 'Trial';
+      const SETE_DIAS = 7 * 24 * 60 * 60 * 1000;
+      const agora = Date.now();
+      const elapsed = agora - trialInicio;
+      if (elapsed > SETE_DIAS) {
+        localStorage.removeItem('hystan_plano');
+        window.location.href = '/planos.html';
+        return;
+      }
+      const diasRestantes = Math.max(1, Math.ceil((SETE_DIAS - elapsed) / (1000 * 60 * 60 * 24)));
+      setupUI('trial', diasRestantes);
+      return;
+    }
+
+    if (plano === 'ativo') { setupUI('ativo'); return; }
+
+    window.location.href = '/planos.html';
+  };
+
+  function setupUI(plano, diasRestantes) {
+    const now = new Date();
+    document.getElementById('stat-month-label').textContent =
+      MONTHS_PT_LONG[now.getMonth()] + ' ' + now.getFullYear();
+
+    if (plano === 'trial') {
+      document.getElementById('user-plan').textContent      = 'Trial · ' + diasRestantes + 'd';
+      document.getElementById('stat-plano').textContent     = 'Trial';
       document.getElementById('stat-plano-sub').textContent = diasRestantes + ' dias restantes';
-      document.getElementById('trial-banner').classList.add('show');
-      document.getElementById('trial-msg').textContent = '⏳ Trial termina em ' + diasRestantes + ' dia(s).';
-      document.getElementById('upgrade-card').style.display = 'flex';
+      trialBanner.classList.add('is-visible');
+      trialMsg.textContent = 'Trial termina em ' + diasRestantes + ' dia(s).';
+      upgradeCard.classList.add('is-visible');
       document.getElementById('sidebar-plan-name').textContent = 'Trial';
-      document.getElementById('sidebar-plan-sub').textContent = diasRestantes + ' dias restantes';
+      document.getElementById('sidebar-plan-sub').textContent  = diasRestantes + ' dias restantes';
       document.getElementById('cfg-plan-badge').textContent = 'Trial';
-      document.getElementById('cfg-plan-name').textContent = 'Período de teste';
-      document.getElementById('cfg-plan-sub').textContent = diasRestantes + ' dias · 5 relatórios incluídos';
+      document.getElementById('cfg-plan-name').textContent  = 'Período de teste';
+      document.getElementById('cfg-plan-sub').textContent   = diasRestantes + ' dias · 5 relatórios incluídos';
     } else {
-      document.getElementById('user-plan').textContent = 'Plano Ativo';
-      document.getElementById('stat-plano').textContent = 'Pro';
+      document.getElementById('user-plan').textContent      = 'Plano Ativo';
+      document.getElementById('stat-plano').textContent     = 'Business';
       document.getElementById('stat-plano-sub').textContent = 'Ilimitado · Ativo';
       document.getElementById('sidebar-plan-name').textContent = 'Plano Business';
-      document.getElementById('sidebar-plan-sub').textContent = 'Relatórios ilimitados';
+      document.getElementById('sidebar-plan-sub').textContent  = 'Relatórios ilimitados';
       document.getElementById('cfg-plan-badge').textContent = 'Business';
-      document.getElementById('cfg-plan-name').textContent = 'Plano Business';
-      document.getElementById('cfg-plan-sub').textContent = 'Relatórios ilimitados · Ativo';
+      document.getElementById('cfg-plan-name').textContent  = 'Plano Business';
+      document.getElementById('cfg-plan-sub').textContent   = 'Relatórios ilimitados · Ativo';
     }
-  }
-</script>
 
-<script>
-  const API = '';
-  let selectedFile = null, currentPeriod = 'mes', selectedMonth = 1;
-  let reportHistory = JSON.parse(localStorage.getItem('hystan_history') || '[]');
-  let totalReports = parseInt(localStorage.getItem('hystan_total') || '0');
-
-  function openSidebar() {
-    document.getElementById('sidebar').classList.add('open');
-    document.getElementById('sidebar-overlay').classList.add('show');
-  }
-  function closeSidebar() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebar-overlay').classList.remove('show');
+    updateStats();
   }
 
-  const pageTitles = { dashboard: 'Dashboard', historico: 'Histórico', configuracoes: 'Configurações' };
-  function showPage(page, btn) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.getElementById('page-' + page).classList.add('active');
-    if (btn) btn.classList.add('active');
-    document.getElementById('topbar-title').textContent = pageTitles[page] || 'Dashboard';
-    closeSidebar();
-    if (page === 'historico') renderHistory();
-  }
+  /* ── SETTINGS BUTTON WIRING ── */
+  function goToPlanos() { window.location.href = '/planos.html'; }
 
-  const dropzone = document.getElementById('dropzone');
-  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
-  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
-  dropzone.addEventListener('drop', e => {
-    e.preventDefault(); dropzone.classList.remove('drag');
-    const file = e.dataTransfer.files[0];
-    if (file && file.name.endsWith('.xlsx')) setFile(file);
-    else showToast('Use apenas arquivos .xlsx', true);
+  document.getElementById('btn-ver-planos').addEventListener('click', goToPlanos);
+  document.getElementById('btn-mudar-plano').addEventListener('click', goToPlanos);
+  document.getElementById('btn-upgrade').addEventListener('click', goToPlanos);
+  document.getElementById('btn-cancelar-plano').addEventListener('click', () => openModal('modal-cancel'));
+  document.getElementById('btn-limpar-historico').addEventListener('click', () => openModal('modal-history'));
+  document.getElementById('btn-logout').addEventListener('click', () => {
+    if (window._doSignOut) window._doSignOut();
   });
-  document.getElementById('file-input').addEventListener('change', e => { if (e.target.files[0]) setFile(e.target.files[0]); });
 
-  function setFile(file) { selectedFile = file; dropzone.classList.add('has-file'); document.getElementById('file-name').textContent = '✓ ' + file.name; }
-  function showPeriod(period, btn) {
-    currentPeriod = period;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.period-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('panel-' + period).classList.add('active');
+  /* ── DROPZONE ── */
+  dropzone.addEventListener('click', () => fileInput.click());
+  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('is-drag'); });
+  dropzone.addEventListener('dragleave', e => {
+    if (!dropzone.contains(e.relatedTarget)) dropzone.classList.remove('is-drag');
+  });
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropzone.classList.remove('is-drag');
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      if (!file.name.toLowerCase().endsWith('.xlsx')) {
+        showToast('Use apenas arquivos .xlsx', 'error');
+      } else if (file.size > 5 * 1024 * 1024) {
+        showToast('Arquivo muito grande. Máximo 5MB.', 'error');
+      } else {
+        setFile(file);
+      }
+    }
+  });
+  fileInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) setFile(file);
+  });
+
+  function setFile(file) {
+    selectedFile = file;
+    dropzone.classList.add('is-file');
+    dropFilenameText.textContent = file.name;
   }
-  function selectMonth(btn) {
-    document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    selectedMonth = parseInt(btn.dataset.mes);
-  }
-  function irParaPlanos() { window.location.href = '/planos.html'; }
+
+  /* ── PERIOD SELECTOR ── */
+  document.querySelectorAll('.tab[data-period]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentPeriod = btn.dataset.period;
+      document.querySelectorAll('.tab[data-period]').forEach(t => t.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      document.querySelectorAll('.period-panel').forEach(p => p.classList.remove('is-active'));
+      document.getElementById('panel-' + currentPeriod).classList.add('is-active');
+    });
+  });
+
+  document.querySelectorAll('.month-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      selectedMonth = parseInt(btn.dataset.mes, 10);
+    });
+  });
+
+  /* ── PDF GENERATION ── */
+  btnGenerate.addEventListener('click', gerarPDF);
 
   async function gerarPDF() {
-    if (!selectedFile) { showToast('Selecione uma planilha primeiro', true); return; }
+    if (!selectedFile) { showToast('Selecione uma planilha primeiro', 'error'); return; }
     const empresa = document.getElementById('empresa').value.trim();
-    if (!empresa) { showToast('Informe o nome da empresa', true); return; }
+    if (!empresa) { showToast('Informe o nome da empresa', 'error'); return; }
+
     const plano = localStorage.getItem('hystan_plano');
-    if (plano === 'trial' && totalReports >= 5) { showToast('Limite do trial atingido.', true); setTimeout(() => window.location.href = '/planos.html', 2000); return; }
+    if (plano === 'trial' && totalReports >= 5) {
+      showToast('Limite do trial atingido.', 'error');
+      setTimeout(() => { window.location.href = '/planos.html'; }, 2200);
+      return;
+    }
 
     let mesInicio, mesFim, ano;
-    if (currentPeriod === 'mes') { mesInicio = mesFim = selectedMonth; ano = document.getElementById('ano-mes').value; }
-    else if (currentPeriod === 'intervalo') {
-      mesInicio = parseInt(document.getElementById('mes-inicio').value);
-      mesFim = parseInt(document.getElementById('mes-fim').value);
-      ano = document.getElementById('ano-intervalo').value;
-      if (mesInicio > mesFim) { showToast('Mês inicial não pode ser maior que o final', true); return; }
-    } else { mesInicio = 1; mesFim = 12; ano = document.getElementById('ano-total').value; }
 
-    const btn = document.getElementById('btn-generate');
-    const spinner = document.getElementById('spinner');
-    const btnText = document.getElementById('btn-text');
-    btn.disabled = true; spinner.style.display = 'block'; btnText.textContent = 'Processando...';
+    if (currentPeriod === 'mes') {
+      mesInicio = mesFim = selectedMonth;
+      ano = document.getElementById('ano-mes').value;
+    } else if (currentPeriod === 'intervalo') {
+      mesInicio = parseInt(document.getElementById('mes-inicio').value, 10);
+      mesFim    = parseInt(document.getElementById('mes-fim').value, 10);
+      ano       = document.getElementById('ano-intervalo').value;
+      if (mesInicio > mesFim) { showToast('Mês inicial não pode ser maior que o final', 'error'); return; }
+    } else {
+      mesInicio = 1;
+      mesFim    = 12;
+      ano       = document.getElementById('ano-total').value;
+    }
+
+    btnGenerate.disabled = true;
+    btnGenerate.classList.add('is-loading');
+    btnText.textContent = 'Processando...';
 
     try {
       const formData = new FormData();
@@ -647,80 +1609,155 @@
       formData.append('ano', ano);
       formData.append('mesInicio', mesInicio);
       formData.append('mesFim', mesFim);
-      const user = window._firebaseUser;
-      const token = user ? await user.getIdToken() : null;
 
-      const resp = await fetch(API + '/gerar-pdf', {
-        method: 'POST',
-        headers: token ? { 'Authorization': 'Bearer ' + token } : {},
-        body: formData
-      });
-      if (!resp.ok) { const msg = await resp.text(); throw new Error(msg || 'Erro no servidor'); }
+      const user  = window._firebaseUser;
+      const token = user ? await user.getIdToken() : null;
+      const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+
+      const resp = await fetch('/gerar-pdf', { method: 'POST', headers, body: formData });
+
+      if (!resp.ok) {
+        let msg = 'Erro no servidor';
+        try { msg = await resp.text(); } catch (_) {}
+        throw new Error(msg);
+      }
+
       const blob = await resp.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = `Relatorio-${empresa}.pdf`; a.click();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = 'Relatorio-' + empresa.replace(/[^a-zA-Z0-9\-_]/g, '_') + '.pdf';
+      a.click();
       setTimeout(() => URL.revokeObjectURL(url), 5000);
+
       const periodoLabel = currentPeriod === 'mes'
-        ? ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][selectedMonth-1] + '/' + ano
-        : currentPeriod === 'intervalo' ? `${mesInicio}–${mesFim}/${ano}` : `Ano ${ano}`;
-      reportHistory.unshift({ empresa, periodo: periodoLabel, data: new Date().toLocaleDateString('pt-BR') });
+        ? MONTHS_PT_SHORT[selectedMonth - 1] + '/' + ano
+        : currentPeriod === 'intervalo'
+          ? MONTHS_PT_SHORT[mesInicio - 1] + '–' + MONTHS_PT_SHORT[mesFim - 1] + '/' + ano
+          : 'Ano ' + ano;
+
+      reportHistory.unshift({
+        empresa,
+        periodo: periodoLabel,
+        data: new Date().toLocaleDateString('pt-BR'),
+        timestamp: Date.now()
+      });
       totalReports++;
       localStorage.setItem('hystan_history', JSON.stringify(reportHistory.slice(0, 20)));
-      localStorage.setItem('hystan_total', totalReports);
+      localStorage.setItem('hystan_total', String(totalReports));
       updateStats();
-      showToast('PDF gerado! Baixando...', false, true);
+      showToast('PDF gerado com sucesso. Baixando...', 'success');
+
     } catch (err) {
-      showToast('Erro: ' + err.message, true);
+      const msg = err.message && err.message.length < 120 ? err.message : 'Erro ao gerar PDF. Tente novamente.';
+      showToast(msg, 'error');
     } finally {
-      btn.disabled = false; spinner.style.display = 'none'; btnText.textContent = 'Gerar Relatório PDF';
+      btnGenerate.disabled = false;
+      btnGenerate.classList.remove('is-loading');
+      btnText.textContent = 'Gerar Relatório PDF';
     }
   }
 
+  /* ── STATS ── */
   function updateStats() {
     document.getElementById('stat-total').textContent = totalReports;
-    const hoje = new Date().toLocaleDateString('pt-BR');
-    document.getElementById('stat-month').textContent = reportHistory.filter(h => h.data === hoje).length;
+    const now = new Date();
+    const monthCount = reportHistory.filter(h => {
+      if (!h.timestamp) return false;
+      const d = new Date(h.timestamp);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    }).length;
+    document.getElementById('stat-month').textContent = monthCount;
   }
 
+  /* ── HISTORY RENDER ── */
   function renderHistory() {
-    if (reportHistory.length === 0) return;
-    document.getElementById('history-empty').style.display = 'none';
-    document.getElementById('history-table').style.display = 'table';
-    document.getElementById('history-body').innerHTML = reportHistory.map(h => `
+    if (reportHistory.length === 0) {
+      historyEmpty.style.display = '';
+      historyTable.style.display = 'none';
+      return;
+    }
+    historyEmpty.style.display = 'none';
+    historyTable.style.display = 'table';
+    historyBody.innerHTML = reportHistory.map(h => `
       <tr>
-        <td style="font-weight:600; color:var(--dark);">${h.empresa}</td>
-        <td>${h.periodo}</td><td>${h.data}</td>
-        <td><span class="badge">Concluído</span></td>
-      </tr>`).join('');
+        <td class="td-company">${escapeHtml(h.empresa)}</td>
+        <td>${escapeHtml(h.periodo)}</td>
+        <td>${escapeHtml(h.data)}</td>
+        <td><span class="badge-ok">Concluído</span></td>
+      </tr>
+    `).join('');
   }
 
-  function confirmarCancelamento() { document.getElementById('modal-cancelar').classList.add('show'); }
-  function confirmarLimparHistorico() { document.getElementById('modal-historico').classList.add('show'); }
-  function fecharModal(id) { document.getElementById(id).classList.remove('show'); }
-  function executarCancelamento() {
-    fecharModal('modal-cancelar');
-    showToast('Entre em contato: suporte@hystan.com.br');
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
-  function executarLimparHistorico() {
+
+  /* ── MODALS ── */
+  function openModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('is-visible');
+  }
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('is-visible');
+  }
+
+  document.getElementById('modal-cancel-close').addEventListener('click', () => closeModal('modal-cancel'));
+  document.getElementById('modal-cancel-confirm').addEventListener('click', () => {
+    closeModal('modal-cancel');
+    showToast('Entre em contato: suporte@hystan.com.br');
+  });
+
+  document.getElementById('modal-history-close').addEventListener('click', () => closeModal('modal-history'));
+  document.getElementById('modal-history-confirm').addEventListener('click', () => {
     localStorage.removeItem('hystan_history');
     localStorage.removeItem('hystan_total');
-    reportHistory = []; totalReports = 0;
-    document.getElementById('history-empty').style.display = 'block';
-    document.getElementById('history-table').style.display = 'none';
+    reportHistory = [];
+    totalReports  = 0;
+    historyEmpty.style.display = '';
+    historyTable.style.display = 'none';
     updateStats();
-    fecharModal('modal-historico');
-    showToast('Histórico limpo!', false, true);
+    closeModal('modal-history');
+    showToast('Histórico limpo.', 'success');
+  });
+
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.remove('is-visible');
+    });
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.is-visible').forEach(m => m.classList.remove('is-visible'));
+      closeSidebar();
+    }
+  });
+
+  /* ── TOASTS ── */
+  function showToast(msg, variant) {
+    const toast = document.createElement('div');
+    toast.className = 'toast' + (variant === 'success' ? ' is-success' : variant === 'error' ? ' is-error' : '');
+    toast.textContent = msg;
+    toastContainer.appendChild(toast);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => toast.classList.add('is-visible'));
+    });
+    setTimeout(() => {
+      toast.classList.remove('is-visible');
+      setTimeout(() => toast.remove(), 350);
+    }, 3500);
   }
 
-  function showToast(msg, error = false, success = false) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast show' + (error ? ' error' : success ? ' success' : '');
-    setTimeout(() => t.classList.remove('show'), 3500);
-  }
-
+  /* ── INIT ── */
   updateStats();
+})();
 </script>
+
 </body>
 </html>
