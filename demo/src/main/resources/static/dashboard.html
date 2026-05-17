@@ -1809,7 +1809,8 @@
     const dark       = isDarkMode();
     const lineColor  = dark ? 'rgba(255,255,255,0.88)' : 'rgba(26,26,26,0.82)';
     const labelColor = dark ? 'rgba(255,255,255,0.28)' : 'rgba(0,0,0,0.3)';
-    const gradTop    = dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)';
+    const gradTop    = dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.06)';
+    const gradBot    = dark ? 'rgba(255,255,255,0)'    : 'rgba(0,0,0,0)';
     const dotFill    = dark ? '#111111' : '#ffffff';
 
     const dpr = window.devicePixelRatio || 1;
@@ -1853,19 +1854,20 @@
       label: b.label
     }));
 
-    /* area fill */
+    /* area fill — drawn first so line renders on top */
+    const baseline = PAD.top + cH;
     ctx.beginPath();
     ctx.moveTo(pts[0].x, pts[0].y);
     for (let i = 1; i < pts.length; i++) {
       const cpx = (pts[i - 1].x + pts[i].x) / 2;
       ctx.bezierCurveTo(cpx, pts[i - 1].y, cpx, pts[i].y, pts[i].x, pts[i].y);
     }
-    ctx.lineTo(pts[n - 1].x, PAD.top + cH);
-    ctx.lineTo(pts[0].x,     PAD.top + cH);
+    ctx.lineTo(pts[n - 1].x, baseline);
+    ctx.lineTo(pts[0].x,     baseline);
     ctx.closePath();
-    const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + cH);
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
     grad.addColorStop(0, gradTop);
-    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    grad.addColorStop(1, gradBot);
     ctx.fillStyle = grad;
     ctx.fill();
 
