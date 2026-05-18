@@ -140,14 +140,14 @@ public class GeradorOrcamentoPDF {
                 txtR(cs, bold, 11, C3R - PAD, tY, money(subtotal));
                 y -= totH + 16;
 
-                /* ── VALIDADE / OBSERVACOES ── */
+                /* ── VALIDADE / OBS. ── */
                 if (ok(req.validadeDias)) {
                     txt(cs, normal, 9, 50, y, "Validade da proposta: " + san(req.validadeDias, 20) + " dias");
                     y -= 13;
                 }
                 if (ok(req.observacoes)) {
                     cs.setNonStrokingColor(new Color(136, 136, 136));
-                    txt(cs, bold, 8, 50, y, "OBSERVACOES:");
+                    txt(cs, bold, 8, 50, y, "OBS.:");
                     cs.setNonStrokingColor(Color.BLACK);
                     y -= 11;
                     txt(cs, normal, 9, 50, y, san(req.observacoes, 200));
