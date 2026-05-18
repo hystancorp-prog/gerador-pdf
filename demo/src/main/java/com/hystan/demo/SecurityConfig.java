@@ -27,6 +27,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/webhook/stripe", "/*.html", "/*.png", "/*.ico", "/").permitAll()
                 .requestMatchers("/gerar-orcamento", "/gerar-recibo").authenticated()
+                .requestMatchers("/empresas", "/empresas/**").authenticated()
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2
