@@ -145,6 +145,7 @@
 <body>
 
 <div id="sidebar-container"></div>
+<script>buildSidebar('orcamento');</script>
 
 <div class="app-wrapper">
   <header class="topbar">
@@ -282,7 +283,6 @@
   onAuthStateChanged(auth, async (user) => {
     if (!user) { window.location.href = '/auth.html'; return; }
     window._firebaseUser = user;
-    buildSidebar('orcamento');
     const name = user.displayName || user.email.split('@')[0];
     document.getElementById('user-name').textContent   = name;
     document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();

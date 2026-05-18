@@ -190,6 +190,7 @@
 <body>
 
 <div id="sidebar-container"></div>
+<script>buildSidebar('planilha');</script>
 
 <div class="app-wrapper">
   <div class="trial-banner" id="trial-banner">
@@ -353,7 +354,6 @@
     document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();
     const plano = localStorage.getItem('hystan_plano');
     document.getElementById('user-plan').textContent = plano === 'ativo' ? 'Plano Ativo' : plano === 'trial' ? 'Trial' : '—';
-    buildSidebar('planilha');
     const sn = document.getElementById('sidebar-plan-name');
     const ss = document.getElementById('sidebar-plan-sub');
     if (sn) sn.textContent = plano === 'ativo' ? 'Plano Business' : plano === 'trial' ? 'Trial' : '—';

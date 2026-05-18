@@ -246,6 +246,7 @@
 <body>
 
 <div id="sidebar-container"></div>
+<script>buildSidebar('dashboard');</script>
 
 <div class="app-wrapper">
 
@@ -524,7 +525,6 @@
     document.getElementById('cfg-login-method').textContent =
       user.providerData[0]?.providerId === 'google.com' ? 'Google' : 'E-mail e senha';
 
-    buildSidebar('dashboard');
     verificarPlano();
   });
 
