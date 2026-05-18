@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="/sidebar.js"></script>
-  <script src="/masks.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -265,6 +264,8 @@
 
 <div class="toast-container" id="toast-container"></div>
 
+<script src="/masks.js"></script>
+
 <!-- ── FIREBASE ── -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
@@ -322,9 +323,9 @@
   document.querySelectorAll('.theme-btn').forEach(b => b.addEventListener('click', () => applyTheme(b.dataset.themeVal)));
 
   /* ── MASKS ── */
-  document.getElementById('e-doc').addEventListener('input', function () { maskCpfCnpj(this); });
-  document.getElementById('e-tel').addEventListener('input', function () { maskTelefone(this); });
-  document.getElementById('e-cep').addEventListener('input', function () { maskCep(this); });
+  document.getElementById('e-doc').addEventListener('input', maskCpfCnpj);
+  document.getElementById('e-tel').addEventListener('input', maskTelefone);
+  document.getElementById('e-cep').addEventListener('input', maskCep);
 
   /* ── MODAL HELPERS ── */
   function openModal(id)  { document.getElementById(id).classList.add('is-visible'); }

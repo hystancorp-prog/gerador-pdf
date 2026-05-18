@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="/sidebar.js"></script>
-  <script src="/masks.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -263,6 +262,8 @@
 
 <div class="toast-container" id="toast-container"></div>
 
+<script src="/masks.js"></script>
+
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
@@ -323,9 +324,9 @@
   document.querySelectorAll('.theme-btn').forEach(b => b.addEventListener('click', () => applyTheme(b.dataset.themeVal)));
 
   /* ── MASKS ── */
-  document.getElementById('prestador-cnpj').addEventListener('input', function () { maskCpfCnpj(this); });
-  document.getElementById('prestador-tel').addEventListener('input',  function () { maskTelefone(this); });
-  document.getElementById('cliente-cnpj').addEventListener('input',   function () { maskCpfCnpj(this); });
+  document.getElementById('prestador-cnpj').addEventListener('input', maskCpfCnpj);
+  document.getElementById('prestador-tel').addEventListener('input',  maskTelefone);
+  document.getElementById('cliente-cnpj').addEventListener('input',   maskCpfCnpj);
 
   /* ── LOAD EMPRESAS ── */
   window.loadEmpresas = async function () {
@@ -379,7 +380,7 @@
     const unitInput = tr.querySelector('[data-field="unit"]');
     const qtyInput  = tr.querySelector('[data-field="qty"]');
 
-    unitInput.addEventListener('input', function () { maskMoeda(this); recalcRow(tr); });
+    unitInput.addEventListener('input', function (e) { maskMoeda(e); recalcRow(tr); });
     qtyInput.addEventListener('input',  function () { recalcRow(tr); });
     tr.querySelector('.btn-remove').addEventListener('click', () => { tr.remove(); recalcTotal(); });
 

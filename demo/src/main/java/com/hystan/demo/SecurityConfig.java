@@ -25,7 +25,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/webhook/stripe", "/*.html", "/*.png", "/*.ico", "/").permitAll()
+                .requestMatchers("/webhook/stripe", "/*.html", "/*.png", "/*.ico", "/*.js", "/*.css", "/").permitAll()
                 .requestMatchers("/gerar-orcamento", "/gerar-recibo").authenticated()
                 .requestMatchers("/empresas", "/empresas/**").authenticated()
                 .anyRequest().authenticated()
