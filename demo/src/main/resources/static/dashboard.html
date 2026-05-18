@@ -16,448 +16,108 @@
 
     /* ── THEME VARIABLES ── */
     :root {
-      --sidebar-w: 240px;
-      --topbar-h: 56px;
-
-      --bg: #f5f5f3;
-      --surface: #ffffff;
-      --surface-2: #f7f7f5;
-      --border: #e0e0dd;
-      --border-strong: #c8c8c4;
-
-      --text-1: #1a1a1a;
-      --text-2: #888888;
-      --text-3: #c0c0bc;
-
-      --btn-bg: #111111;
-      --btn-text: #ffffff;
-      --btn-hover: #2d2d2d;
-
-      --input-bg: #ffffff;
-      --input-border: #e0e0dd;
-      --input-focus: #1a1a1a;
-
-      --tab-active-bg: #111111;
-      --tab-active-text: #ffffff;
-
-      --badge-ok-bg: #dcfce7;
-      --badge-ok-text: #15803d;
-
-      --promo-bg: #111111;
-      --promo-text: #ffffff;
-      --promo-sub: rgba(255,255,255,0.6);
-      --promo-btn-bg: #ffffff;
-      --promo-btn-text: #111111;
-
-      --danger-text: #dc2626;
-      --danger-border: rgba(220,38,38,0.28);
-      --danger-hover: rgba(220,38,38,0.06);
-
-      --modal-bg: #ffffff;
-      --modal-cancel-bg: #f3f3f1;
-      --modal-cancel-text: #555555;
-      --modal-shadow: 0 24px 64px rgba(0,0,0,0.14);
-
-      --toast-bg: #111111;
-      --toast-text: #ffffff;
-      --toast-success-bg: #15803d;
-      --toast-error-bg: #dc2626;
-
-      --trial-bg: #111111;
-      --trial-text: rgba(255,255,255,0.82);
+      --sidebar-w: 240px; --topbar-h: 56px;
+      --bg: #f5f5f3; --surface: #ffffff; --surface-2: #f7f7f5;
+      --border: #e0e0dd; --border-strong: #c8c8c4;
+      --text-1: #1a1a1a; --text-2: #888888; --text-3: #c0c0bc;
+      --btn-bg: #111111; --btn-text: #ffffff; --btn-hover: #2d2d2d;
+      --input-bg: #ffffff; --input-border: #e0e0dd; --input-focus: #1a1a1a;
+      --badge-ok-bg: #dcfce7; --badge-ok-text: #15803d;
+      --promo-bg: #111111; --promo-text: #ffffff; --promo-sub: rgba(255,255,255,0.6);
+      --promo-btn-bg: #ffffff; --promo-btn-text: #111111;
+      --danger-text: #dc2626; --danger-border: rgba(220,38,38,0.28); --danger-hover: rgba(220,38,38,0.06);
+      --modal-bg: #ffffff; --modal-cancel-bg: #f3f3f1; --modal-cancel-text: #555555; --modal-shadow: 0 24px 64px rgba(0,0,0,0.14);
+      --toast-bg: #111111; --toast-text: #ffffff; --toast-success-bg: #15803d; --toast-error-bg: #dc2626;
+      --trial-bg: #111111; --trial-text: rgba(255,255,255,0.82);
     }
-
     @media (prefers-color-scheme: dark) {
       html:not([data-theme="light"]) {
-        --bg: #0a0a0a;
-        --surface: #111111;
-        --surface-2: #1a1a1a;
-        --border: rgba(255,255,255,0.08);
-        --border-strong: rgba(255,255,255,0.16);
-        --text-1: #ffffff;
-        --text-2: rgba(255,255,255,0.5);
-        --text-3: rgba(255,255,255,0.22);
-        --btn-bg: #ffffff;
-        --btn-text: #0a0a0a;
-        --btn-hover: rgba(255,255,255,0.88);
-        --input-bg: rgba(255,255,255,0.04);
-        --input-border: rgba(255,255,255,0.1);
-        --input-focus: rgba(255,255,255,0.4);
-        --tab-active-bg: #ffffff;
-        --tab-active-text: #0a0a0a;
-        --badge-ok-bg: rgba(21,128,61,0.2);
-        --badge-ok-text: #4ade80;
-        --promo-bg: rgba(255,255,255,0.06);
-        --promo-text: #ffffff;
-        --promo-sub: rgba(255,255,255,0.5);
-        --promo-btn-bg: #ffffff;
-        --promo-btn-text: #0a0a0a;
-        --danger-text: #f87171;
-        --danger-border: rgba(248,113,113,0.24);
-        --danger-hover: rgba(248,113,113,0.07);
-        --modal-bg: #1c1c1c;
-        --modal-cancel-bg: #111111;
-        --modal-cancel-text: rgba(255,255,255,0.55);
-        --modal-shadow: 0 24px 64px rgba(0,0,0,0.55);
-        --toast-bg: #2a2a2a;
-        --trial-bg: rgba(255,255,255,0.06);
-        --trial-text: rgba(255,255,255,0.68);
+        --bg: #0a0a0a; --surface: #111111; --surface-2: #1a1a1a;
+        --border: rgba(255,255,255,0.08); --border-strong: rgba(255,255,255,0.16);
+        --text-1: #ffffff; --text-2: rgba(255,255,255,0.5); --text-3: rgba(255,255,255,0.22);
+        --btn-bg: #ffffff; --btn-text: #0a0a0a; --btn-hover: rgba(255,255,255,0.88);
+        --input-bg: rgba(255,255,255,0.04); --input-border: rgba(255,255,255,0.1); --input-focus: rgba(255,255,255,0.4);
+        --badge-ok-bg: rgba(21,128,61,0.2); --badge-ok-text: #4ade80;
+        --promo-bg: rgba(255,255,255,0.06); --promo-text: #ffffff; --promo-sub: rgba(255,255,255,0.5);
+        --promo-btn-bg: #ffffff; --promo-btn-text: #0a0a0a;
+        --danger-text: #f87171; --danger-border: rgba(248,113,113,0.24); --danger-hover: rgba(248,113,113,0.07);
+        --modal-bg: #1c1c1c; --modal-cancel-bg: #111111; --modal-cancel-text: rgba(255,255,255,0.55); --modal-shadow: 0 24px 64px rgba(0,0,0,0.55);
+        --toast-bg: #2a2a2a; --trial-bg: rgba(255,255,255,0.06); --trial-text: rgba(255,255,255,0.68);
       }
     }
-
     html[data-theme="dark"] {
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --surface-2: #1a1a1a;
-      --border: rgba(255,255,255,0.08);
-      --border-strong: rgba(255,255,255,0.16);
-      --text-1: #ffffff;
-      --text-2: rgba(255,255,255,0.5);
-      --text-3: rgba(255,255,255,0.22);
-      --btn-bg: #ffffff;
-      --btn-text: #0a0a0a;
-      --btn-hover: rgba(255,255,255,0.88);
-      --input-bg: rgba(255,255,255,0.04);
-      --input-border: rgba(255,255,255,0.1);
-      --input-focus: rgba(255,255,255,0.4);
-      --tab-active-bg: #ffffff;
-      --tab-active-text: #0a0a0a;
-      --badge-ok-bg: rgba(21,128,61,0.2);
-      --badge-ok-text: #4ade80;
-      --promo-bg: rgba(255,255,255,0.06);
-      --promo-text: #ffffff;
-      --promo-sub: rgba(255,255,255,0.5);
-      --promo-btn-bg: #ffffff;
-      --promo-btn-text: #0a0a0a;
-      --danger-text: #f87171;
-      --danger-border: rgba(248,113,113,0.24);
-      --danger-hover: rgba(248,113,113,0.07);
-      --modal-bg: #1c1c1c;
-      --modal-cancel-bg: #111111;
-      --modal-cancel-text: rgba(255,255,255,0.55);
-      --modal-shadow: 0 24px 64px rgba(0,0,0,0.55);
-      --toast-bg: #2a2a2a;
-      --trial-bg: rgba(255,255,255,0.06);
-      --trial-text: rgba(255,255,255,0.68);
+      --bg: #0a0a0a; --surface: #111111; --surface-2: #1a1a1a;
+      --border: rgba(255,255,255,0.08); --border-strong: rgba(255,255,255,0.16);
+      --text-1: #ffffff; --text-2: rgba(255,255,255,0.5); --text-3: rgba(255,255,255,0.22);
+      --btn-bg: #ffffff; --btn-text: #0a0a0a; --btn-hover: rgba(255,255,255,0.88);
+      --input-bg: rgba(255,255,255,0.04); --input-border: rgba(255,255,255,0.1); --input-focus: rgba(255,255,255,0.4);
+      --badge-ok-bg: rgba(21,128,61,0.2); --badge-ok-text: #4ade80;
+      --promo-bg: rgba(255,255,255,0.06); --promo-text: #ffffff; --promo-sub: rgba(255,255,255,0.5);
+      --promo-btn-bg: #ffffff; --promo-btn-text: #0a0a0a;
+      --danger-text: #f87171; --danger-border: rgba(248,113,113,0.24); --danger-hover: rgba(248,113,113,0.07);
+      --modal-bg: #1c1c1c; --modal-cancel-bg: #111111; --modal-cancel-text: rgba(255,255,255,0.55); --modal-shadow: 0 24px 64px rgba(0,0,0,0.55);
+      --toast-bg: #2a2a2a; --trial-bg: rgba(255,255,255,0.06); --trial-text: rgba(255,255,255,0.68);
     }
-
     html[data-theme="light"] {
-      --bg: #f5f5f3;
-      --surface: #ffffff;
-      --surface-2: #f7f7f5;
-      --border: #e0e0dd;
-      --border-strong: #c8c8c4;
-      --text-1: #1a1a1a;
-      --text-2: #888888;
-      --text-3: #c0c0bc;
-      --btn-bg: #111111;
-      --btn-text: #ffffff;
-      --btn-hover: #2d2d2d;
-      --input-bg: #ffffff;
-      --input-border: #e0e0dd;
-      --input-focus: #1a1a1a;
-      --tab-active-bg: #111111;
-      --tab-active-text: #ffffff;
-      --badge-ok-bg: #dcfce7;
-      --badge-ok-text: #15803d;
-      --promo-bg: #111111;
-      --promo-text: #ffffff;
-      --promo-sub: rgba(255,255,255,0.6);
-      --promo-btn-bg: #ffffff;
-      --promo-btn-text: #111111;
-      --danger-text: #dc2626;
-      --danger-border: rgba(220,38,38,0.28);
-      --danger-hover: rgba(220,38,38,0.06);
-      --modal-bg: #ffffff;
-      --modal-cancel-bg: #f3f3f1;
-      --modal-cancel-text: #555555;
-      --modal-shadow: 0 24px 64px rgba(0,0,0,0.14);
-      --toast-bg: #111111;
-      --toast-text: #ffffff;
-      --toast-success-bg: #15803d;
-      --toast-error-bg: #dc2626;
-      --trial-bg: #111111;
-      --trial-text: rgba(255,255,255,0.82);
+      --bg: #f5f5f3; --surface: #ffffff; --surface-2: #f7f7f5;
+      --border: #e0e0dd; --border-strong: #c8c8c4;
+      --text-1: #1a1a1a; --text-2: #888888; --text-3: #c0c0bc;
+      --btn-bg: #111111; --btn-text: #ffffff; --btn-hover: #2d2d2d;
+      --input-bg: #ffffff; --input-border: #e0e0dd; --input-focus: #1a1a1a;
+      --badge-ok-bg: #dcfce7; --badge-ok-text: #15803d;
+      --promo-bg: #111111; --promo-text: #ffffff; --promo-sub: rgba(255,255,255,0.6);
+      --promo-btn-bg: #ffffff; --promo-btn-text: #111111;
+      --danger-text: #dc2626; --danger-border: rgba(220,38,38,0.28); --danger-hover: rgba(220,38,38,0.06);
+      --modal-bg: #ffffff; --modal-cancel-bg: #f3f3f1; --modal-cancel-text: #555555; --modal-shadow: 0 24px 64px rgba(0,0,0,0.14);
+      --toast-bg: #111111; --toast-text: #ffffff; --toast-success-bg: #15803d; --toast-error-bg: #dc2626;
+      --trial-bg: #111111; --trial-text: rgba(255,255,255,0.82);
     }
 
     /* ── BASE ── */
     html { height: 100%; }
-    body {
-      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text-1);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      -webkit-font-smoothing: antialiased;
-      transition: background 200ms ease, color 200ms ease;
-    }
+    body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text-1); min-height: 100vh; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased; transition: background 200ms ease, color 200ms ease; }
 
     /* ── SIDEBAR ── */
-    .sidebar {
-      width: var(--sidebar-w);
-      background: #111111;
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
-      z-index: 300;
-      display: flex;
-      flex-direction: column;
-      transition: transform 260ms cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .sidebar-logo {
-      padding: 20px 20px 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      flex-shrink: 0;
-    }
-    .sidebar-logo-text {
-      font-family: 'Syne', sans-serif;
-      font-size: 19px;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: -0.03em;
-    }
-    .sidebar-nav {
-      flex: 1;
-      padding: 12px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      overflow-y: auto;
-    }
-    .nav-section-label {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.25);
-      padding: 12px 8px 6px;
-      user-select: none;
-    }
-    .nav-item {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 12px 9px 12px;
-      border-width: 1px 1px 1px 2px;
-      border-style: solid;
-      border-color: transparent;
-      border-radius: 8px;
-      font-family: 'Syne', sans-serif;
-      font-size: 13.5px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.52);
-      background: transparent;
-      cursor: pointer;
-      width: 100%;
-      text-align: left;
-      text-decoration: none;
-      transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
-      outline: none;
-      overflow: hidden;
-    }
-    .nav-item::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 8px;
-      background: linear-gradient(
-        120deg,
-        rgba(255,255,255,0.03) 0%,
-        rgba(255,255,255,0.12) 20%,
-        rgba(200,200,200,0.08) 40%,
-        rgba(255,255,255,0.15) 60%,
-        rgba(180,180,180,0.06) 80%,
-        rgba(255,255,255,0.04) 100%
-      );
-      background-size: 300% 300%;
-      opacity: 0;
-      z-index: 0;
-      pointer-events: none;
-      transition: opacity 150ms ease;
-    }
-    .nav-item:hover {
-      background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.9);
-    }
-    .nav-item.is-active {
-      background: transparent;
-      color: #ffffff;
-      font-weight: 600;
-      border-color: rgba(255,255,255,0.12);
-      border-left-color: rgba(255,255,255,0.7);
-    }
-    .nav-item.is-active::before {
-      opacity: 1;
-      animation: iridescent 4s ease infinite;
-    }
-    .nav-item > span {
-      position: relative;
-      z-index: 1;
-    }
-    @keyframes iridescent {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .nav-icon {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .sidebar { width: var(--sidebar-w); background: #111111; position: fixed; top: 0; left: 0; bottom: 0; z-index: 300; display: flex; flex-direction: column; transition: transform 260ms cubic-bezier(0.4,0,0.2,1); }
+    .sidebar-logo { padding: 20px 20px 18px; border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; }
+    .sidebar-nav { flex: 1; padding: 12px 10px; display: flex; flex-direction: column; gap: 1px; overflow-y: auto; }
+    .nav-section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 12px 8px 6px; user-select: none; }
+    .nav-item { position: relative; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-width: 1px 1px 1px 2px; border-style: solid; border-color: transparent; border-radius: 8px; font-family: 'Syne', sans-serif; font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,0.52); background: transparent; cursor: pointer; width: 100%; text-align: left; text-decoration: none; transition: background 150ms ease, color 150ms ease, border-color 150ms ease; outline: none; overflow: hidden; border: 1px 1px 1px 2px; }
+    .nav-item::before { content: ''; position: absolute; inset: 0; border-radius: 8px; background: linear-gradient(120deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.12) 20%, rgba(200,200,200,0.08) 40%, rgba(255,255,255,0.15) 60%, rgba(180,180,180,0.06) 80%, rgba(255,255,255,0.04) 100%); background-size: 300% 300%; opacity: 0; z-index: 0; pointer-events: none; transition: opacity 150ms ease; }
+    .nav-item:hover { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.9); }
+    .nav-item.is-active { background: transparent; color: #ffffff; font-weight: 600; border-color: rgba(255,255,255,0.12); border-left-color: rgba(255,255,255,0.7); }
+    .nav-item.is-active::before { opacity: 1; animation: iridescent 4s ease infinite; }
+    .nav-item > span { position: relative; z-index: 1; }
+    @keyframes iridescent { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    .nav-icon { width: 16px; height: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
     .nav-spacer { flex: 1; min-height: 16px; }
-    .sidebar-plan {
-      margin: 12px;
-      padding: 14px 16px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      background: rgba(255,255,255,0.03);
-      flex-shrink: 0;
-    }
-    .sidebar-plan-label {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.28);
-      margin-bottom: 4px;
-    }
-    .sidebar-plan-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 2px;
-    }
+    .sidebar-plan { margin: 12px; padding: 14px 16px; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(255,255,255,0.03); flex-shrink: 0; }
+    .sidebar-plan-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 4px; }
+    .sidebar-plan-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 2px; }
     .sidebar-plan-sub { font-size: 11px; color: rgba(255,255,255,0.38); }
-
-    /* ── SIDEBAR OVERLAY ── */
-    .sidebar-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.48);
-      backdrop-filter: blur(3px);
-      z-index: 299;
-    }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.48); backdrop-filter: blur(3px); z-index: 299; }
     .sidebar-overlay.is-visible { display: block; }
 
     /* ── APP WRAPPER ── */
-    .app-wrapper {
-      margin-left: var(--sidebar-w);
-      width: calc(100% - var(--sidebar-w));
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+    .app-wrapper { margin-left: var(--sidebar-w); width: calc(100% - var(--sidebar-w)); display: flex; flex-direction: column; min-height: 100vh; }
 
     /* ── TRIAL BANNER ── */
-    .trial-banner {
-      display: none;
-      background: var(--trial-bg);
-      color: var(--trial-text);
-      padding: 10px 28px;
-      font-size: 13px;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      flex-shrink: 0;
-    }
+    .trial-banner { display: none; background: var(--trial-bg); color: var(--trial-text); padding: 10px 28px; font-size: 13px; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
     .trial-banner.is-visible { display: flex; }
-    .trial-banner a {
-      color: #ffffff;
-      font-weight: 700;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,0.38);
-      padding-bottom: 1px;
-      transition: border-color 150ms ease;
-    }
+    .trial-banner a { color: #ffffff; font-weight: 700; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.38); padding-bottom: 1px; transition: border-color 150ms ease; }
     .trial-banner a:hover { border-color: #ffffff; }
 
     /* ── TOPBAR ── */
-    .topbar {
-      height: var(--topbar-h);
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 28px;
-      position: sticky;
-      top: 0;
-      z-index: 200;
-      flex-shrink: 0;
-    }
+    .topbar { height: var(--topbar-h); background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; position: sticky; top: 0; z-index: 200; flex-shrink: 0; }
     .topbar-left { display: flex; align-items: center; gap: 12px; }
-    .btn-hamburger {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--text-1);
-      padding: 6px;
-      border-radius: 6px;
-      align-items: center;
-      justify-content: center;
-      transition: background 150ms ease;
-    }
+    .btn-hamburger { display: none; background: none; border: none; cursor: pointer; color: var(--text-1); padding: 6px; border-radius: 6px; align-items: center; justify-content: center; transition: background 150ms ease; }
     .btn-hamburger:hover { background: var(--surface-2); }
-    .topbar-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--text-1);
-      letter-spacing: -0.02em;
-    }
+    .topbar-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--text-1); letter-spacing: -0.02em; }
     .topbar-right { display: flex; align-items: center; gap: 16px; }
-
-    /* Theme toggle */
-    .theme-toggle {
-      display: flex;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 3px;
-      gap: 2px;
-    }
-    .theme-btn {
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: none;
-      background: transparent;
-      color: var(--text-2);
-      font-size: 12px;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 150ms ease, color 150ms ease;
-      white-space: nowrap;
-    }
-    .theme-btn.is-active {
-      background: var(--surface);
-      color: var(--text-1);
-      font-weight: 600;
-    }
-
-    /* User info */
-    .user-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: #111111;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 700;
-      font-family: 'DM Sans', sans-serif;
-      flex-shrink: 0;
-    }
+    .theme-toggle { display: flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 3px; gap: 2px; }
+    .theme-btn { padding: 4px 10px; border-radius: 6px; border: none; background: transparent; color: var(--text-2); font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: background 150ms ease, color 150ms ease; white-space: nowrap; }
+    .theme-btn.is-active { background: var(--surface); color: var(--text-1); font-weight: 600; }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: #111111; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; font-family: 'DM Sans', sans-serif; flex-shrink: 0; }
     .user-details { line-height: 1.3; text-align: right; }
     .user-name { font-size: 13px; font-weight: 600; color: var(--text-1); }
     .user-plan-badge { font-size: 11px; color: var(--text-2); }
@@ -467,411 +127,74 @@
     .page { display: none; }
     .page.is-active { display: block; }
 
-    /* ── STATS GRID ── */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 22px 24px;
-    }
-    .stat-label {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-2);
-      margin-bottom: 10px;
-    }
-    .stat-value {
-      font-family: 'Syne', sans-serif;
-      font-size: 30px;
-      font-weight: 800;
-      color: var(--text-1);
-      line-height: 1;
-      letter-spacing: -0.03em;
-    }
-    .stat-value-sm {
-      font-family: 'Syne', sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text-1);
-      line-height: 1;
-      letter-spacing: -0.02em;
-    }
-    .stat-sub { font-size: 12px; color: var(--text-3); margin-top: 6px; }
+    /* ── GREETING ── */
+    .greeting { margin-bottom: 28px; }
+    .greeting-title { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800; color: var(--text-1); letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 6px; }
+    .greeting-sub { font-size: 14px; color: var(--text-2); line-height: 1.5; }
 
     /* ── PROMO CARD ── */
-    .promo-card {
-      display: none;
-      background: var(--promo-bg);
-      border-radius: 16px;
-      padding: 20px 24px;
-      margin-bottom: 24px;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
+    .promo-card { display: none; background: var(--promo-bg); border-radius: 16px; padding: 20px 24px; margin-bottom: 24px; flex-direction: row; align-items: center; justify-content: space-between; gap: 20px; }
     .promo-card.is-visible { display: flex; }
-    .promo-card-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--promo-text);
-      margin-bottom: 3px;
-      letter-spacing: -0.01em;
-    }
+    .promo-card-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; color: var(--promo-text); margin-bottom: 3px; letter-spacing: -0.01em; }
     .promo-card-sub { font-size: 13px; color: var(--promo-sub); }
-    .btn-promo {
-      padding: 9px 18px;
-      background: var(--promo-btn-bg);
-      color: var(--promo-btn-text);
-      border: none;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-      transition: opacity 150ms ease;
-    }
+    .btn-promo { padding: 9px 18px; background: var(--promo-btn-bg); color: var(--promo-btn-text); border: none; border-radius: 8px; font-size: 13px; font-weight: 700; font-family: 'DM Sans', sans-serif; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: opacity 150ms ease; }
     .btn-promo:hover { opacity: 0.86; }
 
-    /* ── CARD ── */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      margin-bottom: 20px;
-    }
-    .card-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-1);
-      margin-bottom: 20px;
-      letter-spacing: -0.01em;
-    }
+    /* ── STATS GRID ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px 24px; }
+    .stat-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2); margin-bottom: 10px; }
+    .stat-value { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800; color: var(--text-1); line-height: 1; letter-spacing: -0.03em; }
+    .stat-sub { font-size: 12px; color: var(--text-3); margin-top: 6px; }
 
-    /* ── CHART CARD ── */
+    /* ── CARD ── */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin-bottom: 20px; }
+    .card-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-1); margin-bottom: 20px; letter-spacing: -0.01em; }
+
+    /* ── CHART ── */
     .chart-card { padding: 24px 28px 20px; }
-    .chart-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
-    .chart-card .card-title { margin-bottom: 2px; }
-    .chart-subtitle { font-size: 12px; color: var(--text-3); }
     .chart-wrap { position: relative; width: 100%; }
     .chart-canvas { display: block; width: 100%; height: 180px; cursor: crosshair; }
-    .chart-tooltip {
-      position: absolute;
-      background: var(--btn-bg);
-      color: var(--btn-text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 5px 10px;
-      border-radius: 6px;
-      pointer-events: none;
-      transform: translateX(-50%);
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 100ms ease;
-    }
+    .chart-tooltip { position: absolute; background: var(--btn-bg); color: var(--btn-text); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 6px; pointer-events: none; transform: translateX(-50%); white-space: nowrap; opacity: 0; transition: opacity 100ms ease; }
     .chart-tooltip.is-visible { opacity: 1; }
 
-    /* ── DROPZONE ── */
-    .dropzone {
-      border: 2px dashed var(--border);
-      border-radius: 12px;
-      padding: 44px 24px;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 200ms ease, background 200ms ease;
-      background: var(--surface-2);
-      user-select: none;
-    }
-    .dropzone:hover, .dropzone.is-drag {
-      border-style: solid;
-      border-color: var(--border-strong);
-      background: var(--surface);
-    }
-    .dropzone.is-file {
-      border-style: solid;
-      border-color: #16a34a;
-      background: rgba(22,163,74,0.04);
-    }
-    .drop-icon {
-      width: 40px;
-      height: 40px;
-      margin: 0 auto 12px;
-      color: var(--text-3);
-      transition: color 200ms ease;
-    }
-    .dropzone:hover .drop-icon, .dropzone.is-drag .drop-icon { color: var(--text-2); }
-    .dropzone.is-file .drop-icon { color: #16a34a; }
-    .drop-title { font-size: 15px; font-weight: 600; color: var(--text-1); margin-bottom: 4px; }
-    .drop-sub { font-size: 13px; color: var(--text-2); }
-    .drop-filename {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #16a34a;
-      margin-top: 10px;
-    }
-    .dropzone.is-file .drop-filename { display: flex; }
+    /* ── NAV CARDS ── */
+    .nav-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+    .nav-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px 24px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-decoration: none; color: inherit; cursor: pointer; transition: all 200ms ease; text-align: center; }
+    .nav-card:hover { transform: translateY(-4px); border-color: var(--text-1); }
+    .nav-card-icon { width: 48px; height: 48px; color: var(--text-2); display: flex; align-items: center; justify-content: center; }
+    .nav-card-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-1); letter-spacing: -0.01em; }
+    .nav-card-desc { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+    .nav-card-btn { margin-top: 4px; padding: 8px 20px; background: var(--btn-bg); color: var(--btn-text); border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 150ms ease; }
+    .nav-card:hover .nav-card-btn { background: var(--btn-hover); }
 
-    /* ── PERIOD ── */
-    .period-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--text-2);
-      margin: 28px 0 10px;
-    }
-    .period-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
-    .tab {
-      padding: 7px 15px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      background: transparent;
-      color: var(--text-2);
-      transition: all 150ms ease;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .tab:hover { border-color: var(--border-strong); color: var(--text-1); }
-    .tab.is-active {
-      background: var(--tab-active-bg);
-      color: var(--tab-active-text);
-      border-color: var(--tab-active-bg);
-    }
-    .period-panel { display: none; }
-    .period-panel.is-active { display: block; }
-    .months-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 7px;
-    }
-    .month-btn {
-      padding: 10px 6px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      background: transparent;
-      color: var(--text-2);
-      transition: all 150ms ease;
-      font-family: 'DM Sans', sans-serif;
-      text-align: center;
-    }
-    .month-btn:hover:not(.is-active) { border-color: var(--border-strong); color: var(--text-1); }
-    .month-btn.is-active {
-      background: var(--tab-active-bg);
-      color: var(--tab-active-text);
-      border-color: var(--tab-active-bg);
-    }
-    .period-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      margin-top: 14px;
-    }
-
-    /* ── FORM ── */
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-2);
-    }
-    select,
-    input[type="number"],
-    input[type="text"] {
-      padding: 10px 13px;
-      border: 1px solid var(--input-border);
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: 'DM Sans', sans-serif;
-      color: var(--text-1);
-      background: var(--input-bg);
-      outline: none;
-      transition: border-color 200ms ease;
-      -webkit-appearance: none;
-      appearance: none;
-    }
-    select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      padding-right: 34px;
-    }
-    select:focus, input[type="number"]:focus, input[type="text"]:focus { border-color: var(--input-focus); }
-    .empresa-group { margin-top: 20px; max-width: 420px; }
-
-    /* ── GENERATE BUTTON ── */
-    .btn-generate {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 15px;
-      background: var(--btn-bg);
-      color: var(--btn-text);
-      border: none;
-      border-radius: 12px;
-      font-family: 'Syne', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 150ms ease, transform 150ms ease;
-      margin-top: 24px;
-      letter-spacing: -0.01em;
-    }
-    .btn-generate:hover:not(:disabled) {
-      background: var(--btn-hover);
-      transform: translateY(-1px);
-    }
-    .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .btn-icon { display: flex; align-items: center; justify-content: center; }
-    .spinner {
-      display: none;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255,255,255,0.28);
-      border-top-color: currentColor;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      flex-shrink: 0;
-    }
-    .btn-generate.is-loading .spinner { display: block; }
-    .btn-generate.is-loading .btn-icon { display: none; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── HISTORY ── */
-    .history-empty {
-      text-align: center;
-      padding: 52px 24px;
-    }
-    .history-empty-icon {
-      width: 36px;
-      height: 36px;
-      margin: 0 auto 12px;
-      color: var(--text-3);
-    }
+    /* ── HISTORY TABS ── */
+    .history-tabs-wrap { display: flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 4px; gap: 4px; margin-bottom: 20px; }
+    .history-tab { flex: 1; padding: 9px 16px; border-radius: 7px; border: none; font-size: 13px; font-weight: 500; cursor: pointer; background: transparent; color: var(--text-2); font-family: 'DM Sans', sans-serif; transition: all 150ms ease; }
+    .history-tab.is-active { background: var(--btn-bg); color: var(--btn-text); font-weight: 600; }
+    .history-empty { text-align: center; padding: 52px 24px; }
+    .history-empty-icon { width: 36px; height: 36px; margin: 0 auto 12px; color: var(--text-3); }
     .history-empty p { font-size: 14px; color: var(--text-3); }
     .history-table { width: 100%; border-collapse: collapse; }
-    .history-table th {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-3);
-      text-align: left;
-      padding: 0 16px 12px;
-    }
-    .history-table td {
-      padding: 13px 16px;
-      border-top: 1px solid var(--border);
-      font-size: 13px;
-      color: var(--text-2);
-      vertical-align: middle;
-    }
+    .history-table th { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); text-align: left; padding: 0 16px 12px; }
+    .history-table td { padding: 13px 16px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-2); vertical-align: middle; }
     .history-table tr:hover td { background: var(--surface-2); }
-    .td-company { font-weight: 600; color: var(--text-1); }
-    .badge-ok {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 600;
-      background: var(--badge-ok-bg);
-      color: var(--badge-ok-text);
-    }
+    .td-primary { font-weight: 600; color: var(--text-1); }
+    .badge-ok { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; background: var(--badge-ok-bg); color: var(--badge-ok-text); }
 
     /* ── SETTINGS ── */
     .settings-section { margin-bottom: 4px; }
-    .settings-section-title {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-3);
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 4px;
-    }
-    .settings-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 15px 0;
-      border-bottom: 1px solid var(--border);
-      gap: 16px;
-    }
+    .settings-section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+    .settings-row { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border); gap: 16px; }
     .settings-row:last-child { border-bottom: none; }
     .settings-row-info h4 { font-size: 14px; font-weight: 600; color: var(--text-1); margin-bottom: 2px; }
     .settings-row-info p { font-size: 12px; color: var(--text-2); }
     .settings-row-info.is-value p { font-size: 14px; color: var(--text-1); font-weight: 400; }
-    .plan-info-card {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 20px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    .plan-info-badge {
-      display: inline-flex;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      background: var(--btn-bg);
-      color: var(--btn-text);
-      margin-bottom: 6px;
-    }
-    .plan-info-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-1);
-    }
+    .plan-info-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .plan-info-badge { display: inline-flex; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: var(--btn-bg); color: var(--btn-text); margin-bottom: 6px; }
+    .plan-info-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-1); }
     .plan-info-sub { font-size: 12px; color: var(--text-2); margin-top: 2px; }
-
-    /* Settings buttons */
-    .btn-s {
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      white-space: nowrap;
-      flex-shrink: 0;
-      transition: all 150ms ease;
-      border: 1px solid transparent;
-    }
+    .btn-s { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap; flex-shrink: 0; transition: all 150ms ease; border: 1px solid transparent; }
     .btn-s-outline { background: transparent; border-color: var(--border); color: var(--text-2); }
     .btn-s-outline:hover { border-color: var(--border-strong); color: var(--text-1); }
     .btn-s-dark { background: var(--btn-bg); color: var(--btn-text); }
@@ -880,75 +203,21 @@
     .btn-s-danger:hover { background: var(--danger-hover); }
 
     /* ── MODALS ── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.38);
-      backdrop-filter: blur(8px);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-    }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.38); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; }
     .modal-overlay.is-visible { display: flex; }
-    .modal {
-      background: var(--modal-bg);
-      border-radius: 16px;
-      padding: 32px;
-      max-width: 420px;
-      width: calc(100% - 32px);
-      box-shadow: var(--modal-shadow);
-    }
+    .modal { background: var(--modal-bg); border-radius: 16px; padding: 32px; max-width: 420px; width: calc(100% - 32px); box-shadow: var(--modal-shadow); }
     .modal-icon { width: 40px; height: 40px; margin-bottom: 16px; color: var(--danger-text); }
-    .modal-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--text-1);
-      margin-bottom: 8px;
-      letter-spacing: -0.02em;
-    }
+    .modal-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--text-1); margin-bottom: 8px; letter-spacing: -0.02em; }
     .modal-body { font-size: 14px; color: var(--text-2); line-height: 1.65; margin-bottom: 24px; }
     .modal-actions { display: flex; gap: 10px; }
-    .modal-actions button {
-      flex: 1;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      border: none;
-      transition: opacity 150ms ease;
-    }
+    .modal-actions button { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; border: none; transition: opacity 150ms ease; }
     .modal-actions button:hover { opacity: 0.84; }
     .btn-modal-cancel { background: var(--modal-cancel-bg); color: var(--modal-cancel-text); }
     .btn-modal-confirm { background: #dc2626; color: #ffffff; }
 
     /* ── TOASTS ── */
-    .toast-container {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 10000;
-      pointer-events: none;
-    }
-    .toast {
-      background: var(--toast-bg);
-      color: var(--toast-text);
-      padding: 13px 18px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      transform: translateY(14px);
-      opacity: 0;
-      transition: transform 300ms ease, opacity 300ms ease;
-      max-width: 340px;
-      line-height: 1.4;
-    }
+    .toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 8px; z-index: 10000; pointer-events: none; }
+    .toast { background: var(--toast-bg); color: var(--toast-text); padding: 13px 18px; border-radius: 10px; font-size: 14px; font-weight: 500; transform: translateY(14px); opacity: 0; transition: transform 300ms ease, opacity 300ms ease; max-width: 340px; line-height: 1.4; }
     .toast.is-visible { transform: translateY(0); opacity: 1; }
     .toast.is-success { background: var(--toast-success-bg); }
     .toast.is-error { background: var(--toast-error-bg); }
@@ -960,6 +229,7 @@
       .app-wrapper { margin-left: 0; }
       .btn-hamburger { display: flex; }
       .stats-grid { grid-template-columns: 1fr 1fr; }
+      .nav-cards { grid-template-columns: 1fr; }
       .content { padding: 20px 16px; }
       .topbar { padding: 0 16px; }
       .promo-card { flex-direction: column; align-items: flex-start; gap: 14px; }
@@ -968,7 +238,6 @@
     }
     @media (max-width: 480px) {
       .stats-grid { grid-template-columns: 1fr; }
-      .period-tabs { flex-wrap: wrap; }
       .theme-toggle { display: none; }
     }
   </style>
@@ -985,60 +254,47 @@
     <div class="nav-section-label">Principal</div>
 
     <button class="nav-item is-active" data-page="dashboard">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="1.5" y="1.5" width="5" height="5" rx="1.2"/>
-          <rect x="9.5" y="1.5" width="5" height="5" rx="1.2"/>
-          <rect x="1.5" y="9.5" width="5" height="5" rx="1.2"/>
-          <rect x="9.5" y="9.5" width="5" height="5" rx="1.2"/>
-        </svg>
-      </span>
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="1.5" width="5" height="5" rx="1.2"/><rect x="9.5" y="1.5" width="5" height="5" rx="1.2"/><rect x="1.5" y="9.5" width="5" height="5" rx="1.2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1.2"/></svg></span>
       <span>Dashboard</span>
     </button>
 
     <button class="nav-item" data-page="history">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="8" cy="8" r="6.5"/>
-          <polyline points="8 4.5 8 8 10.5 10.5"/>
-        </svg>
-      </span>
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><polyline points="8 4.5 8 8 10.5 10.5"/></svg></span>
       <span>Histórico</span>
     </button>
 
+    <div class="nav-section-label" style="margin-top:8px;">Ferramentas</div>
+
+    <a class="nav-item" href="/planilha.html">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="1.5" width="13" height="13" rx="1.5"/><line x1="1.5" y1="5.5" x2="14.5" y2="5.5"/><line x1="1.5" y1="9.5" x2="14.5" y2="9.5"/><line x1="5.5" y1="5.5" x2="5.5" y2="14.5"/><line x1="9.5" y1="5.5" x2="9.5" y2="14.5"/></svg></span>
+      <span>Planilha → PDF</span>
+    </a>
+
     <a class="nav-item" href="/orcamento.html">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M10 1.5H4a1.5 1.5 0 0 0-1.5 1.5v10A1.5 1.5 0 0 0 4 14.5h8A1.5 1.5 0 0 0 13.5 13V5L10 1.5z"/>
-          <polyline points="10 1.5 10 5.5 13.5 5.5"/>
-          <line x1="5.5" y1="8.5" x2="10.5" y2="8.5"/>
-          <line x1="5.5" y1="11" x2="8.5" y2="11"/>
-        </svg>
-      </span>
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 1.5H4a1.5 1.5 0 0 0-1.5 1.5v10A1.5 1.5 0 0 0 4 14.5h8A1.5 1.5 0 0 0 13.5 13V5L10 1.5z"/><polyline points="10 1.5 10 5.5 13.5 5.5"/><line x1="5.5" y1="8.5" x2="10.5" y2="8.5"/><line x1="5.5" y1="11" x2="8.5" y2="11"/></svg></span>
       <span>Orçamento</span>
     </a>
 
     <a class="nav-item" href="/recibo.html">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 1.5v13l2.5-1.5 2.5 1.5 2.5-1.5L13 14.5V1.5"/>
-          <line x1="6" y1="6" x2="10" y2="6"/>
-          <line x1="6" y1="9" x2="10" y2="9"/>
-        </svg>
-      </span>
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5v13l2.5-1.5 2.5 1.5 2.5-1.5L13 14.5V1.5"/><line x1="6" y1="6" x2="10" y2="6"/><line x1="6" y1="9" x2="10" y2="9"/></svg></span>
       <span>Recibo</span>
     </a>
 
     <div class="nav-section-label" style="margin-top:8px;">Conta</div>
 
     <button class="nav-item" data-page="settings">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="8" cy="8" r="2.4"/>
-          <path d="M8 1.5v1.2M8 13.3v1.2M1.5 8h1.2M13.3 8h1.2M3.4 3.4l.85.85M11.75 11.75l.85.85M3.4 12.6l.85-.85M11.75 4.25l.85-.85"/>
-        </svg>
-      </span>
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="2.4"/><path d="M8 1.5v1.2M8 13.3v1.2M1.5 8h1.2M13.3 8h1.2M3.4 3.4l.85.85M11.75 11.75l.85.85M3.4 12.6l.85-.85M11.75 4.25l.85-.85"/></svg></span>
       <span>Configurações</span>
+    </button>
+
+    <a class="nav-item" href="/planos.html">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/><path d="M8 5v6M5.5 7.5 8 5l2.5 2.5"/></svg></span>
+      <span>Planos</span>
+    </a>
+
+    <button class="nav-item" id="sidebar-logout">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h3"/><polyline points="10.5 11 14 8 10.5 5"/><line x1="14" y1="8" x2="6" y2="8"/></svg></span>
+      <span>Sair</span>
     </button>
 
     <div class="nav-spacer"></div>
@@ -1053,11 +309,7 @@
 <div class="app-wrapper">
 
   <div class="trial-banner" id="trial-banner">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;opacity:0.7">
-      <circle cx="7" cy="7" r="5.5"/>
-      <line x1="7" y1="4.5" x2="7" y2="7.5"/>
-      <line x1="7" y1="9.5" x2="7.01" y2="9.5"/>
-    </svg>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;opacity:0.7"><circle cx="7" cy="7" r="5.5"/><line x1="7" y1="4.5" x2="7" y2="7.5"/><line x1="7" y1="9.5" x2="7.01" y2="9.5"/></svg>
     <span id="trial-msg">Você está no período de teste.</span>
     <a href="/planos.html">Assinar agora</a>
   </div>
@@ -1065,11 +317,7 @@
   <header class="topbar">
     <div class="topbar-left">
       <button class="btn-hamburger" id="btn-hamburger" aria-label="Abrir menu">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-          <line x1="3" y1="6" x2="17" y2="6"/>
-          <line x1="3" y1="10" x2="17" y2="10"/>
-          <line x1="3" y1="14" x2="17" y2="14"/>
-        </svg>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="6" x2="17" y2="6"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="14" x2="17" y2="14"/></svg>
       </button>
       <span class="topbar-title" id="topbar-title">Dashboard</span>
     </div>
@@ -1092,188 +340,113 @@
     <!-- ── PAGE: DASHBOARD ── -->
     <div class="page is-active" id="page-dashboard">
 
+      <div class="greeting">
+        <h1 class="greeting-title">
+          <span id="greeting-text">Olá,</span>
+          <span id="greeting-name"> —</span>
+        </h1>
+        <p class="greeting-sub" id="greeting-frase"></p>
+      </div>
+
       <div class="promo-card" id="upgrade-card">
         <div>
           <div class="promo-card-title">Desbloqueie tudo</div>
-          <div class="promo-card-sub">Assine um plano e gere relatórios ilimitados.</div>
+          <div class="promo-card-sub">Assine um plano e gere documentos ilimitados.</div>
         </div>
         <button class="btn-promo" id="btn-ver-planos">Ver planos</button>
       </div>
 
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-label">Total gerados</div>
-          <div class="stat-value" id="stat-total">0</div>
-          <div class="stat-sub">Acumulado</div>
+          <div class="stat-label">Relatórios PDF</div>
+          <div class="stat-value" id="stat-pdf">0</div>
+          <div class="stat-sub">Planilhas geradas</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">Este mês</div>
-          <div class="stat-value" id="stat-month">0</div>
-          <div class="stat-sub" id="stat-month-label">—</div>
+          <div class="stat-label">Orçamentos</div>
+          <div class="stat-value" id="stat-orc">0</div>
+          <div class="stat-sub">Orçamentos emitidos</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">Plano</div>
-          <div class="stat-value-sm" id="stat-plano">—</div>
-          <div class="stat-sub" id="stat-plano-sub">—</div>
+          <div class="stat-label">Recibos</div>
+          <div class="stat-value" id="stat-rec">0</div>
+          <div class="stat-sub">Recibos emitidos</div>
         </div>
       </div>
 
       <div class="card chart-card">
-        <div class="chart-header">
-          <div>
-            <div class="card-title">Relatórios gerados</div>
-            <div class="chart-subtitle" id="chart-subtitle">Últimos 6 meses</div>
-          </div>
-        </div>
+        <div class="card-title">Atividade geral — últimos 6 meses</div>
         <div class="chart-wrap" id="chart-wrap">
           <canvas id="chart-canvas" class="chart-canvas"></canvas>
           <div class="chart-tooltip" id="chart-tooltip"></div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-title">Novo Relatório</div>
-
-        <div class="dropzone" id="dropzone">
-          <div class="drop-icon">
-            <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 26V10M12 18l8-8 8 8"/>
-              <path d="M6 32h28"/>
+      <div class="nav-cards">
+        <a class="nav-card" href="/planilha.html">
+          <div class="nav-card-icon">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="32" height="32" rx="3"/>
+              <line x1="4" y1="14" x2="36" y2="14"/>
+              <line x1="4" y1="24" x2="36" y2="24"/>
+              <line x1="14" y1="14" x2="14" y2="36"/>
+              <line x1="25" y1="14" x2="25" y2="36"/>
             </svg>
           </div>
-          <div class="drop-title">Arraste sua planilha aqui</div>
-          <div class="drop-sub">ou clique para selecionar · apenas .xlsx</div>
-          <div class="drop-filename" id="drop-filename">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="2 7 5.5 10.5 12 3.5"/>
+          <div class="nav-card-name">Planilha → PDF</div>
+          <div class="nav-card-desc">Converta suas planilhas Excel em relatórios profissionais</div>
+          <span class="nav-card-btn">Abrir</span>
+        </a>
+
+        <a class="nav-card" href="/orcamento.html">
+          <div class="nav-card-icon">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M25 4H10a3 3 0 0 0-3 3v26a3 3 0 0 0 3 3h20a3 3 0 0 0 3-3V12L25 4z"/>
+              <polyline points="25 4 25 13 34 13"/>
+              <line x1="14" y1="21" x2="26" y2="21"/>
+              <line x1="14" y1="27" x2="21" y2="27"/>
             </svg>
-            <span id="drop-filename-text"></span>
           </div>
-        </div>
-        <input type="file" id="file-input" accept=".xlsx" style="display:none">
+          <div class="nav-card-name">Orçamento</div>
+          <div class="nav-card-desc">Crie orçamentos profissionais com tabela de itens</div>
+          <span class="nav-card-btn">Abrir</span>
+        </a>
 
-        <div class="period-label">Período</div>
-        <div class="period-tabs">
-          <button class="tab is-active" data-period="mes">Mês específico</button>
-          <button class="tab" data-period="intervalo">Intervalo</button>
-          <button class="tab" data-period="ano">Ano completo</button>
-        </div>
-
-        <div class="period-panel is-active" id="panel-mes">
-          <div class="months-grid">
-            <button class="month-btn is-active" data-mes="1">Jan</button>
-            <button class="month-btn" data-mes="2">Fev</button>
-            <button class="month-btn" data-mes="3">Mar</button>
-            <button class="month-btn" data-mes="4">Abr</button>
-            <button class="month-btn" data-mes="5">Mai</button>
-            <button class="month-btn" data-mes="6">Jun</button>
-            <button class="month-btn" data-mes="7">Jul</button>
-            <button class="month-btn" data-mes="8">Ago</button>
-            <button class="month-btn" data-mes="9">Set</button>
-            <button class="month-btn" data-mes="10">Out</button>
-            <button class="month-btn" data-mes="11">Nov</button>
-            <button class="month-btn" data-mes="12">Dez</button>
-          </div>
-          <div class="period-row">
-            <div class="form-group">
-              <label class="form-label" for="ano-mes">Ano</label>
-              <input type="number" id="ano-mes" value="2026" min="2020" max="2099" style="width:110px">
-            </div>
-          </div>
-        </div>
-
-        <div class="period-panel" id="panel-intervalo">
-          <div class="period-row">
-            <div class="form-group">
-              <label class="form-label" for="mes-inicio">Início</label>
-              <select id="mes-inicio">
-                <option value="1">Janeiro</option><option value="2">Fevereiro</option>
-                <option value="3">Março</option><option value="4">Abril</option>
-                <option value="5">Maio</option><option value="6">Junho</option>
-                <option value="7">Julho</option><option value="8">Agosto</option>
-                <option value="9">Setembro</option><option value="10">Outubro</option>
-                <option value="11">Novembro</option><option value="12">Dezembro</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="mes-fim">Término</label>
-              <select id="mes-fim">
-                <option value="1">Janeiro</option><option value="2">Fevereiro</option>
-                <option value="3">Março</option><option value="4">Abril</option>
-                <option value="5">Maio</option><option value="6">Junho</option>
-                <option value="7">Julho</option><option value="8">Agosto</option>
-                <option value="9">Setembro</option><option value="10">Outubro</option>
-                <option value="11">Novembro</option><option value="12" selected>Dezembro</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="ano-intervalo">Ano</label>
-              <input type="number" id="ano-intervalo" value="2026" min="2020" max="2099" style="width:100px">
-            </div>
-          </div>
-        </div>
-
-        <div class="period-panel" id="panel-ano">
-          <div class="period-row">
-            <div class="form-group">
-              <label class="form-label" for="ano-total">Ano de referência</label>
-              <input type="number" id="ano-total" value="2026" min="2020" max="2099" style="width:130px">
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group empresa-group">
-          <label class="form-label" for="empresa">Nome do relatório</label>
-          <input type="text" id="empresa" placeholder="Ex: Relatório Maio 2026">
-        </div>
-
-        <button class="btn-generate" id="btn-generate">
-          <span class="spinner"></span>
-          <span class="btn-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9.5 2H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5.5L9.5 2z"/>
-              <polyline points="9.5 2 9.5 5.5 13 5.5"/>
-              <line x1="6" y1="9" x2="10" y2="9"/>
-              <line x1="6" y1="11.5" x2="8.5" y2="11.5"/>
+        <a class="nav-card" href="/recibo.html">
+          <div class="nav-card-icon">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 4v32l6-4 6 4 6-4 6 4V4"/>
+              <line x1="14" y1="15" x2="26" y2="15"/>
+              <line x1="14" y1="22" x2="26" y2="22"/>
+              <line x1="14" y1="28" x2="20" y2="28"/>
             </svg>
-          </span>
-          <span id="btn-text">Gerar Relatório PDF</span>
-        </button>
+          </div>
+          <div class="nav-card-name">Recibo</div>
+          <div class="nav-card-desc">Emita recibos de serviço com valor por extenso</div>
+          <span class="nav-card-btn">Abrir</span>
+        </a>
       </div>
+
     </div>
 
     <!-- ── PAGE: HISTORY ── -->
     <div class="page" id="page-history">
       <div class="card">
-        <div class="card-title">Histórico de Relatórios</div>
-        <div class="history-empty" id="history-empty">
-          <div class="history-empty-icon">
-            <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="6" y="4" width="24" height="28" rx="3"/>
-              <line x1="12" y1="14" x2="24" y2="14"/>
-              <line x1="12" y1="20" x2="20" y2="20"/>
-            </svg>
-          </div>
-          <p>Você ainda não gerou nenhum relatório.</p>
+        <div class="card-title">Histórico</div>
+
+        <div class="history-tabs-wrap">
+          <button class="history-tab is-active" data-htab="planilhas">Planilhas</button>
+          <button class="history-tab" data-htab="orcamentos">Orçamentos</button>
+          <button class="history-tab" data-htab="recibos">Recibos</button>
         </div>
-        <table class="history-table" id="history-table" style="display:none">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Período</th>
-              <th>Data</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="history-body"></tbody>
-        </table>
+
+        <div id="history-content"></div>
       </div>
     </div>
 
     <!-- ── PAGE: SETTINGS ── -->
     <div class="page" id="page-settings">
 
-      <!-- Subscription -->
       <div class="card">
         <div class="card-title">Assinatura</div>
         <div class="plan-info-card">
@@ -1289,7 +462,7 @@
           <div class="settings-row">
             <div class="settings-row-info">
               <h4>Fazer upgrade</h4>
-              <p>Acesse relatórios ilimitados e recursos exclusivos</p>
+              <p>Acesse documentos ilimitados e recursos exclusivos</p>
             </div>
             <button class="btn-s btn-s-dark" id="btn-upgrade">Ver planos</button>
           </div>
@@ -1303,48 +476,31 @@
         </div>
       </div>
 
-      <!-- Account -->
       <div class="card">
         <div class="card-title">Conta</div>
         <div class="settings-section">
           <div class="settings-section-title">Informações</div>
           <div class="settings-row">
-            <div class="settings-row-info is-value">
-              <h4>Nome</h4>
-              <p id="cfg-user-name">—</p>
-            </div>
+            <div class="settings-row-info is-value"><h4>Nome</h4><p id="cfg-user-name">—</p></div>
           </div>
           <div class="settings-row">
-            <div class="settings-row-info is-value">
-              <h4>E-mail</h4>
-              <p id="cfg-user-email">—</p>
-            </div>
+            <div class="settings-row-info is-value"><h4>E-mail</h4><p id="cfg-user-email">—</p></div>
           </div>
           <div class="settings-row">
-            <div class="settings-row-info is-value">
-              <h4>Método de login</h4>
-              <p id="cfg-login-method">—</p>
-            </div>
+            <div class="settings-row-info is-value"><h4>Método de login</h4><p id="cfg-login-method">—</p></div>
           </div>
         </div>
       </div>
 
-      <!-- Danger zone -->
       <div class="card">
         <div class="card-title">Zona de perigo</div>
         <div class="settings-section">
           <div class="settings-row">
-            <div class="settings-row-info">
-              <h4>Sair da conta</h4>
-              <p>Encerra sua sessão neste dispositivo</p>
-            </div>
+            <div class="settings-row-info"><h4>Sair da conta</h4><p>Encerra sua sessão neste dispositivo</p></div>
             <button class="btn-s btn-s-outline" id="btn-logout">Sair</button>
           </div>
           <div class="settings-row">
-            <div class="settings-row-info">
-              <h4>Limpar histórico local</h4>
-              <p>Remove o histórico de relatórios salvo neste navegador</p>
-            </div>
+            <div class="settings-row-info"><h4>Limpar histórico local</h4><p>Remove o histórico de documentos salvo neste navegador</p></div>
             <button class="btn-s btn-s-danger" id="btn-limpar-historico">Limpar</button>
           </div>
         </div>
@@ -1356,15 +512,11 @@
 
 <!-- ── MODAL: CANCELAR ASSINATURA ── -->
 <div class="modal-overlay" id="modal-cancel">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-cancel-title">
+  <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-icon">
-      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M17.2 6.5L4 30a2 2 0 0 0 1.7 3h28.6A2 2 0 0 0 36 30L22.8 6.5a2 2 0 0 0-3.6 0z"/>
-        <line x1="20" y1="16" x2="20" y2="23"/>
-        <line x1="20" y1="27" x2="20.02" y2="27"/>
-      </svg>
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.2 6.5L4 30a2 2 0 0 0 1.7 3h28.6A2 2 0 0 0 36 30L22.8 6.5a2 2 0 0 0-3.6 0z"/><line x1="20" y1="16" x2="20" y2="23"/><line x1="20" y1="27" x2="20.02" y2="27"/></svg>
     </div>
-    <div class="modal-title" id="modal-cancel-title">Cancelar assinatura?</div>
+    <div class="modal-title">Cancelar assinatura?</div>
     <div class="modal-body">Você continuará com acesso até o fim do período já pago. Após isso, sua conta volta ao plano gratuito.</div>
     <div class="modal-actions">
       <button class="btn-modal-cancel" id="modal-cancel-close">Manter plano</button>
@@ -1375,18 +527,12 @@
 
 <!-- ── MODAL: LIMPAR HISTÓRICO ── -->
 <div class="modal-overlay" id="modal-history">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-history-title">
+  <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-icon">
-      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="6 10 10 10 34 10"/>
-        <path d="M32 10l-2 22a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3L8 10"/>
-        <line x1="17" y1="18" x2="17" y2="28"/>
-        <line x1="23" y1="18" x2="23" y2="28"/>
-        <path d="M15 10V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/>
-      </svg>
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 10 10 10 34 10"/><path d="M32 10l-2 22a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3L8 10"/><line x1="17" y1="18" x2="17" y2="28"/><line x1="23" y1="18" x2="23" y2="28"/><path d="M15 10V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/></svg>
     </div>
-    <div class="modal-title" id="modal-history-title">Limpar histórico?</div>
-    <div class="modal-body">Remove o histórico de relatórios deste navegador. Não afeta os PDFs já baixados.</div>
+    <div class="modal-title">Limpar histórico?</div>
+    <div class="modal-body">Remove todo o histórico de documentos deste navegador. Não afeta os PDFs já baixados.</div>
     <div class="modal-actions">
       <button class="btn-modal-cancel" id="modal-history-close">Cancelar</button>
       <button class="btn-modal-confirm" id="modal-history-confirm">Sim, limpar</button>
@@ -1410,7 +556,7 @@
     appId: "1:922392046948:web:6f1e27fd18a43a9224de71"
   };
 
-  const app = initializeApp(firebaseConfig);
+  const app  = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
   onAuthStateChanged(auth, async (user) => {
@@ -1418,31 +564,21 @@
 
     window._firebaseUser = user;
 
-    // Sincroniza usuário com o banco
     try {
       const token = await user.getIdToken();
       await fetch('/sync-user', {
         method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: user.email,
-          nome: user.displayName || '',
-          foto: user.photoURL || ''
-        })
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: user.email, nome: user.displayName || '', foto: user.photoURL || '' })
       });
-    } catch (_) {
-      // silencioso — não bloqueia o fluxo
-    }
+    } catch (_) {}
 
-    const name = user.displayName || user.email.split('@')[0];
+    const name    = user.displayName || user.email.split('@')[0];
     const initial = name.charAt(0).toUpperCase();
-
-    document.getElementById('user-name').textContent = name;
+    document.getElementById('user-name').textContent  = name;
     document.getElementById('user-avatar').textContent = initial;
-    document.getElementById('cfg-user-name').textContent = user.displayName || '—';
+    document.getElementById('greeting-name').textContent = ' ' + name;
+    document.getElementById('cfg-user-name').textContent  = user.displayName || '—';
     document.getElementById('cfg-user-email').textContent = user.email;
     document.getElementById('cfg-login-method').textContent =
       user.providerData[0]?.providerId === 'google.com' ? 'Google' : 'E-mail e senha';
@@ -1463,85 +599,86 @@
 (function () {
   'use strict';
 
-  /* ── STATE ── */
   const MONTHS_PT_SHORT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  const MONTHS_PT_LONG  = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
   const PAGE_TITLES = { dashboard: 'Dashboard', history: 'Histórico', settings: 'Configurações' };
 
-  let selectedFile = null;
-  let currentPeriod = 'mes';
-  let selectedMonth = new Date().getMonth() + 1;
+  const FRASES = [
+    "Cada orçamento enviado é uma porta que você abre.",
+    "Organização hoje é lucro amanhã.",
+    "Documentos profissionais constroem confiança.",
+    "Pequenos detalhes fazem grandes diferenças.",
+    "Seu trabalho merece ser apresentado com qualidade.",
+    "Profissionalismo começa no primeiro documento.",
+    "Clareza nos números é respeito pelo cliente.",
+    "Um recibo bem feito vale mais que mil palavras.",
+    "Quem documenta bem, cresce com segurança.",
+    "O sucesso está nos detalhes que outros ignoram.",
+    "Cada cliente bem atendido é uma indicação em potencial.",
+    "Processos organizados liberam tempo para crescer.",
+    "Profissionalismo não é luxo, é estratégia.",
+    "Um bom orçamento já é metade da venda.",
+    "Simplicidade e clareza vendem mais que complexidade.",
+    "Seu tempo vale muito — automatize o que puder.",
+    "Documentação correta evita conflitos futuros.",
+    "A primeira impressão começa no orçamento.",
+    "Negócios sólidos são construídos com processos sólidos.",
+    "Hoje é um bom dia para fechar um negócio."
+  ];
+
+  /* ── STATE ── */
   let reportHistory = [];
-  let totalReports = 0;
+  let orcamentos    = [];
+  let recibos       = [];
+  let totalPDF      = 0;
+  let activeHistTab = 'planilhas';
 
-  try {
-    reportHistory = JSON.parse(localStorage.getItem('hystan_history') || '[]');
-    totalReports  = parseInt(localStorage.getItem('hystan_total') || '0', 10);
-  } catch (_) { /* ignore parse errors */ }
+  function loadStorage() {
+    try { reportHistory = JSON.parse(localStorage.getItem('hystan_history')   || '[]'); } catch (_) { reportHistory = []; }
+    try { orcamentos    = JSON.parse(localStorage.getItem('hystan_orcamentos') || '[]'); } catch (_) { orcamentos = []; }
+    try { recibos       = JSON.parse(localStorage.getItem('hystan_recibos')    || '[]'); } catch (_) { recibos = []; }
+    totalPDF = parseInt(localStorage.getItem('hystan_total') || '0', 10);
+  }
+  loadStorage();
 
-  /* ── DOM REFS ── */
-  const sidebar          = document.getElementById('sidebar');
-  const sidebarOverlay   = document.getElementById('sidebar-overlay');
-  const topbarTitle      = document.getElementById('topbar-title');
-  const trialBanner      = document.getElementById('trial-banner');
-  const trialMsg         = document.getElementById('trial-msg');
-  const upgradeCard      = document.getElementById('upgrade-card');
-  const dropzone         = document.getElementById('dropzone');
-  const fileInput        = document.getElementById('file-input');
-  const dropFilename     = document.getElementById('drop-filename');
-  const dropFilenameText = document.getElementById('drop-filename-text');
-  const btnGenerate      = document.getElementById('btn-generate');
-  const btnText          = document.getElementById('btn-text');
-  const historyEmpty     = document.getElementById('history-empty');
-  const historyTable     = document.getElementById('history-table');
-  const historyBody      = document.getElementById('history-body');
-  const toastContainer   = document.getElementById('toast-container');
+  /* ── GREETING ── */
+  (function initGreeting() {
+    const h = new Date().getHours();
+    const gt = h < 12 ? 'Bom dia,' : h < 18 ? 'Boa tarde,' : 'Boa noite,';
+    document.getElementById('greeting-text').textContent  = gt;
+    document.getElementById('greeting-frase').textContent = FRASES[new Date().getDate() % 20];
+  })();
 
   /* ── THEME ── */
   function applyTheme(t) {
     document.documentElement.setAttribute('data-theme', t);
     localStorage.setItem('hystan_theme', t);
-    document.querySelectorAll('.theme-btn').forEach(btn => {
-      btn.classList.toggle('is-active', btn.dataset.themeVal === t);
-    });
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('is-active', b.dataset.themeVal === t));
     drawChart();
   }
-
-  (function initTheme() {
-    const t = localStorage.getItem('hystan_theme') || 'system';
-    applyTheme(t);
-  })();
-
-  document.querySelectorAll('.theme-btn').forEach(btn => {
-    btn.addEventListener('click', () => applyTheme(btn.dataset.themeVal));
-  });
+  applyTheme(localStorage.getItem('hystan_theme') || 'system');
+  document.querySelectorAll('.theme-btn').forEach(b => b.addEventListener('click', () => applyTheme(b.dataset.themeVal)));
 
   /* ── SIDEBAR ── */
-  function openSidebar() {
-    sidebar.classList.add('is-open');
-    sidebarOverlay.classList.add('is-visible');
-  }
-  function closeSidebar() {
-    sidebar.classList.remove('is-open');
-    sidebarOverlay.classList.remove('is-visible');
-  }
-
+  const sidebar        = document.getElementById('sidebar');
+  const sidebarOverlay = document.getElementById('sidebar-overlay');
+  function openSidebar()  { sidebar.classList.add('is-open');    sidebarOverlay.classList.add('is-visible'); }
+  function closeSidebar() { sidebar.classList.remove('is-open'); sidebarOverlay.classList.remove('is-visible'); }
   document.getElementById('btn-hamburger').addEventListener('click', openSidebar);
   sidebarOverlay.addEventListener('click', closeSidebar);
+  document.getElementById('sidebar-logout').addEventListener('click', () => { if (window._doSignOut) window._doSignOut(); });
 
   /* ── NAVIGATION ── */
   function navigate(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('is-active'));
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('is-active'));
+    document.querySelectorAll('.nav-item[data-page]').forEach(n => n.classList.remove('is-active'));
     const pageEl = document.getElementById('page-' + page);
     if (pageEl) pageEl.classList.add('is-active');
     const navEl = document.querySelector(`.nav-item[data-page="${page}"]`);
     if (navEl) navEl.classList.add('is-active');
-    topbarTitle.textContent = PAGE_TITLES[page] || 'Dashboard';
+    document.getElementById('topbar-title').textContent = PAGE_TITLES[page] || 'Dashboard';
     closeSidebar();
     if (page === 'history') renderHistory();
   }
-
   document.querySelectorAll('.nav-item[data-page]').forEach(btn => {
     btn.addEventListener('click', () => navigate(btn.dataset.page));
   });
@@ -1552,9 +689,7 @@
     if (user) {
       try {
         const token = await user.getIdToken();
-        const resp = await fetch('/meu-plano', {
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
+        const resp  = await fetch('/meu-plano', { headers: { 'Authorization': 'Bearer ' + token } });
         if (resp.ok) {
           const data = await resp.json();
           if (data.status === 'ativo' || data.status === 'trial') {
@@ -1563,302 +698,172 @@
             return;
           }
         }
-      } catch (_) {
-        // fallback para localStorage
-      }
+      } catch (_) {}
     }
 
-    const plano = localStorage.getItem('hystan_plano');
+    const plano      = localStorage.getItem('hystan_plano');
     const trialInicio = parseInt(localStorage.getItem('hystan_trial_inicio') || '0', 10);
-    const params = new URLSearchParams(window.location.search);
+    const params     = new URLSearchParams(window.location.search);
 
     if (params.get('pago') === 'true') {
       localStorage.setItem('hystan_plano', 'ativo');
       window.history.replaceState({}, '', '/dashboard.html');
-      setupUI('ativo');
-      return;
+      setupUI('ativo'); return;
     }
-
     if (!plano) { window.location.href = '/planos.html'; return; }
-
     if (plano === 'trial') {
-      const SETE_DIAS = 7 * 24 * 60 * 60 * 1000;
-      const agora = Date.now();
-      const elapsed = agora - trialInicio;
-      if (elapsed > SETE_DIAS) {
+      const elapsed = Date.now() - trialInicio;
+      if (elapsed > 7 * 24 * 60 * 60 * 1000) {
         localStorage.removeItem('hystan_plano');
-        window.location.href = '/planos.html';
-        return;
+        window.location.href = '/planos.html'; return;
       }
-      const diasRestantes = Math.max(1, Math.ceil((SETE_DIAS - elapsed) / (1000 * 60 * 60 * 24)));
-      setupUI('trial', diasRestantes);
-      return;
+      const dias = Math.max(1, Math.ceil((7 * 24 * 60 * 60 * 1000 - elapsed) / 86400000));
+      setupUI('trial', dias); return;
     }
-
     if (plano === 'ativo') { setupUI('ativo'); return; }
-
     window.location.href = '/planos.html';
   };
 
   function setupUI(plano, diasRestantes) {
-    const now = new Date();
-    document.getElementById('stat-month-label').textContent =
-      MONTHS_PT_LONG[now.getMonth()] + ' ' + now.getFullYear();
-
     if (plano === 'trial') {
-      document.getElementById('user-plan').textContent      = 'Trial · ' + diasRestantes + 'd';
-      document.getElementById('stat-plano').textContent     = 'Trial';
-      document.getElementById('stat-plano-sub').textContent = diasRestantes + ' dias restantes';
-      trialBanner.classList.add('is-visible');
-      trialMsg.textContent = 'Trial termina em ' + diasRestantes + ' dia(s).';
-      upgradeCard.classList.add('is-visible');
+      document.getElementById('user-plan').textContent         = 'Trial · ' + diasRestantes + 'd';
+      document.getElementById('trial-banner').classList.add('is-visible');
+      document.getElementById('trial-msg').textContent         = 'Trial termina em ' + diasRestantes + ' dia(s).';
+      document.getElementById('upgrade-card').classList.add('is-visible');
       document.getElementById('sidebar-plan-name').textContent = 'Trial';
       document.getElementById('sidebar-plan-sub').textContent  = diasRestantes + ' dias restantes';
-      document.getElementById('cfg-plan-badge').textContent = 'Trial';
-      document.getElementById('cfg-plan-name').textContent  = 'Período de teste';
-      document.getElementById('cfg-plan-sub').textContent   = diasRestantes + ' dias · 5 relatórios incluídos';
+      document.getElementById('cfg-plan-badge').textContent    = 'Trial';
+      document.getElementById('cfg-plan-name').textContent     = 'Período de teste';
+      document.getElementById('cfg-plan-sub').textContent      = diasRestantes + ' dias · 5 relatórios incluídos';
     } else {
-      document.getElementById('user-plan').textContent      = 'Plano Ativo';
-      document.getElementById('stat-plano').textContent     = 'Business';
-      document.getElementById('stat-plano-sub').textContent = 'Ilimitado · Ativo';
+      document.getElementById('user-plan').textContent         = 'Plano Ativo';
       document.getElementById('sidebar-plan-name').textContent = 'Plano Business';
       document.getElementById('sidebar-plan-sub').textContent  = 'Relatórios ilimitados';
-      document.getElementById('cfg-plan-badge').textContent = 'Business';
-      document.getElementById('cfg-plan-name').textContent  = 'Plano Business';
-      document.getElementById('cfg-plan-sub').textContent   = 'Relatórios ilimitados · Ativo';
+      document.getElementById('cfg-plan-badge').textContent    = 'Business';
+      document.getElementById('cfg-plan-name').textContent     = 'Plano Business';
+      document.getElementById('cfg-plan-sub').textContent      = 'Relatórios ilimitados · Ativo';
     }
-
     updateStats();
   }
 
-  /* ── SETTINGS BUTTON WIRING ── */
+  /* ── SETTINGS WIRING ── */
   function goToPlanos() { window.location.href = '/planos.html'; }
-
   document.getElementById('btn-ver-planos').addEventListener('click', goToPlanos);
   document.getElementById('btn-mudar-plano').addEventListener('click', goToPlanos);
   document.getElementById('btn-upgrade').addEventListener('click', goToPlanos);
   document.getElementById('btn-cancelar-plano').addEventListener('click', () => openModal('modal-cancel'));
   document.getElementById('btn-limpar-historico').addEventListener('click', () => openModal('modal-history'));
-  document.getElementById('btn-logout').addEventListener('click', () => {
-    if (window._doSignOut) window._doSignOut();
-  });
-
-  /* ── DROPZONE ── */
-  dropzone.addEventListener('click', () => fileInput.click());
-  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('is-drag'); });
-  dropzone.addEventListener('dragleave', e => {
-    if (!dropzone.contains(e.relatedTarget)) dropzone.classList.remove('is-drag');
-  });
-  dropzone.addEventListener('drop', e => {
-    e.preventDefault();
-    dropzone.classList.remove('is-drag');
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      if (!file.name.toLowerCase().endsWith('.xlsx')) {
-        showToast('Use apenas arquivos .xlsx', 'error');
-      } else if (file.size > 5 * 1024 * 1024) {
-        showToast('Arquivo muito grande. Máximo 5MB.', 'error');
-      } else {
-        setFile(file);
-      }
-    }
-  });
-  fileInput.addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (file) setFile(file);
-  });
-
-  function setFile(file) {
-    selectedFile = file;
-    dropzone.classList.add('is-file');
-    dropFilenameText.textContent = file.name;
-  }
-
-  /* ── PERIOD SELECTOR ── */
-  document.querySelectorAll('.tab[data-period]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentPeriod = btn.dataset.period;
-      document.querySelectorAll('.tab[data-period]').forEach(t => t.classList.remove('is-active'));
-      btn.classList.add('is-active');
-      document.querySelectorAll('.period-panel').forEach(p => p.classList.remove('is-active'));
-      document.getElementById('panel-' + currentPeriod).classList.add('is-active');
-    });
-  });
-
-  document.querySelectorAll('.month-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('is-active'));
-      btn.classList.add('is-active');
-      selectedMonth = parseInt(btn.dataset.mes, 10);
-    });
-  });
-
-  /* ── PDF GENERATION ── */
-  btnGenerate.addEventListener('click', gerarPDF);
-
-  async function gerarPDF() {
-    if (!selectedFile) { showToast('Selecione uma planilha primeiro', 'error'); return; }
-    const empresa = document.getElementById('empresa').value.trim();
-    if (!empresa) { showToast('Informe o nome da empresa', 'error'); return; }
-
-    const plano = localStorage.getItem('hystan_plano');
-    if (plano === 'trial' && totalReports >= 5) {
-      showToast('Limite do trial atingido.', 'error');
-      setTimeout(() => { window.location.href = '/planos.html'; }, 2200);
-      return;
-    }
-
-    let mesInicio, mesFim, ano;
-
-    if (currentPeriod === 'mes') {
-      mesInicio = mesFim = selectedMonth;
-      ano = document.getElementById('ano-mes').value;
-    } else if (currentPeriod === 'intervalo') {
-      mesInicio = parseInt(document.getElementById('mes-inicio').value, 10);
-      mesFim    = parseInt(document.getElementById('mes-fim').value, 10);
-      ano       = document.getElementById('ano-intervalo').value;
-      if (mesInicio > mesFim) { showToast('Mês inicial não pode ser maior que o final', 'error'); return; }
-    } else {
-      mesInicio = 1;
-      mesFim    = 12;
-      ano       = document.getElementById('ano-total').value;
-    }
-
-    btnGenerate.disabled = true;
-    btnGenerate.classList.add('is-loading');
-    btnText.textContent = 'Processando...';
-
-    try {
-      const formData = new FormData();
-      formData.append('planilha', selectedFile);
-      formData.append('empresa', empresa);
-      formData.append('ano', ano);
-      formData.append('mesInicio', mesInicio);
-      formData.append('mesFim', mesFim);
-
-      const user  = window._firebaseUser;
-      const token = user ? await user.getIdToken() : null;
-      const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
-
-      const resp = await fetch('/gerar-pdf', { method: 'POST', headers, body: formData });
-
-      if (!resp.ok) {
-        let msg = 'Erro no servidor';
-        try { msg = await resp.text(); } catch (_) {}
-        throw new Error(msg);
-      }
-
-      const blob = await resp.blob();
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href     = url;
-      a.download = 'Relatorio-' + empresa.replace(/[^a-zA-Z0-9\-_]/g, '_') + '.pdf';
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 5000);
-
-      const periodoLabel = currentPeriod === 'mes'
-        ? MONTHS_PT_SHORT[selectedMonth - 1] + '/' + ano
-        : currentPeriod === 'intervalo'
-          ? MONTHS_PT_SHORT[mesInicio - 1] + '–' + MONTHS_PT_SHORT[mesFim - 1] + '/' + ano
-          : 'Ano ' + ano;
-
-      reportHistory.unshift({
-        empresa,
-        periodo: periodoLabel,
-        data: new Date().toLocaleDateString('pt-BR'),
-        timestamp: Date.now()
-      });
-      totalReports++;
-      localStorage.setItem('hystan_history', JSON.stringify(reportHistory.slice(0, 20)));
-      localStorage.setItem('hystan_total', String(totalReports));
-      updateStats();
-      showToast('PDF gerado com sucesso. Baixando...', 'success');
-
-    } catch (err) {
-      const msg = err.message && err.message.length < 120 ? err.message : 'Erro ao gerar PDF. Tente novamente.';
-      showToast(msg, 'error');
-    } finally {
-      btnGenerate.disabled = false;
-      btnGenerate.classList.remove('is-loading');
-      btnText.textContent = 'Gerar Relatório PDF';
-    }
-  }
+  document.getElementById('btn-logout').addEventListener('click', () => { if (window._doSignOut) window._doSignOut(); });
 
   /* ── STATS ── */
   function updateStats() {
-    document.getElementById('stat-total').textContent = totalReports;
-    const now = new Date();
-    const monthCount = reportHistory.filter(h => {
-      if (!h.timestamp) return false;
-      const d = new Date(h.timestamp);
-      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-    }).length;
-    document.getElementById('stat-month').textContent = monthCount;
+    loadStorage();
+    document.getElementById('stat-pdf').textContent = totalPDF;
+    document.getElementById('stat-orc').textContent = orcamentos.length;
+    document.getElementById('stat-rec').textContent = recibos.length;
     drawChart();
   }
 
-  /* ── HISTORY RENDER ── */
-  function renderHistory() {
-    if (reportHistory.length === 0) {
-      historyEmpty.style.display = '';
-      historyTable.style.display = 'none';
-      return;
-    }
-    historyEmpty.style.display = 'none';
-    historyTable.style.display = 'table';
-    historyBody.innerHTML = reportHistory.map(h => `
-      <tr>
-        <td class="td-company">${escapeHtml(h.empresa)}</td>
-        <td>${escapeHtml(h.periodo)}</td>
-        <td>${escapeHtml(h.data)}</td>
-        <td><span class="badge-ok">Concluído</span></td>
-      </tr>
-    `).join('');
-  }
-
+  /* ── HISTORY ── */
   function escapeHtml(s) {
-    return String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  /* ── MODALS ── */
-  function openModal(id) {
-    const el = document.getElementById(id);
-    if (el) el.classList.add('is-visible');
-  }
-  function closeModal(id) {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('is-visible');
+  function renderHistory() {
+    loadStorage();
+    const container = document.getElementById('history-content');
+
+    if (activeHistTab === 'planilhas') {
+      if (reportHistory.length === 0) {
+        container.innerHTML = emptyState('Nenhum relatório gerado ainda.');
+        return;
+      }
+      container.innerHTML = `
+        <table class="history-table">
+          <thead><tr><th>Nome</th><th>Período</th><th>Data</th><th>Status</th></tr></thead>
+          <tbody>${reportHistory.map(h => `
+            <tr>
+              <td class="td-primary">${escapeHtml(h.empresa)}</td>
+              <td>${escapeHtml(h.periodo)}</td>
+              <td>${escapeHtml(h.data)}</td>
+              <td><span class="badge-ok">Concluído</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>`;
+    } else if (activeHistTab === 'orcamentos') {
+      if (orcamentos.length === 0) {
+        container.innerHTML = emptyState('Nenhum orçamento gerado ainda.');
+        return;
+      }
+      container.innerHTML = `
+        <table class="history-table">
+          <thead><tr><th>Prestador</th><th>Cliente</th><th>Total</th><th>Data</th><th>Status</th></tr></thead>
+          <tbody>${orcamentos.map(o => `
+            <tr>
+              <td class="td-primary">${escapeHtml(o.prestador)}</td>
+              <td>${escapeHtml(o.cliente)}</td>
+              <td>${escapeHtml(o.total)}</td>
+              <td>${escapeHtml(o.data)}</td>
+              <td><span class="badge-ok">Concluído</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>`;
+    } else {
+      if (recibos.length === 0) {
+        container.innerHTML = emptyState('Nenhum recibo emitido ainda.');
+        return;
+      }
+      container.innerHTML = `
+        <table class="history-table">
+          <thead><tr><th>Prestador</th><th>Cliente</th><th>Valor</th><th>Data</th><th>Status</th></tr></thead>
+          <tbody>${recibos.map(r => `
+            <tr>
+              <td class="td-primary">${escapeHtml(r.prestador)}</td>
+              <td>${escapeHtml(r.cliente)}</td>
+              <td>${escapeHtml(r.valor)}</td>
+              <td>${escapeHtml(r.data)}</td>
+              <td><span class="badge-ok">Concluído</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>`;
+    }
   }
 
-  document.getElementById('modal-cancel-close').addEventListener('click', () => closeModal('modal-cancel'));
-  document.getElementById('modal-cancel-confirm').addEventListener('click', () => {
-    closeModal('modal-cancel');
-    showToast('Entre em contato: suporte@hystan.com.br');
+  function emptyState(msg) {
+    return `<div class="history-empty">
+      <div class="history-empty-icon"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="24" height="28" rx="3"/><line x1="12" y1="14" x2="24" y2="14"/><line x1="12" y1="20" x2="20" y2="20"/></svg></div>
+      <p>${escapeHtml(msg)}</p></div>`;
+  }
+
+  document.querySelectorAll('.history-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeHistTab = btn.dataset.htab;
+      document.querySelectorAll('.history-tab').forEach(t => t.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      renderHistory();
+    });
   });
 
+  /* ── MODALS ── */
+  function openModal(id)  { const el = document.getElementById(id); if (el) el.classList.add('is-visible'); }
+  function closeModal(id) { const el = document.getElementById(id); if (el) el.classList.remove('is-visible'); }
+
+  document.getElementById('modal-cancel-close').addEventListener('click', () => closeModal('modal-cancel'));
+  document.getElementById('modal-cancel-confirm').addEventListener('click', () => { closeModal('modal-cancel'); showToast('Entre em contato: suporte@hystan.com.br'); });
   document.getElementById('modal-history-close').addEventListener('click', () => closeModal('modal-history'));
   document.getElementById('modal-history-confirm').addEventListener('click', () => {
     localStorage.removeItem('hystan_history');
+    localStorage.removeItem('hystan_orcamentos');
+    localStorage.removeItem('hystan_recibos');
     localStorage.removeItem('hystan_total');
-    reportHistory = [];
-    totalReports  = 0;
-    historyEmpty.style.display = '';
-    historyTable.style.display = 'none';
+    reportHistory = []; orcamentos = []; recibos = []; totalPDF = 0;
     updateStats();
     closeModal('modal-history');
     showToast('Histórico limpo.', 'success');
   });
-
   document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', e => {
-      if (e.target === overlay) overlay.classList.remove('is-visible');
-    });
+    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('is-visible'); });
   });
-
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       document.querySelectorAll('.modal-overlay.is-visible').forEach(m => m.classList.remove('is-visible'));
@@ -1867,38 +872,36 @@
   });
 
   /* ── TOASTS ── */
+  const toastContainer = document.getElementById('toast-container');
   function showToast(msg, variant) {
     const toast = document.createElement('div');
     toast.className = 'toast' + (variant === 'success' ? ' is-success' : variant === 'error' ? ' is-error' : '');
     toast.textContent = msg;
     toastContainer.appendChild(toast);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => toast.classList.add('is-visible'));
-    });
-    setTimeout(() => {
-      toast.classList.remove('is-visible');
-      setTimeout(() => toast.remove(), 350);
-    }, 3500);
+    requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.add('is-visible')));
+    setTimeout(() => { toast.classList.remove('is-visible'); setTimeout(() => toast.remove(), 350); }, 3500);
   }
 
   /* ── CHART ── */
+  function getAllDocs() {
+    return [...reportHistory, ...orcamentos, ...recibos].filter(h => h.timestamp);
+  }
+
   function isDarkMode() {
     const t = document.documentElement.getAttribute('data-theme');
-    if (t === 'dark') return true;
-    if (t === 'light') return false;
+    if (t === 'dark') return true; if (t === 'light') return false;
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
 
   function drawChart() {
     const canvas = document.getElementById('chart-canvas');
     if (!canvas) return;
-
-    const dark       = isDarkMode();
-    const lineColor  = dark ? 'rgba(255,255,255,0.88)' : 'rgba(26,26,26,0.82)';
-    const labelColor = dark ? 'rgba(255,255,255,0.28)' : 'rgba(0,0,0,0.3)';
-    const gradTop    = dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.15)';
-    const gradBot    = dark ? 'rgba(255,255,255,0)'    : 'rgba(0,0,0,0)';
-    const dotFill    = dark ? '#111111' : '#ffffff';
+    const dark      = isDarkMode();
+    const lineColor = dark ? 'rgba(255,255,255,0.88)' : 'rgba(26,26,26,0.82)';
+    const labelColor= dark ? 'rgba(255,255,255,0.28)' : 'rgba(0,0,0,0.3)';
+    const gradTop   = dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.15)';
+    const gradBot   = dark ? 'rgba(255,255,255,0)'    : 'rgba(0,0,0,0)';
+    const dotFill   = dark ? '#111111' : '#ffffff';
 
     const dpr = window.devicePixelRatio || 1;
     const W   = canvas.clientWidth;
@@ -1915,17 +918,15 @@
 
     const PAD = { top: 14, bot: 28, left: 34, right: 12 };
     const cW  = W - PAD.left - PAD.right;
-    const cH  = H - PAD.top - PAD.bot;
+    const cH  = H - PAD.top  - PAD.bot;
 
-    /* build 6-month buckets */
     const now = new Date();
     const buckets = [];
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       buckets.push({ label: MONTHS_PT_SHORT[d.getMonth()], year: d.getFullYear(), month: d.getMonth(), count: 0 });
     }
-    reportHistory.forEach(h => {
-      if (!h.timestamp) return;
+    getAllDocs().forEach(h => {
       const d = new Date(h.timestamp);
       const b = buckets.find(bk => bk.month === d.getMonth() && bk.year === d.getFullYear());
       if (b) b.count++;
@@ -1933,71 +934,43 @@
 
     const maxVal = Math.max(...buckets.map(b => b.count), 1);
     const n = buckets.length;
-
     const pts = buckets.map((b, i) => ({
-      x:     PAD.left + (n < 2 ? cW / 2 : (i / (n - 1)) * cW),
-      y:     PAD.top + (1 - b.count / maxVal) * cH,
-      value: b.count,
-      label: b.label
+      x: PAD.left + (n < 2 ? cW / 2 : (i / (n - 1)) * cW),
+      y: PAD.top + (1 - b.count / maxVal) * cH,
+      value: b.count, label: b.label
     }));
 
-    /* area fill — drawn first so line renders on top */
     const baseline = PAD.top + cH;
     ctx.beginPath();
     ctx.moveTo(pts[0].x, pts[0].y);
     for (let i = 1; i < pts.length; i++) {
-      const cpx = (pts[i - 1].x + pts[i].x) / 2;
-      ctx.bezierCurveTo(cpx, pts[i - 1].y, cpx, pts[i].y, pts[i].x, pts[i].y);
+      const cpx = (pts[i-1].x + pts[i].x) / 2;
+      ctx.bezierCurveTo(cpx, pts[i-1].y, cpx, pts[i].y, pts[i].x, pts[i].y);
     }
-    ctx.lineTo(pts[n - 1].x, baseline);
-    ctx.lineTo(pts[0].x,     baseline);
-    ctx.closePath();
+    ctx.lineTo(pts[n-1].x, baseline); ctx.lineTo(pts[0].x, baseline); ctx.closePath();
     const grad = ctx.createLinearGradient(0, 0, 0, H);
-    grad.addColorStop(0, gradTop);
-    grad.addColorStop(1, gradBot);
-    ctx.fillStyle = grad;
-    ctx.fill();
+    grad.addColorStop(0, gradTop); grad.addColorStop(1, gradBot);
+    ctx.fillStyle = grad; ctx.fill();
 
-    /* line */
-    ctx.beginPath();
-    ctx.moveTo(pts[0].x, pts[0].y);
+    ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
     for (let i = 1; i < pts.length; i++) {
-      const cpx = (pts[i - 1].x + pts[i].x) / 2;
-      ctx.bezierCurveTo(cpx, pts[i - 1].y, cpx, pts[i].y, pts[i].x, pts[i].y);
+      const cpx = (pts[i-1].x + pts[i].x) / 2;
+      ctx.bezierCurveTo(cpx, pts[i-1].y, cpx, pts[i].y, pts[i].x, pts[i].y);
     }
-    ctx.strokeStyle = lineColor;
-    ctx.lineWidth   = 2;
-    ctx.lineJoin    = 'round';
-    ctx.lineCap     = 'round';
-    ctx.stroke();
+    ctx.strokeStyle = lineColor; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke();
 
-    /* X labels */
-    ctx.font      = '500 11px \'DM Sans\', sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillStyle = labelColor;
+    ctx.font = '500 11px \'DM Sans\', sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = labelColor;
     pts.forEach(p => ctx.fillText(p.label, p.x, H - 7));
-
-    /* Y labels */
-    ctx.font      = '400 10px \'DM Sans\', sans-serif';
-    ctx.textAlign = 'right';
-    ctx.fillStyle = labelColor;
+    ctx.font = '400 10px \'DM Sans\', sans-serif'; ctx.textAlign = 'right'; ctx.fillStyle = labelColor;
     ctx.fillText(String(maxVal), PAD.left - 7, PAD.top + 4);
-    if (maxVal >= 2) {
-      ctx.fillText(String(Math.round(maxVal / 2)), PAD.left - 7, PAD.top + cH / 2 + 4);
-    }
+    if (maxVal >= 2) ctx.fillText(String(Math.round(maxVal / 2)), PAD.left - 7, PAD.top + cH / 2 + 4);
     ctx.fillText('0', PAD.left - 7, PAD.top + cH + 4);
 
-    /* dots */
     pts.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
-      ctx.fillStyle   = dotFill;
-      ctx.fill();
-      ctx.strokeStyle = lineColor;
-      ctx.lineWidth   = 2;
-      ctx.stroke();
+      ctx.beginPath(); ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = dotFill; ctx.fill();
+      ctx.strokeStyle = lineColor; ctx.lineWidth = 2; ctx.stroke();
     });
-
     canvas._chartPts = pts;
   }
 
@@ -2005,31 +978,18 @@
     const canvas  = document.getElementById('chart-canvas');
     const tooltip = document.getElementById('chart-tooltip');
     if (!canvas || !tooltip) return;
-
     canvas.addEventListener('mousemove', e => {
-      const pts = canvas._chartPts;
-      if (!pts) return;
+      const pts = canvas._chartPts; if (!pts) return;
       const rect = canvas.getBoundingClientRect();
-      const mx   = e.clientX - rect.left;
-      const my   = e.clientY - rect.top;
-
-      let nearest = null;
-      let minDist = Infinity;
-      pts.forEach(p => {
-        const d = Math.sqrt((p.x - mx) ** 2 + (p.y - my) ** 2);
-        if (d < minDist) { minDist = d; nearest = p; }
-      });
-
+      const mx = e.clientX - rect.left; const my = e.clientY - rect.top;
+      let nearest = null; let minDist = Infinity;
+      pts.forEach(p => { const d = Math.sqrt((p.x-mx)**2+(p.y-my)**2); if (d < minDist) { minDist = d; nearest = p; } });
       if (nearest && minDist < 30) {
-        tooltip.textContent   = nearest.value + (nearest.value === 1 ? ' relatório' : ' relatórios');
-        tooltip.style.left    = nearest.x + 'px';
-        tooltip.style.top     = (nearest.y - 38) + 'px';
+        tooltip.textContent = nearest.value + (nearest.value === 1 ? ' documento' : ' documentos');
+        tooltip.style.left = nearest.x + 'px'; tooltip.style.top = (nearest.y - 38) + 'px';
         tooltip.classList.add('is-visible');
-      } else {
-        tooltip.classList.remove('is-visible');
-      }
+      } else { tooltip.classList.remove('is-visible'); }
     });
-
     canvas.addEventListener('mouseleave', () => tooltip.classList.remove('is-visible'));
   }
 

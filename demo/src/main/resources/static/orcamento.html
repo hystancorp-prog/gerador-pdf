@@ -644,6 +644,17 @@
       a.download = 'orcamento-' + prestadorNome.replace(/[^a-zA-Z0-9]/g, '_') + '.pdf';
       a.click();
       setTimeout(() => URL.revokeObjectURL(url), 5000);
+      try {
+        const _orcs = JSON.parse(localStorage.getItem('hystan_orcamentos') || '[]');
+        _orcs.unshift({
+          prestador: prestadorNome,
+          cliente: clienteNome,
+          total: totalGeralEl.textContent,
+          data: new Date().toLocaleDateString('pt-BR'),
+          timestamp: Date.now()
+        });
+        localStorage.setItem('hystan_orcamentos', JSON.stringify(_orcs.slice(0, 50)));
+      } catch (_) {}
       showToast('Orçamento gerado com sucesso!', 'success');
 
     } catch (err) {

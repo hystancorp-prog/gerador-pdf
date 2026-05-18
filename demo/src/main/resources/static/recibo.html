@@ -515,6 +515,17 @@
       a.download = 'recibo-' + numRecibo + '.pdf';
       a.click();
       setTimeout(() => URL.revokeObjectURL(url), 5000);
+      try {
+        const _recs = JSON.parse(localStorage.getItem('hystan_recibos') || '[]');
+        _recs.unshift({
+          prestador: prestadorNome,
+          cliente: clienteNome,
+          valor: 'R$ ' + valor.toFixed(2).replace('.', ','),
+          data: new Date().toLocaleDateString('pt-BR'),
+          timestamp: Date.now()
+        });
+        localStorage.setItem('hystan_recibos', JSON.stringify(_recs.slice(0, 50)));
+      } catch (_) {}
       showToast('Recibo gerado com sucesso!', 'success');
 
     } catch (err) {
