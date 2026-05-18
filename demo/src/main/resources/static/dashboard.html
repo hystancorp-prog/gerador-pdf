@@ -569,11 +569,12 @@
   ];
 
   /* ── STATE ── */
-  let reportHistory = [];
-  let orcamentos    = [];
-  let recibos       = [];
-  let totalPDF      = 0;
-  let activeHistTab = 'planilhas';
+  let reportHistory  = [];
+  let orcamentos     = [];
+  let recibos        = [];
+  let totalPDF       = 0;
+  let activeHistTab  = 'planilhas';
+  let _userNavigated = false; /* true after any explicit user navigation */
 
   function loadStorage() {
     try { reportHistory = JSON.parse(localStorage.getItem('hystan_history')   || '[]'); } catch (_) { reportHistory = []; }
@@ -606,6 +607,7 @@
 
   /* ── NAVIGATION ── */
   function navigate(page) {
+    _userNavigated = true;
     document.querySelectorAll('.page').forEach(p => p.classList.remove('is-active'));
     const pageEl = document.getElementById('page-' + page);
     if (pageEl) pageEl.classList.add('is-active');
@@ -616,6 +618,12 @@
     if (window._setSidebarActive && spaToSidebar[page]) window._setSidebarActive(spaToSidebar[page]);
   }
   window._navigate = navigate;
+
+  /* guard: async callbacks (verificarPlano/setupUI) must not reset SPA page */
+  function navigateInitial(page) {
+    if (_userNavigated) return;
+    navigate(page);
+  }
 
   /* ── PLAN VERIFICATION ── */
   window.verificarPlano = async function verificarPlano() {

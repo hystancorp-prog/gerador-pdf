@@ -174,6 +174,7 @@
   function hideLoader() {
     var loader = document.getElementById('hystan-loader');
     if (!loader) return;
+    loader.style.pointerEvents = 'none'; /* allow clicks through while fading */
     loader.style.opacity = '0';
     setTimeout(function () {
       var l = document.getElementById('hystan-loader');
