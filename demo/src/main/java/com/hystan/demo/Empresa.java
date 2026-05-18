@@ -23,6 +23,9 @@ public class Empresa {
     private String estado;
     private String cep;
 
+    @Column(columnDefinition = "TEXT")
+    private String logoBase64;
+
     @Column(name = "criado_em")
     private LocalDateTime criadoEm = LocalDateTime.now();
 
@@ -52,6 +55,9 @@ public class Empresa {
 
     public String getCep() { return cep; }
     public void setCep(String cep) { this.cep = cep; }
+
+    public String getLogoBase64() { return logoBase64; }
+    public void setLogoBase64(String logoBase64) { this.logoBase64 = logoBase64; }
 
     public LocalDateTime getCriadoEm() { return criadoEm; }
     public void setCriadoEm(LocalDateTime criadoEm) { this.criadoEm = criadoEm; }

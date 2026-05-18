@@ -308,6 +308,13 @@
       </div>
 
       <div class="form-group empresa-group">
+        <label class="form-label" for="empresa-select-pl">Usar empresa cadastrada</label>
+        <select id="empresa-select-pl" style="width:100%;">
+          <option value="">— Preencher manualmente —</option>
+        </select>
+      </div>
+
+      <div class="form-group empresa-group">
         <label class="form-label" for="empresa">Nome do relatório</label>
         <input type="text" id="empresa" placeholder="Ex: Relatório Maio 2026">
       </div>
@@ -365,6 +372,7 @@
       document.getElementById('trial-msg').textContent = 'Trial termina em ' + dias + ' dia(s).';
     }
     if (window._hideLoader) window._hideLoader();
+    loadEmpresas();
   });
 
   window._doSignOut = async () => {
@@ -393,6 +401,7 @@
   } catch (_) {}
 
   const dropzone       = document.getElementById('dropzone');
+  let selectedLogoBase64 = null;
   const fileInput      = document.getElementById('file-input');
   const btnGenerate    = document.getElementById('btn-generate');
   const btnText        = document.getElementById('btn-text');
@@ -408,6 +417,38 @@
   document.querySelectorAll('.theme-btn').forEach(b => b.addEventListener('click', () => applyTheme(b.dataset.themeVal)));
 
   /* sidebar handled by sidebar.js */
+
+  /* ── COMPANY SELECT ── */
+  window.loadEmpresas = async function () {
+    const user  = window._firebaseUser;
+    const token = user ? await user.getIdToken() : null;
+    if (!token) return;
+    try {
+      const resp = await fetch('/empresas', { headers: { 'Authorization': 'Bearer ' + token } });
+      if (!resp.ok) return;
+      const list = await resp.json();
+      const sel  = document.getElementById('empresa-select-pl');
+      list.forEach(e => {
+        const opt = document.createElement('option');
+        opt.value       = JSON.stringify(e);
+        opt.textContent = e.nome + (e.cpfCnpj ? ' — ' + e.cpfCnpj : '');
+        sel.appendChild(opt);
+      });
+    } catch (_) {}
+  };
+
+  document.getElementById('empresa-select-pl').addEventListener('change', function () {
+    if (!this.value) {
+      selectedLogoBase64 = null;
+      return;
+    }
+    try {
+      const e = JSON.parse(this.value);
+      const nomeInput = document.getElementById('empresa');
+      if (!nomeInput.value.trim()) nomeInput.value = e.nome || '';
+      selectedLogoBase64 = e.logoBase64 || null;
+    } catch (_) {}
+  });
 
   // ── DROPZONE
   dropzone.addEventListener('click', () => fileInput.click());
@@ -487,6 +528,7 @@
       formData.append('ano', ano);
       formData.append('mesInicio', mesInicio);
       formData.append('mesFim', mesFim);
+      if (selectedLogoBase64) formData.append('logoBase64', selectedLogoBase64);
 
       const user  = window._firebaseUser;
       const token = user ? await user.getIdToken() : null;

@@ -36,6 +36,7 @@ public class PdfController {
             @RequestParam("ano") int ano,
             @RequestParam("mesInicio") int mesInicio,
             @RequestParam("mesFim") int mesFim,
+            @RequestParam(value = "logoBase64", required = false) String logoBase64,
             HttpServletRequest request) {
 
         if (!rateLimiter.isAllowed(RateLimiter.getClientIp(request) + ":gerar-pdf", RATE_LIMIT, WINDOW_MS)) {
@@ -87,7 +88,7 @@ public class PdfController {
                     .body("Nenhum registro encontrado para o período selecionado.".getBytes());
             }
 
-            GeradorPDF.gerar(dados, saida, nomeEmpresa, "");
+            GeradorPDF.gerar(dados, saida, nomeEmpresa, logoBase64 != null ? logoBase64 : "");
 
             byte[] pdfBytes = java.nio.file.Files.readAllBytes(pdfTemp.toPath());
 

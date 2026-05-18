@@ -275,6 +275,7 @@
   const btnText        = document.getElementById('btn-text');
   const toastContainer = document.getElementById('toast-container');
   const empresaSel     = document.getElementById('empresa-select');
+  let selectedLogoBase64 = null;
 
   /* ── THEME ── */
   function applyTheme(t) {
@@ -315,12 +316,14 @@
     if (!this.value) {
       document.getElementById('prestador-nome').value = '';
       document.getElementById('prestador-doc').value  = '';
+      selectedLogoBase64 = null;
       return;
     }
     try {
       const e = JSON.parse(this.value);
-      document.getElementById('prestador-nome').value = e.nome    || '';
-      document.getElementById('prestador-doc').value  = e.cpfCnpj || '';
+      document.getElementById('prestador-nome').value = e.nome     || '';
+      document.getElementById('prestador-doc').value  = e.cpfCnpj  || '';
+      selectedLogoBase64 = e.logoBase64 || null;
     } catch (_) {}
   });
 
@@ -343,7 +346,7 @@
     if (valor <= 0)     { showToast('Informe um valor válido.', 'error'); return; }
     if (!cidade)        { showToast('Informe a cidade.', 'error'); return; }
 
-    const payload = { prestadorNome, prestadorCpfCnpj: prestadorDoc, clienteNome, descricaoServico: descricao, valor, data, cidade, numeroRecibo: numRecibo };
+    const payload = { prestadorNome, prestadorCpfCnpj: prestadorDoc, clienteNome, descricaoServico: descricao, valor, data, cidade, numeroRecibo: numRecibo, logoBase64: selectedLogoBase64 || null };
 
     btnGenerate.disabled = true;
     btnGenerate.classList.add('is-loading');

@@ -9,4 +9,5 @@ public class ReciboRequest {
     public String data;
     public String cidade;
     public String numeroRecibo;
+    public String logoBase64;
 }

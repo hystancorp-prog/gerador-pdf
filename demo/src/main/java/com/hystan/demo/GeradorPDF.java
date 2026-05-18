@@ -3,17 +3,20 @@ package com.hystan.demo;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import javax.imageio.ImageIO;
 
 public class GeradorPDF {
 
     public static void gerar(List<String[]> dados, String saida,
-                             String nomeEmpresa, String caminhoLogo) throws Exception {
+                             String nomeEmpresa, String logoBase64) throws Exception {
         try (PDDocument doc = new PDDocument()) {
             PDPage pagina  = new PDPage(PDRectangle.A4);
             doc.addPage(pagina);
@@ -23,18 +26,21 @@ public class GeradorPDF {
 
             try (PDPageContentStream c = new PDPageContentStream(doc, pagina)) {
 
-                boolean temLogo = caminhoLogo != null
-                               && !caminhoLogo.isEmpty()
-                               && new File(caminhoLogo).exists();
-
                 float y = 780;
 
-                if (temLogo) {
-                    PDImageXObject logo = PDImageXObject.createFromFile(caminhoLogo, doc);
-                    c.drawImage(logo, 50, y - 10, 60, 60);
+                PDImageXObject logoImg = loadLogo(doc, logoBase64);
+                float logoW = 0;
+                if (logoImg != null) {
+                    float maxH = 60f;
+                    float aspect = (float) logoImg.getWidth() / logoImg.getHeight();
+                    float lH = Math.min(maxH, logoImg.getHeight());
+                    float lW = Math.min(60f, lH * aspect);
+                    lH = lW / aspect;
+                    c.drawImage(logoImg, 50, y - 10, lW, lH);
+                    logoW = lW + 10;
                 }
 
-                float xNome = temLogo ? 120 : 50;
+                float xNome = 50 + logoW;
                 c.beginText();
                 c.setFont(fonteBold, 20);
                 c.newLineAtOffset(xNome, y);
@@ -116,6 +122,19 @@ public class GeradorPDF {
         }
     }
 
+    private static PDImageXObject loadLogo(PDDocument doc, String base64) {
+        if (base64 == null || base64.isBlank()) return null;
+        try {
+            String b64 = base64.contains(",") ? base64.substring(base64.indexOf(",") + 1) : base64;
+            byte[] bytes = java.util.Base64.getDecoder().decode(b64.trim());
+            BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
+            if (img == null) return null;
+            return LosslessFactory.createFromImage(doc, img);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     private static void escrever(PDPageContentStream c, float x, float y, String texto, int maxLen)
             throws Exception {
         c.beginText();
@@ -124,7 +143,6 @@ public class GeradorPDF {
         c.endText();
     }
 
-    // Strip control characters and truncate — prevents layout breaks and encoding issues
     private static String sanitize(String input, int maxLen) {
         if (input == null) return "";
         String s = input.replaceAll("[\\x00-\\x1F\\x7F]", "").trim();

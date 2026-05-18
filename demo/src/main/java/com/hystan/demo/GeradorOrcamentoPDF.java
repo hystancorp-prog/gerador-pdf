@@ -3,11 +3,15 @@ package com.hystan.demo;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import javax.imageio.ImageIO;
 
 public class GeradorOrcamentoPDF {
 
@@ -26,14 +30,29 @@ public class GeradorOrcamentoPDF {
                 String dataHoje = LocalDate.now()
                     .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-                // ── CABEÇALHO
+                // ── LOGO + CABEÇALHO
+                PDImageXObject logoImg = loadLogo(doc, req.logoBase64);
+                float headerH = 36f;
+                float headerY = y - 10;
+
                 c.setNonStrokingColor(new Color(50, 50, 50));
-                c.addRect(50, y - 10, 495, 36);
+                c.addRect(50, headerY, 495, headerH);
                 c.fill();
+
+                float textOffsetX = 55;
+                if (logoImg != null) {
+                    float maxLogoH = headerH - 6;
+                    float aspect   = (float) logoImg.getWidth() / logoImg.getHeight();
+                    float lH = Math.min(maxLogoH, logoImg.getHeight());
+                    float lW = lH * aspect;
+                    float lY = headerY + (headerH - lH) / 2f;
+                    c.drawImage(logoImg, 55, lY, lW, lH);
+                    textOffsetX = 55 + lW + 8;
+                }
 
                 c.setNonStrokingColor(Color.WHITE);
                 c.setFont(fonteBold, 15);
-                escrever(c, 55, y + 8, "ORCAMENTO No " + numOrc, 50);
+                escrever(c, textOffsetX, y + 8, "ORCAMENTO No " + numOrc, 50);
 
                 c.setFont(fonteNormal, 10);
                 escrever(c, 400, y + 8, "Emissao: " + dataHoje, 30);
@@ -149,7 +168,7 @@ public class GeradorOrcamentoPDF {
                 c.setStrokingColor(Color.BLACK);
                 y -= 18;
 
-                // ── RODAPÉ: VALIDADE E OBSERVAÇÕES
+                // ── RODAPÉ
                 c.setFont(fonteNormal, 10);
                 if (req.validadeDias != null && !req.validadeDias.isBlank()) {
                     escrever(c, 50, y,
@@ -171,6 +190,19 @@ public class GeradorOrcamentoPDF {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             doc.save(baos);
             return baos.toByteArray();
+        }
+    }
+
+    private static PDImageXObject loadLogo(PDDocument doc, String base64) {
+        if (base64 == null || base64.isBlank()) return null;
+        try {
+            String b64 = base64.contains(",") ? base64.substring(base64.indexOf(",") + 1) : base64;
+            byte[] bytes = java.util.Base64.getDecoder().decode(b64.trim());
+            BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
+            if (img == null) return null;
+            return LosslessFactory.createFromImage(doc, img);
+        } catch (Exception e) {
+            return null;
         }
     }
 

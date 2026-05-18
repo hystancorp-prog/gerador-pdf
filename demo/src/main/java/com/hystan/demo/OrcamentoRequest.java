@@ -11,6 +11,7 @@ public class OrcamentoRequest {
     public String validadeDias;
     public String observacoes;
     public List<ItemOrcamento> itens;
+    public String logoBase64;
 
     public static class ItemOrcamento {
         public String descricao;

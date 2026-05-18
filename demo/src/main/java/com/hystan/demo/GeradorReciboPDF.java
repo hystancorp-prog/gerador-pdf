@@ -3,9 +3,13 @@ package com.hystan.demo;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.*;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Random;
+import javax.imageio.ImageIO;
 
 public class GeradorReciboPDF {
 
@@ -40,17 +44,32 @@ public class GeradorReciboPDF {
                         : String.valueOf(new Random().nextInt(9000) + 1000),
                     20);
 
-                // ── CABEÇALHO
+                // ── LOGO + CABEÇALHO
+                PDImageXObject logoImg = loadLogo(doc, req.logoBase64);
+                float headerH = 36f;
+                float headerY = y - 10;
+
                 c.setNonStrokingColor(new Color(50, 50, 50));
-                c.addRect(50, y - 10, 495, 36);
+                c.addRect(50, headerY, 495, headerH);
                 c.fill();
+
+                float textOffsetX = 55;
+                if (logoImg != null) {
+                    float maxLogoH = headerH - 6;
+                    float aspect   = (float) logoImg.getWidth() / logoImg.getHeight();
+                    float lH = Math.min(maxLogoH, logoImg.getHeight());
+                    float lW = lH * aspect;
+                    float lY = headerY + (headerH - lH) / 2f;
+                    c.drawImage(logoImg, 55, lY, lW, lH);
+                    textOffsetX = 55 + lW + 8;
+                }
 
                 c.setNonStrokingColor(Color.WHITE);
                 c.setFont(fonteBold, 18);
-                escrever(c, 55, y + 6, "RECIBO", 20);
+                escrever(c, textOffsetX, y + 6, "RECIBO", 20);
 
                 c.setFont(fonteNormal, 11);
-                escrever(c, 200, y + 6, "No " + numRecibo, 25);
+                escrever(c, textOffsetX + 80, y + 6, "No " + numRecibo, 25);
 
                 c.setFont(fonteNormal, 10);
                 String dataStr = req.data != null && !req.data.isBlank()
@@ -68,13 +87,13 @@ public class GeradorReciboPDF {
                 y -= 30;
 
                 // ── CORPO PRINCIPAL
-                String clienteNome    = sanitize(req.clienteNome, 60);
-                String descricao      = sanitize(req.descricaoServico, 200);
-                String extenso        = valorPorExtenso(valor);
-                String prestadorNome  = sanitize(req.prestadorNome, 60);
-                String prestadorDoc   = sanitize(req.prestadorCpfCnpj, 30);
-                String cidade         = sanitize(req.cidade, 50);
-                String data           = sanitize(req.data != null ? req.data : "", 20);
+                String clienteNome   = sanitize(req.clienteNome, 60);
+                String descricao     = sanitize(req.descricaoServico, 200);
+                String extenso       = valorPorExtenso(valor);
+                String prestadorNome = sanitize(req.prestadorNome, 60);
+                String prestadorDoc  = sanitize(req.prestadorCpfCnpj, 30);
+                String cidade        = sanitize(req.cidade, 50);
+                String data          = sanitize(req.data != null ? req.data : "", 20);
 
                 c.setFont(fonteNormal, 11);
                 String linha1 = "Recebi de " + clienteNome + " a quantia de " + valorFormatado;
@@ -122,7 +141,7 @@ public class GeradorReciboPDF {
 
                 y -= 40;
 
-                // ── SEPARADOR DE ASSINATURA
+                // ── LINHA DE ASSINATURA
                 c.setStrokingColor(Color.BLACK);
                 c.moveTo(50, y); c.lineTo(260, y); c.stroke();
                 y -= 12;
@@ -141,6 +160,19 @@ public class GeradorReciboPDF {
         }
     }
 
+    private static PDImageXObject loadLogo(PDDocument doc, String base64) {
+        if (base64 == null || base64.isBlank()) return null;
+        try {
+            String b64 = base64.contains(",") ? base64.substring(base64.indexOf(",") + 1) : base64;
+            byte[] bytes = java.util.Base64.getDecoder().decode(b64.trim());
+            BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
+            if (img == null) return null;
+            return LosslessFactory.createFromImage(doc, img);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     private static float drawWrappedText(PDPageContentStream c, PDFont font, float size,
                                           float x, float y, float maxWidth,
                                           String text) throws Exception {
@@ -153,17 +185,12 @@ public class GeradorReciboPDF {
             if (word.isEmpty()) continue;
             String candidate = line.length() == 0 ? word : line + " " + word;
             float w;
-            try {
-                w = font.getStringWidth(candidate) / 1000f * size;
-            } catch (Exception e) {
-                w = maxWidth + 1;
-            }
+            try { w = font.getStringWidth(candidate) / 1000f * size; }
+            catch (Exception e) { w = maxWidth + 1; }
             if (w > maxWidth && line.length() > 0) {
                 c.setFont(font, size);
-                c.beginText();
-                c.newLineAtOffset(x, y);
-                c.showText(line.toString());
-                c.endText();
+                c.beginText(); c.newLineAtOffset(x, y);
+                c.showText(line.toString()); c.endText();
                 y -= size * 1.5f;
                 line = new StringBuilder(word);
             } else {
@@ -173,10 +200,8 @@ public class GeradorReciboPDF {
         }
         if (line.length() > 0) {
             c.setFont(font, size);
-            c.beginText();
-            c.newLineAtOffset(x, y);
-            c.showText(line.toString());
-            c.endText();
+            c.beginText(); c.newLineAtOffset(x, y);
+            c.showText(line.toString()); c.endText();
             y -= size * 1.5f;
         }
         return y;
@@ -184,10 +209,8 @@ public class GeradorReciboPDF {
 
     private static void escrever(PDPageContentStream c, float x, float y,
                                    String texto, int maxLen) throws Exception {
-        c.beginText();
-        c.newLineAtOffset(x, y);
-        c.showText(sanitize(texto, maxLen));
-        c.endText();
+        c.beginText(); c.newLineAtOffset(x, y);
+        c.showText(sanitize(texto, maxLen)); c.endText();
     }
 
     private static String sanitize(String input, int maxLen) {
@@ -196,24 +219,16 @@ public class GeradorReciboPDF {
         return s.length() > maxLen ? s.substring(0, maxLen) : s;
     }
 
-    // ── VALOR POR EXTENSO (PT-BR)
-
     private static String valorPorExtenso(double valor) {
         long intPart = (long) valor;
         long cents = Math.round((valor - intPart) * 100);
         if (cents >= 100) { intPart++; cents = 0; }
-
         if (intPart == 0 && cents == 0) return "zero reais";
-
         StringBuilder sb = new StringBuilder();
-        if (intPart > 0) {
-            sb.append(porExtenso(intPart));
-            sb.append(intPart == 1 ? " real" : " reais");
-        }
+        if (intPart > 0) { sb.append(porExtenso(intPart)); sb.append(intPart == 1 ? " real" : " reais"); }
         if (cents > 0) {
             if (intPart > 0) sb.append(" e ");
-            sb.append(porExtenso(cents));
-            sb.append(cents == 1 ? " centavo" : " centavos");
+            sb.append(porExtenso(cents)); sb.append(cents == 1 ? " centavo" : " centavos");
         }
         return sb.toString();
     }
@@ -221,28 +236,20 @@ public class GeradorReciboPDF {
     private static String porExtenso(long n) {
         if (n == 0) return "zero";
         StringBuilder sb = new StringBuilder();
-
         if (n >= 1_000_000) {
             long m = n / 1_000_000;
             sb.append(porExtenso(m)).append(m == 1 ? " milhao" : " milhoes");
-            n %= 1_000_000;
-            if (n > 0) sb.append(n < 100 ? " e " : ", ");
+            n %= 1_000_000; if (n > 0) sb.append(n < 100 ? " e " : ", ");
         }
         if (n >= 1_000) {
             long m = n / 1_000;
-            if (m == 1) sb.append("mil");
-            else sb.append(porExtenso(m)).append(" mil");
-            n %= 1_000;
-            if (n > 0) sb.append(n < 100 ? " e " : ", ");
+            if (m == 1) sb.append("mil"); else sb.append(porExtenso(m)).append(" mil");
+            n %= 1_000; if (n > 0) sb.append(n < 100 ? " e " : ", ");
         }
         if (n >= 100) {
             long cent = n / 100;
-            if (n % 100 == 0) {
-                sb.append(CENTENAS[(int) cent]);
-            } else {
-                sb.append(cent == 1 ? "cento" : CENTENAS[(int) cent]);
-                sb.append(" e ");
-            }
+            if (n % 100 == 0) sb.append(CENTENAS[(int) cent]);
+            else { sb.append(cent == 1 ? "cento" : CENTENAS[(int) cent]); sb.append(" e "); }
             n %= 100;
         }
         if (n >= 20) {

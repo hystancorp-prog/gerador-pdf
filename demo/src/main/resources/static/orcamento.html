@@ -314,6 +314,7 @@
   const itemsBody      = document.getElementById('items-body');
   const totalGeralEl   = document.getElementById('total-geral');
   const empresaSel     = document.getElementById('empresa-select');
+  let selectedLogoBase64 = null;
 
   /* ── THEME ── */
   function applyTheme(t) {
@@ -352,13 +353,15 @@
       document.getElementById('prestador-nome').value  = '';
       document.getElementById('prestador-cnpj').value  = '';
       document.getElementById('prestador-tel').value   = '';
+      selectedLogoBase64 = null;
       return;
     }
     try {
       const e = JSON.parse(this.value);
-      document.getElementById('prestador-nome').value = e.nome  || '';
+      document.getElementById('prestador-nome').value = e.nome     || '';
       document.getElementById('prestador-cnpj').value = e.cpfCnpj  || '';
       document.getElementById('prestador-tel').value  = e.telefone || '';
+      selectedLogoBase64 = e.logoBase64 || null;
     } catch (_) {}
   });
 
@@ -439,7 +442,8 @@
       clienteCnpj:  document.getElementById('cliente-cnpj').value.trim(),
       validadeDias: document.getElementById('validade').value,
       observacoes:  document.getElementById('observacoes').value.trim(),
-      itens
+      itens,
+      logoBase64: selectedLogoBase64 || null
     };
 
     btnGenerate.disabled = true;
