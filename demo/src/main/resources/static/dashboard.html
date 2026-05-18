@@ -525,6 +525,7 @@
     document.getElementById('cfg-login-method').textContent =
       user.providerData[0]?.providerId === 'google.com' ? 'Google' : 'E-mail e senha';
 
+    if (window._hideLoader) window._hideLoader();
     verificarPlano();
   });
 
@@ -606,14 +607,13 @@
   /* ── NAVIGATION ── */
   function navigate(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('is-active'));
-    document.querySelectorAll('.nav-item[data-page]').forEach(n => n.classList.remove('is-active'));
     const pageEl = document.getElementById('page-' + page);
     if (pageEl) pageEl.classList.add('is-active');
-    const navEl = document.querySelector(`.nav-item[data-page="${page}"]`);
-    if (navEl) navEl.classList.add('is-active');
     document.getElementById('topbar-title').textContent = PAGE_TITLES[page] || 'Dashboard';
     if (window._closeSidebar) window._closeSidebar();
     if (page === 'history') renderHistory();
+    const spaToSidebar = { dashboard: 'dashboard', history: 'historico', settings: 'configuracoes' };
+    if (window._setSidebarActive && spaToSidebar[page]) window._setSidebarActive(spaToSidebar[page]);
   }
   window._navigate = navigate;
 

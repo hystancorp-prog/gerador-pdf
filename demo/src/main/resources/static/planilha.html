@@ -364,6 +364,7 @@
       document.getElementById('trial-banner').classList.add('is-visible');
       document.getElementById('trial-msg').textContent = 'Trial termina em ' + dias + ' dia(s).';
     }
+    if (window._hideLoader) window._hideLoader();
   });
 
   window._doSignOut = async () => {

@@ -255,6 +255,7 @@
     const ss = document.getElementById('sidebar-plan-sub');
     if (sn) sn.textContent = plano === 'ativo' ? 'Plano Business' : plano === 'trial' ? 'Trial' : '—';
     if (ss) ss.textContent = plano === 'ativo' ? 'Relatórios ilimitados' : '';
+    if (window._hideLoader) window._hideLoader();
     loadEmpresas();
   });
 
