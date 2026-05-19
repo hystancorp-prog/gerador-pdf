@@ -376,7 +376,16 @@
       .plan-card.featured { transform: none; }
       .plan-card.featured:hover { transform: translateY(-4px); }
     }
-  </style>
+
+  /* ===== RESPONSIVIDADE MOBILE ===== */
+  @media (max-width: 768px) {
+    .auth-left { display: none !important; }
+    .auth-right { width: 100% !important; padding: 32px 24px !important; }
+    .pricing-grid, .plans { grid-template-columns: 1fr !important; }
+    .plan-card.featured { transform: none !important; }
+    .billing-toggle { flex-wrap: wrap !important; justify-content: center !important; }
+  }
+</style>
 </head>
 <body>
 

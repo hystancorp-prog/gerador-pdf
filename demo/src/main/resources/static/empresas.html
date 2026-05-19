@@ -151,7 +151,33 @@
       .topbar { padding: 0 16px; }
       .form-row-2, .form-row-3 { grid-template-columns: 1fr; }
     }
-  </style>
+
+  /* ===== RESPONSIVIDADE MOBILE ===== */
+  @media (max-width: 768px) {
+    .app-wrapper { margin-left: 0 !important; }
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .btn-menu { display: block !important; }
+    .content { padding: 20px 16px !important; }
+    .stats-grid { grid-template-columns: 1fr !important; }
+    .topbar { padding: 14px 16px !important; }
+    .user-details { display: none; }
+    .card { padding: 20px 16px !important; }
+    .upgrade-card { flex-direction: column !important; text-align: center !important; }
+    .history-table, table { display: block; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+    .months-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .period-tabs { flex-wrap: wrap !important; }
+    .empresas-grid, .form-row { grid-template-columns: 1fr !important; flex-direction: column !important; }
+    .modal { width: 95% !important; padding: 24px 20px !important; }
+    .items-table { overflow-x: auto; display: block; }
+    #hystan-loader img { height: 24px !important; }
+  }
+  @media (max-width: 480px) {
+    .topbar-title { font-size: 15px !important; }
+    .stat-value { font-size: 24px !important; }
+    .btn-generate { font-size: 14px !important; }
+  }
+</style>
 </head>
 <body>
 
