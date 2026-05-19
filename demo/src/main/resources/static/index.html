@@ -859,6 +859,13 @@
     .footer-grid { grid-template-columns: 1fr 1fr !important; }
     .footer-brand { grid-column: 1 / -1 !important; }
     .footer-bottom { flex-direction: column !important; gap: 12px !important; text-align: center !important; }
+    /* Fix 1: logo dupla */
+    .nav-logo .logo-light { display: var(--logo-light-display) !important; }
+    .nav-logo .logo-dark { display: var(--logo-dark-display) !important; }
+    /* Fix 2: bordas dos cards no light mode */
+    .step, .feature, .plan, .testimonial, .preview-frame {
+      border: 1px solid var(--border) !important;
+    }
   }
   @media (max-width: 480px) {
     .footer-grid { grid-template-columns: 1fr !important; }

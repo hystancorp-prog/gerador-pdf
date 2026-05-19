@@ -151,6 +151,22 @@
     .stat-value { font-size: 24px !important; }
     .btn-generate { font-size: 14px !important; }
   }
+
+  /* ===== SELECT THEME ===== */
+  select { color-scheme: dark; }
+  :root[data-theme="dark"] select {
+    background-color: var(--surface-2, #161616) !important;
+    color: var(--text, #ffffff) !important;
+    border-color: var(--border, rgba(255,255,255,0.08)) !important;
+  }
+  :root[data-theme="dark"] select option {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+  }
+  :root[data-theme="light"] select {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+  }
 </style>
 </head>
 <body>
