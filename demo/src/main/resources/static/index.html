@@ -1040,10 +1040,10 @@
         <p class="plan-desc">Para autônomos e pequenos negócios em crescimento.</p>
         <div class="plan-price">
           <span class="currency">R$</span>
-          <span class="amount" data-price-monthly="39" data-price-yearly="31">39</span>
+          <span class="amount" data-price-monthly="37,90" data-price-yearly="29,90">37,90</span>
           <span class="period">/ mês</span>
         </div>
-        <p class="plan-price-note" id="essencialNote">Cobrado mensalmente</p>
+        <p class="plan-price-note" id="essencialNote">Cobrado mensalmente · R$ 455/ano</p>
         <ul>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Documentos ilimitados</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Logo e cores personalizadas</li>
@@ -1052,7 +1052,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Suporte prioritário</li>
         </ul>
         <a href="/auth.html" class="btn btn-primary">Começar grátis</a>
-        <p class="plan-savings" data-monthly="39" data-yearly="31"></p>
+        <p class="plan-savings" data-savings="96,20"></p>
       </div>
 
       <!-- Business -->
@@ -1061,10 +1061,10 @@
         <p class="plan-desc">Para clínicas, salões e times com vários atendentes.</p>
         <div class="plan-price">
           <span class="currency">R$</span>
-          <span class="amount" data-price-monthly="89" data-price-yearly="71">89</span>
+          <span class="amount" data-price-monthly="57,90" data-price-yearly="45,90">57,90</span>
           <span class="period">/ mês</span>
         </div>
-        <p class="plan-price-note" id="businessNote">Cobrado mensalmente</p>
+        <p class="plan-price-note" id="businessNote">Cobrado mensalmente · R$ 694/ano</p>
         <ul>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Tudo do Essencial</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Até 5 usuários no time</li>
@@ -1073,7 +1073,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Suporte por WhatsApp</li>
         </ul>
         <a href="/auth.html" class="btn btn-secondary">Começar grátis</a>
-        <p class="plan-savings" data-monthly="89" data-yearly="71"></p>
+        <p class="plan-savings" data-savings="143,20"></p>
       </div>
     </div>
   </div>
@@ -1306,17 +1306,16 @@
       prices.forEach(function (el) {
         el.textContent = billing === 'yearly' ? el.dataset.priceYearly : el.dataset.priceMonthly;
       });
-      var note = billing === 'yearly'
-        ? 'Cobrado anualmente · economize 20%'
-        : 'Cobrado mensalmente';
-      if (essencialNote) essencialNote.textContent = note;
-      if (businessNote) businessNote.textContent = note;
+      if (essencialNote) essencialNote.textContent = billing === 'yearly'
+        ? 'Cobrado anualmente · R$ 358,80/ano'
+        : 'Cobrado mensalmente · R$ 455/ano';
+      if (businessNote) businessNote.textContent = billing === 'yearly'
+        ? 'Cobrado anualmente · R$ 550,80/ano'
+        : 'Cobrado mensalmente · R$ 694/ano';
       // ===== IMPROVEMENT 10: savings text =====
       document.querySelectorAll('.plan-savings').forEach(function (el) {
         if (billing === 'yearly') {
-          var m = parseInt(el.dataset.monthly, 10);
-          var y = parseInt(el.dataset.yearly, 10);
-          el.textContent = 'Você economiza R$ ' + ((m - y) * 12) + ' por ano';
+          el.textContent = 'Você economiza R$ ' + el.dataset.savings + ' por ano';
           el.classList.remove('show');
           el.offsetHeight; // reflow to restart animation
           el.classList.add('show');
