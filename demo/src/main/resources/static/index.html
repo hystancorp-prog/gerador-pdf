@@ -652,7 +652,7 @@
   /* ===== FOOTER ===== */
   footer { border-top: 1px solid var(--border); padding: 56px 0 36px; }
   .footer-grid {
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px;
     margin-bottom: 48px;
   }
   .footer-brand img { height: 28px; width: auto; }
@@ -745,6 +745,77 @@
   /* ===== IMPROVEMENT 9: HERO META INDIVIDUAL STAGGER ===== */
   .hero-load-5b { animation-delay: 500ms; }
   .hero-load-5c { animation-delay: 600ms; }
+
+  /* ===== MODAIS LEGAIS ===== */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 200;
+    opacity: 0; pointer-events: none;
+    transition: opacity 250ms ease;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+  .modal {
+    position: fixed; inset: 0; z-index: 201;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    opacity: 0; pointer-events: none;
+    transform: translateY(12px) scale(0.98);
+    transition: opacity 250ms ease, transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .modal.open { opacity: 1; pointer-events: auto; transform: none; }
+  .modal-inner {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 20px;
+    width: 100%; max-width: 560px; max-height: 85vh;
+    display: flex; flex-direction: column;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+  }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .modal-header h3 { font-size: 18px; }
+  .modal-close {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .modal-close:hover { background: var(--surface-2); color: var(--text); }
+  .modal-close svg { width: 16px; height: 16px; }
+  .modal-body {
+    padding: 24px 28px;
+    overflow-y: auto;
+    flex: 1;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .modal-body p { font-size: 14.5px; color: var(--text-muted); line-height: 1.65; }
+  .modal-body strong { color: var(--text); }
+  .modal-body code {
+    font-family: ui-monospace, 'Courier New', monospace;
+    font-size: 12px;
+    background: var(--surface-2);
+    padding: 2px 6px; border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  .modal-footer {
+    padding: 16px 28px 24px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: flex-end;
+    flex-shrink: 0;
+  }
+  /* ===== FOOTER LEGAL LINKS ===== */
+  .footer-legal-links { display: flex; gap: 20px; flex-wrap: wrap; }
+  .footer-legal-links a { font-size: 13px; color: var(--text-dim); transition: color 160ms ease; cursor: pointer; }
+  .footer-legal-links a:hover { color: var(--text); }
+  @media (max-width: 768px) { .footer-legal-links { display: none; } }
 
   /* ===== IMPROVEMENT 10: PLAN SAVINGS FADE-IN TEXT ===== */
   @keyframes fadeInSavings {
@@ -1165,42 +1236,109 @@
       <div class="footer-col">
         <h5>Produto</h5>
         <ul>
-          <li><a href="#funcionalidades">Funcionalidades</a></li>
-          <li><a href="#planos">Planos</a></li>
-          <li><a href="#como-funciona">Como funciona</a></li>
+          <li><a href="#funcionalidades" class="footer-anchor">Funcionalidades</a></li>
+          <li><a href="#planos" class="footer-anchor">Planos</a></li>
+          <li><a href="#como-funciona" class="footer-anchor">Como funciona</a></li>
+          <li><a href="#depoimentos" class="footer-anchor">Depoimentos</a></li>
           <li><a href="/auth.html">Entrar</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h5>Empresa</h5>
-        <ul>
-          <li><a href="#">Sobre</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Contato</a></li>
-          <li><a href="#">Carreira</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>Legal</h5>
         <ul>
-          <li><a href="#">Termos de uso</a></li>
-          <li><a href="#">Privacidade</a></li>
-          <li><a href="#">LGPD</a></li>
-          <li><a href="#">Cookies</a></li>
+          <li><a href="#" data-modal="modal-termos">Termos de uso</a></li>
+          <li><a href="#" data-modal="modal-privacidade">Privacidade</a></li>
+          <li><a href="#" data-modal="modal-lgpd">LGPD</a></li>
+          <li><a href="#" data-modal="modal-cookies">Cookies</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2025 Hystan. Todos os direitos reservados.</span>
-      <span>CNPJ 00.000.000/0001-00</span>
-      <div class="footer-bottom-links">
-        <a href="#">Status</a>
-        <a href="#">Changelog</a>
-        <a href="#">Twitter/X</a>
+      <span>© 2026 Hystan. Todos os direitos reservados.</span>
+      <div class="footer-legal-links">
+        <a href="#" data-modal="modal-termos">Termos de uso</a>
+        <a href="#" data-modal="modal-privacidade">Privacidade</a>
+        <a href="#" data-modal="modal-lgpd">LGPD</a>
+        <a href="#" data-modal="modal-cookies">Cookies</a>
       </div>
     </div>
   </div>
 </footer>
+
+<!-- ===== MODAIS LEGAIS ===== -->
+<div class="modal-backdrop" id="modalBackdrop"></div>
+
+<div class="modal" id="modal-termos" role="dialog" aria-modal="true" aria-labelledby="modal-termos-title">
+  <div class="modal-inner">
+    <div class="modal-header">
+      <h3 id="modal-termos-title">Termos de Uso</h3>
+      <button class="modal-close" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p>Ao utilizar a plataforma Hystan, você concorda com estes termos de uso. O serviço é fornecido para fins profissionais de geração de documentos PDF a partir de planilhas, sendo vedado o uso para fins ilícitos, spam ou atividades que violem a legislação brasileira.</p>
+      <p>O usuário é responsável pelo conteúdo das planilhas enviadas e pelos documentos gerados. A Hystan não se responsabiliza por informações incorretas inseridas pelo usuário, nem por decisões tomadas com base nos documentos gerados pela plataforma.</p>
+      <p>O cancelamento pode ser realizado a qualquer momento pelo painel do usuário, sem multa ou fidelidade. O acesso é mantido até o fim do período já pago. Planos não utilizados não são reembolsáveis após o período de 7 dias de trial gratuito.</p>
+      <p>A Hystan reserva-se o direito de atualizar estes termos mediante aviso prévio de 15 dias por e-mail cadastrado. O uso continuado do serviço após essa data constitui aceite das novas condições.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary modal-close-btn">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-privacidade" role="dialog" aria-modal="true" aria-labelledby="modal-privacidade-title">
+  <div class="modal-inner">
+    <div class="modal-header">
+      <h3 id="modal-privacidade-title">Política de Privacidade</h3>
+      <button class="modal-close" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p>A Hystan coleta apenas os dados necessários para o funcionamento do serviço: nome, e-mail e informações de autenticação via Firebase Authentication (Google OAuth2 ou e-mail/senha). Nenhuma senha é armazenada diretamente — a autenticação é gerenciada integralmente pelo Firebase.</p>
+      <p>As planilhas enviadas são processadas em memória para geração do PDF e não são armazenadas em nossos servidores após a conclusão do processamento. Os PDFs gerados ficam disponíveis para download temporário e não são compartilhados com terceiros.</p>
+      <p>Não vendemos, alugamos ou compartilhamos seus dados pessoais com terceiros para fins comerciais. Podemos compartilhar informações agregadas e anonimizadas para fins de análise e melhoria do serviço.</p>
+      <p>Utilizamos o Stripe para processamento de pagamentos. Os dados de cartão são tratados exclusivamente pelo Stripe e nunca passam pelos nossos servidores. Para mais informações, consulte a política de privacidade do Stripe em stripe.com/privacy.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary modal-close-btn">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-lgpd" role="dialog" aria-modal="true" aria-labelledby="modal-lgpd-title">
+  <div class="modal-inner">
+    <div class="modal-header">
+      <h3 id="modal-lgpd-title">LGPD — Lei Geral de Proteção de Dados</h3>
+      <button class="modal-close" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p>Em conformidade com a Lei nº 13.709/2018 (LGPD), você tem direito de acessar, corrigir, portar e solicitar a exclusão de seus dados pessoais a qualquer momento. Para exercer esses direitos, envie um e-mail para privacidade@hystan.com.br com o assunto "LGPD — Solicitação".</p>
+      <p>Os dados são tratados com base nas seguintes bases legais: execução de contrato (para prestação do serviço), legítimo interesse (para melhoria da plataforma) e consentimento (para comunicações de marketing, quando aplicável).</p>
+      <p>O Encarregado de Proteção de Dados (DPO) da Hystan pode ser contactado pelo e-mail dpo@hystan.com.br. Respondemos a todas as solicitações em até 15 dias úteis, conforme previsto na lei.</p>
+      <p>Caso entenda que seus direitos não foram atendidos adequadamente, você pode registrar uma reclamação junto à Autoridade Nacional de Proteção de Dados (ANPD) em gov.br/anpd.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary modal-close-btn">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-cookies" role="dialog" aria-modal="true" aria-labelledby="modal-cookies-title">
+  <div class="modal-inner">
+    <div class="modal-header">
+      <h3 id="modal-cookies-title">Política de Cookies</h3>
+      <button class="modal-close" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p>A Hystan utiliza um número mínimo de cookies e mecanismos de armazenamento local (localStorage) estritamente necessários para o funcionamento do serviço. Não utilizamos cookies de rastreamento ou publicidade de terceiros.</p>
+      <p><strong>Autenticação:</strong> O Firebase Authentication armazena tokens de sessão em cookies seguros (HttpOnly, Secure) para manter o usuário autenticado entre sessões. Esses tokens expiram automaticamente e são renovados pelo Firebase.</p>
+      <p><strong>Preferências:</strong> Salvamos sua preferência de tema (dark/light mode) no localStorage do navegador com a chave <code>hystan_theme</code>. Nenhuma informação pessoal é armazenada nessa chave.</p>
+      <p>Você pode limpar cookies e dados do localStorage a qualquer momento pelas configurações do seu navegador. Isso encerrará sua sessão e redefinirá suas preferências de exibição.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary modal-close-btn">Fechar</button>
+    </div>
+  </div>
+</div>
 
 <script>
   // ===== THEME TOGGLE =====
@@ -1247,6 +1385,58 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  })();
+
+  // ===== FOOTER SMOOTH SCROLL =====
+  (function () {
+    document.querySelectorAll('.footer-anchor').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        var target = document.querySelector(link.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  })();
+
+  // ===== LEGAL MODALS =====
+  (function () {
+    var backdrop = document.getElementById('modalBackdrop');
+    var currentModal = null;
+
+    function openModal(id) {
+      var modal = document.getElementById(id);
+      if (!modal) return;
+      if (currentModal) closeModal();
+      currentModal = modal;
+      backdrop.classList.add('open');
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      if (!currentModal) return;
+      currentModal.classList.remove('open');
+      backdrop.classList.remove('open');
+      document.body.style.overflow = '';
+      currentModal = null;
+    }
+
+    document.querySelectorAll('[data-modal]').forEach(function (trigger) {
+      trigger.addEventListener('click', function (e) {
+        e.preventDefault();
+        openModal(trigger.dataset.modal);
+      });
+    });
+
+    document.querySelectorAll('.modal-close, .modal-close-btn').forEach(function (btn) {
+      btn.addEventListener('click', closeModal);
+    });
+
+    backdrop.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeModal();
+    });
   })();
 
   // ===== IMPROVEMENT 7: ACTIVE NAV SECTION INDICATOR =====
