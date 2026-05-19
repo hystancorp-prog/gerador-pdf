@@ -121,33 +121,28 @@
 
   /* ── LOGOUT MODAL ── */
   function showLogoutModal() {
-    var m = document.getElementById('_sb_logout_modal');
-    if (m) m.classList.add('is-visible');
-  }
-  function hideLogoutModal() {
-    var m = document.getElementById('_sb_logout_modal');
-    if (m) m.classList.remove('is-visible');
-  }
-  function injectLogoutModal() {
-    if (document.getElementById('_sb_logout_modal')) return;
+    if (document.getElementById('logout-modal')) return;
     var modal = document.createElement('div');
-    modal.id = '_sb_logout_modal';
-    modal.className = '_sb_modal_ov';
+    modal.id = 'logout-modal';
+    modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;';
     modal.innerHTML =
-      '<div class="_sb_modal">' +
-        '<div class="_sb_modal_title">Sair da conta?</div>' +
-        '<p class="_sb_modal_body">Tem certeza que deseja encerrar sua sessão?</p>' +
-        '<div class="_sb_modal_actions">' +
-          '<button id="_sb_btn_cancel">Cancelar</button>' +
-          '<button id="_sb_btn_confirm">Sair</button>' +
+      '<div style="background:var(--surface,#ffffff);color:var(--text,#1a1a1a);border:1px solid var(--border-strong,#c8c8c4);border-radius:16px;padding:32px;max-width:400px;width:90%;box-shadow:0 24px 60px rgba(0,0,0,0.3);">' +
+        '<h3 style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;margin:0 0 8px;color:var(--text,#1a1a1a);">Sair da conta?</h3>' +
+        '<p style="font-size:14px;color:var(--text-muted,#888);margin:0 0 24px;line-height:1.5;">Tem certeza que deseja encerrar sua sessão neste dispositivo?</p>' +
+        '<div style="display:flex;gap:10px;">' +
+          '<button id="logout-cancel" style="flex:1;padding:12px;border-radius:8px;border:1px solid var(--border,#e0e0dd);background:var(--surface-2,#f5f5f3);color:var(--text,#1a1a1a);font-size:14px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;">Cancelar</button>' +
+          '<button id="logout-confirm" style="flex:1;padding:12px;border-radius:8px;border:none;background:#dc2626;color:white;font-size:14px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;">Sair</button>' +
         '</div>' +
       '</div>';
     document.body.appendChild(modal);
-    modal.addEventListener('click', function (e) { if (e.target === modal) hideLogoutModal(); });
-    document.getElementById('_sb_btn_cancel').addEventListener('click', hideLogoutModal);
-    document.getElementById('_sb_btn_confirm').addEventListener('click', function () {
-      if (typeof window._doSignOut === 'function') window._doSignOut();
-      else hideLogoutModal();
+    document.getElementById('logout-cancel').onclick = function () { modal.remove(); };
+    document.getElementById('logout-confirm').onclick = function () {
+      modal.remove();
+      if (typeof window.logout === 'function') window.logout();
+    };
+    modal.addEventListener('click', function (e) { if (e.target === modal) modal.remove(); });
+    document.addEventListener('keydown', function escHandler(e) {
+      if (e.key === 'Escape') { modal.remove(); document.removeEventListener('keydown', escHandler); }
     });
   }
 
@@ -197,7 +192,6 @@
       document.body.insertBefore(ov, document.body.firstChild);
     }
 
-    injectLogoutModal();
     injectLoader();
 
     var plano    = localStorage.getItem('hystan_plano') || '';
@@ -259,7 +253,7 @@
 
     /* ESC */
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { closeSidebar(); hideLogoutModal(); }
+      if (e.key === 'Escape') { closeSidebar(); }
     });
   }
 
