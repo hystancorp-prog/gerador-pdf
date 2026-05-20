@@ -130,7 +130,7 @@
 
     /* ── GREETING ── */
     .greeting { margin-bottom: 28px; }
-    .greeting-title { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800; color: var(--text-1); letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 6px; }
+    .greeting-title { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800; color: var(--text-1); letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 6px; word-break: break-word; }
     .greeting-sub { font-size: 14px; color: var(--text-2); line-height: 1.5; }
 
     /* ── PROMO CARD ── */
@@ -224,60 +224,96 @@
     .toast.is-error { background: var(--toast-error-bg); }
 
   @media (max-width: 768px) {
-    .greeting-title {
-      font-size: 24px !important;
-      letter-spacing: -0.02em !important;
-      line-height: 1.2 !important;
+    .app-wrapper { margin-left: 0 !important; }
+    .sidebar { transform: translateX(-100%) !important; }
+    .sidebar.open { transform: translateX(0) !important; }
+    .btn-menu { display: flex !important; }
+    .content { padding: 16px !important; max-width: 100% !important; }
+    .topbar { padding: 12px 16px !important; }
+    .topbar-title { font-size: 16px !important; }
+    .user-details { display: none !important; }
+
+    /* Saudação */
+    .content h1, .content h2 {
+      font-size: 20px !important;
+      line-height: 1.3 !important;
+      word-break: break-word !important;
     }
-    .promo-card {
+    .content p { font-size: 13px !important; }
+
+    /* Stats */
+    .stats-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
+    .stat-card { padding: 16px !important; }
+    .stat-value { font-size: 26px !important; }
+
+    /* Upgrade card */
+    .upgrade-card {
       flex-direction: column !important;
-      align-items: flex-start !important;
-      gap: 12px !important;
       padding: 16px !important;
+      text-align: center !important;
     }
-    .promo-card-title {
-      font-size: 14px !important;
+    .upgrade-card h3 { font-size: 15px !important; }
+    .upgrade-card p { font-size: 12px !important; }
+
+    /* Tool/nav cards */
+    .tool-cards, .nav-cards { grid-template-columns: 1fr !important; }
+    .tool-card, .nav-card {
+      padding: 20px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .tool-card *, .nav-card * {
       white-space: normal !important;
       overflow: visible !important;
       text-overflow: unset !important;
+      word-break: break-word !important;
     }
-    .promo-card-sub {
-      font-size: 12px !important;
-      white-space: normal !important;
-    }
-    .btn-promo { width: 100% !important; }
+
+    /* Gráfico */
+    canvas { max-width: 100% !important; height: 150px !important; }
+
+    /* Cards gerais */
+    .card { padding: 16px !important; overflow: hidden !important; }
+    .card-title { font-size: 15px !important; }
+
+    /* Trial banner */
     .trial-banner {
-      flex-wrap: nowrap !important;
+      font-size: 11px !important;
       padding: 8px 16px !important;
-      font-size: 12px !important;
-      gap: 8px !important;
-      justify-content: flex-start !important;
+      flex-wrap: wrap !important;
+      text-align: center !important;
     }
-    .stats-grid {
-      grid-template-columns: 1fr !important;
-      gap: 10px !important;
+
+    /* Meses */
+    .months-grid { grid-template-columns: repeat(3, 1fr) !important; }
+
+    /* Period tabs */
+    .period-tabs { flex-wrap: wrap !important; gap: 6px !important; }
+
+    /* Botão gerar */
+    .btn-generate {
+      font-size: 14px !important;
+      padding: 14px !important;
     }
-    .stat-card  { padding: 16px !important; }
-    .stat-value { font-size: 28px !important; }
-    .nav-cards  {
-      grid-template-columns: 1fr !important;
-      gap: 12px !important;
+
+    /* Modais */
+    .modal {
+      width: 92% !important;
+      padding: 24px 18px !important;
     }
-    .content { padding: 16px !important; }
-    .topbar  { padding: 0 16px !important; }
-    .card    { padding: 20px 16px !important; }
-    .user-details { display: none; }
-    .app-wrapper  { margin-left: 0 !important; }
-    .sidebar { transform: translateX(-100%); }
-    .sidebar.is-open { transform: translateX(0); }
-    .btn-hamburger { display: flex !important; }
-    .history-table { display: block; overflow-x: auto; white-space: nowrap; }
+
+    /* Histórico tabela */
+    .history-table {
+      display: block !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
   }
 
   @media (max-width: 480px) {
-    .greeting-title { font-size: 20px !important; }
-    .stat-value     { font-size: 26px !important; }
-    .theme-toggle   { display: none; }
+    .content h1, .content h2 { font-size: 18px !important; }
+    .stat-value { font-size: 22px !important; }
+    .btn-generate { font-size: 13px !important; }
   }
 </style>
 </head>
