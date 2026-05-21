@@ -186,6 +186,22 @@
     color: #1a1a1a !important;
   }
 
+  /* ===== INPUT NUMBER VISIBILITY ===== */
+  input[type="number"],
+  input[name*="qtd"],
+  input[name*="quantidade"],
+  [class*="qtd"] input,
+  [class*="quantidade"] input {
+    color: var(--text, #1a1a1a) !important;
+    -webkit-text-fill-color: var(--text, #1a1a1a) !important;
+    opacity: 1 !important;
+  }
+  :root[data-theme="dark"] input[type="number"],
+  :root[data-theme="dark"] input {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+
   @media (max-width: 768px) {
     :root { --sidebar-w: 0px !important; }
     .app-wrapper { margin-left: 0 !important; width: 100% !important; }

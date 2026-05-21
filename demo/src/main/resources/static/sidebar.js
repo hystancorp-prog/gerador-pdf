@@ -314,3 +314,19 @@
   window._closeSidebar     = closeSidebar;
   window._hideLoader       = hideLoader;
 })();
+
+/* ── EVENT DELEGATION (works regardless of injection timing) ── */
+document.addEventListener('click', function (e) {
+  if (e.target.closest('#btn-menu')) {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (sidebar) sidebar.classList.toggle('open');
+    if (overlay) overlay.classList.toggle('show');
+  }
+  if (e.target.closest('.sidebar-overlay')) {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('show');
+  }
+});
