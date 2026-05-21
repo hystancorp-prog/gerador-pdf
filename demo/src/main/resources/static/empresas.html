@@ -689,5 +689,29 @@ window.addEventListener('load', function() {
 });
 </script>
 
+<script>
+window.addEventListener('load', function() {
+  var btn = document.getElementById('btn-menu');
+  var sidebar = document.querySelector('.sidebar');
+
+  if (btn) {
+    btn.addEventListener('click', function() {
+      sidebar.classList.toggle('open');
+
+      // Força o estilo diretamente para testar
+      if (sidebar.classList.contains('open')) {
+        sidebar.style.transform = 'translateX(0)';
+        sidebar.style.position = 'fixed';
+        sidebar.style.top = '0';
+        sidebar.style.left = '0';
+        sidebar.style.height = '100vh';
+        sidebar.style.zIndex = '9999';
+      } else {
+        sidebar.style.transform = 'translateX(-100%)';
+      }
+    });
+  }
+});
+</script>
 </body>
 </html>
