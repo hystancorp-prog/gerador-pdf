@@ -530,6 +530,10 @@
     const unitInput = tr.querySelector('[data-field="unit"]');
     const qtyInput  = tr.querySelector('[data-field="qty"]');
 
+    qtyInput.style.color = 'inherit';
+    qtyInput.style.webkitTextFillColor = 'inherit';
+    qtyInput.style.opacity = '1';
+
     unitInput.addEventListener('input', function (e) { maskMoeda(e); recalcRow(tr); });
     qtyInput.addEventListener('input',  function () { recalcRow(tr); });
     tr.querySelector('.btn-remove').addEventListener('click', () => { tr.remove(); recalcTotal(); });
