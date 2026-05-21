@@ -242,6 +242,13 @@
     }
   }
 
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] { -moz-appearance: textfield; }
+
 </style>
 </head>
 <body>
@@ -494,7 +501,7 @@
     tr.className = 'item-row';
     tr.innerHTML =
       '<td class="col-desc"><input type="text" placeholder="Descrição do serviço/produto" data-field="desc"></td>' +
-      '<td class="col-qty"><input type="number" min="1" value="1" data-field="qty" style="width:100%; color:#ffffff !important; -webkit-text-fill-color:#ffffff !important; background:transparent;"></td>' +
+      '<td class="col-qty"><input type="number" min="1" value="1" data-field="qty" style="width:100%; color:inherit; -webkit-text-fill-color:currentColor;"></td>' +
       '<td class="col-unit"><input type="text" placeholder="R$ 0,00" data-field="unit"></td>' +
       '<td class="col-total td-total-val" data-field="total">R$ 0,00</td>' +
       '<td class="col-del"><button class="btn-remove" type="button" aria-label="Remover">' +
@@ -509,10 +516,6 @@
     tr.querySelector('.btn-remove').addEventListener('click', () => { tr.remove(); recalcTotal(); });
 
     itemsBody.appendChild(tr);
-    const qi = tr.querySelector('[data-field="qty"]');
-    console.log('cor do input:', window.getComputedStyle(qi).color);
-    console.log('fill color:', window.getComputedStyle(qi).webkitTextFillColor);
-    console.log('background:', window.getComputedStyle(qi).backgroundColor);
     recalcTotal();
   }
 
@@ -625,17 +628,10 @@ window.addEventListener('load', function() {
   var sidebar = document.querySelector('.sidebar');
   var overlay = document.querySelector('.sidebar-overlay');
 
-  console.log('btn-menu encontrado:', !!btn);
-  console.log('sidebar encontrada:', !!sidebar);
-  console.log('overlay encontrado:', !!overlay);
-
   if (btn) {
     btn.addEventListener('click', function() {
-      console.log('CLICOU NO HAMBURGUER');
-      console.log('sidebar classes antes:', sidebar ? sidebar.className : 'sem sidebar');
       if (sidebar) sidebar.classList.toggle('open');
       if (overlay) overlay.classList.toggle('show');
-      console.log('sidebar classes depois:', sidebar ? sidebar.className : 'sem sidebar');
     });
   }
 });
