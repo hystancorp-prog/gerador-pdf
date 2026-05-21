@@ -602,7 +602,7 @@
 
 <script>
 window.addEventListener('load', function() {
-  var btn     = document.getElementById('btn-menu');
+  var btn = document.getElementById('btn-menu');
   var sidebar = document.querySelector('.sidebar');
   var overlay = document.querySelector('.sidebar-overlay');
 
@@ -617,13 +617,6 @@ window.addEventListener('load', function() {
       if (sidebar) sidebar.classList.toggle('open');
       if (overlay) overlay.classList.toggle('show');
       console.log('sidebar classes depois:', sidebar ? sidebar.className : 'sem sidebar');
-    });
-  }
-
-  if (overlay) {
-    overlay.addEventListener('click', function() {
-      if (sidebar) sidebar.classList.remove('open');
-      overlay.classList.remove('show');
     });
   }
 });

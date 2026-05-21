@@ -23,6 +23,8 @@
     '.sidebar-plan-label{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:4px}' +
     '.sidebar-plan-name{font-family:"Syne",sans-serif;font-size:14px;font-weight:700;color:#ffffff;margin-bottom:2px}' +
     '.sidebar-plan-sub{font-size:11px;color:rgba(255,255,255,0.38)}' +
+    '.sidebar{z-index:9999!important}' +
+    '.sidebar-overlay{z-index:9998!important}' +
     '@media(max-width:768px){' +
       '#sidebar{transform:translateX(-100%)!important;transition:transform 0.25s ease}' +
       '#sidebar.is-open,#sidebar.open{transform:translateX(0)!important}' +
