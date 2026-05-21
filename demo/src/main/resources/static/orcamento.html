@@ -186,6 +186,16 @@
     color: #1a1a1a !important;
   }
 
+  :root[data-theme="dark"] [data-field="qty"],
+  :root[data-theme="dark"] [data-field="price"] {
+    color: #ffffff;
+    background: transparent;
+  }
+  :root[data-theme="light"] [data-field="qty"],
+  :root[data-theme="light"] [data-field="price"] {
+    color: #000000;
+    background: transparent;
+  }
 
   @media (max-width: 768px) {
     :root { --sidebar-w: 0px !important; }
@@ -501,7 +511,7 @@
     tr.className = 'item-row';
     tr.innerHTML =
       '<td class="col-desc"><input type="text" placeholder="Descrição do serviço/produto" data-field="desc"></td>' +
-      '<td class="col-qty"><input type="number" min="1" value="1" data-field="qty" style="width:100%; color:inherit;"></td>' +
+      '<td class="col-qty"><input type="number" min="1" value="1" data-field="qty" style="width:100%;background:transparent;border:none;outline:none;font-size:14px;font-family:inherit;padding:4px;color:#000000;opacity:1;"></td>' +
       '<td class="col-unit"><input type="text" placeholder="R$ 0,00" data-field="unit"></td>' +
       '<td class="col-total td-total-val" data-field="total">R$ 0,00</td>' +
       '<td class="col-del"><button class="btn-remove" type="button" aria-label="Remover">' +
@@ -519,7 +529,7 @@
 
     setTimeout(function() {
       tr.querySelectorAll('input').forEach(function(input) {
-        input.style.cssText += '; color: inherit !important; -webkit-text-fill-color: unset !important; opacity: 1 !important;';
+        input.style.cssText += '; color: inherit !important; opacity: 1 !important;';
       });
     }, 0);
 
