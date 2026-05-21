@@ -1099,5 +1099,27 @@
     }
   });
 </script>
+<script>
+window.addEventListener('load', function() {
+  var btn = document.getElementById('btn-menu');
+  var sidebar = document.querySelector('.sidebar');
+  var overlay = document.querySelector('.sidebar-overlay');
+
+  console.log('btn-menu encontrado:', !!btn);
+  console.log('sidebar encontrada:', !!sidebar);
+  console.log('overlay encontrado:', !!overlay);
+
+  if (btn) {
+    btn.style.border = '2px solid red';
+    btn.addEventListener('click', function() {
+      console.log('CLICOU NO HAMBURGUER');
+      console.log('sidebar classes antes:', sidebar ? sidebar.className : 'sem sidebar');
+      if (sidebar) sidebar.classList.toggle('open');
+      if (overlay) overlay.classList.toggle('show');
+      console.log('sidebar classes depois:', sidebar ? sidebar.className : 'sem sidebar');
+    });
+  }
+});
+</script>
 </body>
 </html>
