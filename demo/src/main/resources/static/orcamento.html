@@ -509,6 +509,10 @@
     tr.querySelector('.btn-remove').addEventListener('click', () => { tr.remove(); recalcTotal(); });
 
     itemsBody.appendChild(tr);
+    const qi = tr.querySelector('[data-field="qty"]');
+    console.log('cor do input:', window.getComputedStyle(qi).color);
+    console.log('fill color:', window.getComputedStyle(qi).webkitTextFillColor);
+    console.log('background:', window.getComputedStyle(qi).backgroundColor);
     recalcTotal();
   }
 
