@@ -23,7 +23,12 @@
     '.sidebar-plan-label{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:4px}' +
     '.sidebar-plan-name{font-family:"Syne",sans-serif;font-size:14px;font-weight:700;color:#ffffff;margin-bottom:2px}' +
     '.sidebar-plan-sub{font-size:11px;color:rgba(255,255,255,0.38)}' +
-    '@media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.is-open{transform:translateX(0)}}' +
+    '@media(max-width:768px){' +
+      '#sidebar{transform:translateX(-100%)!important;transition:transform 0.25s ease}' +
+      '#sidebar.is-open,#sidebar.open{transform:translateX(0)!important}' +
+      '#sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199}' +
+      '#sidebar-overlay.show{display:block}' +
+    '}' +
     /* logout modal */
     '._sb_modal_ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.38);backdrop-filter:blur(8px);z-index:9999;align-items:center;justify-content:center}' +
     '._sb_modal_ov.is-visible{display:flex}' +
@@ -95,18 +100,26 @@
     if (o) { o.classList.remove('is-visible'); o.classList.remove('show'); }
   }
 
-  /* ── ATTACH SIDEBAR EVENTS ── */
-  function attachSidebarEvents() {
-    var btnMenu = document.getElementById('btn-menu');
-    var sidebar = document.getElementById('sidebar');
-    var overlay = document.getElementById('sidebar-overlay');
+  /* ── ATTACH HAMBURGER EVENTS ── */
+  function attachHamburger() {
+    const btn     = document.getElementById('btn-menu');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
 
-    if (btnMenu) {
-      btnMenu.addEventListener('click', function () {
-        if (sidebar) sidebar.classList.toggle('open');
-        if (overlay) overlay.classList.toggle('show');
-      });
+    if (!btn) {
+      setTimeout(attachHamburger, 100);
+      return;
     }
+
+    /* Remove listeners antigos para não duplicar */
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+
+    newBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (sidebar) sidebar.classList.toggle('open');
+      if (overlay) overlay.classList.toggle('show');
+    });
 
     if (overlay) {
       overlay.addEventListener('click', function () {
@@ -284,7 +297,14 @@
       if (e.key === 'Escape') { closeSidebar(); }
     });
 
-    attachSidebarEvents();
+    attachHamburger();
+  }
+
+  /* ── BOOTSTRAP HAMBURGER ON LOAD ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachHamburger);
+  } else {
+    attachHamburger();
   }
 
   /* ── EXPORTS ── */
