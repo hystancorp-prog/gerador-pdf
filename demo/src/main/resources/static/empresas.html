@@ -160,7 +160,7 @@
     .app-wrapper { margin-left: 0 !important; }
     .sidebar { transform: translateX(-100%); }
     .sidebar.open { transform: translateX(0); }
-    .btn-menu { display: block !important; }
+    #btn-menu { display: flex !important; }
     .content { padding: 20px 16px !important; }
     .stats-grid { grid-template-columns: 1fr !important; }
     .topbar { padding: 14px 16px !important; }
@@ -236,8 +236,12 @@
 <div class="app-wrapper">
   <header class="topbar">
     <div class="topbar-left">
-      <button class="btn-hamburger" id="btn-hamburger" aria-label="Abrir menu">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="6" x2="17" y2="6"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="14" x2="17" y2="14"/></svg>
+      <button id="btn-menu" style="display:none;background:none;border:none;cursor:pointer;padding:4px;color:inherit;align-items:center;justify-content:center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
       </button>
       <span class="topbar-title">Minhas Empresas</span>
     </div>
