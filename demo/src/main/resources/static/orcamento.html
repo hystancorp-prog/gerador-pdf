@@ -256,6 +256,18 @@
       display: block !important;
     }
   }
+
+  input[type="number"] {
+    color: var(--text, #1a1a1a) !important;
+    -webkit-text-fill-color: var(--text, #1a1a1a) !important;
+    background-color: var(--surface, #ffffff) !important;
+    opacity: 1 !important;
+  }
+  :root[data-theme="dark"] input[type="number"] {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background-color: var(--surface, #111111) !important;
+  }
 </style>
 </head>
 <body>
