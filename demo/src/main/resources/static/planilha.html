@@ -430,6 +430,19 @@
     const name = user.displayName || user.email.split('@')[0];
     document.getElementById('user-name').textContent = name;
     document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();
+    const avatar = document.getElementById('user-avatar');
+    if (avatar) {
+      avatar.style.cursor = 'pointer';
+      avatar.title = 'Configurações';
+      avatar.addEventListener('click', function() {
+        if (typeof window._navigate === 'function') {
+          window._navigate('settings');
+        } else {
+          window.location.href = '/dashboard.html';
+          sessionStorage.setItem('hystan_goto', 'settings');
+        }
+      });
+    }
     const plano = localStorage.getItem('hystan_plano');
     document.getElementById('user-plan').textContent = plano === 'ativo' ? 'Plano Ativo' : plano === 'trial' ? 'Trial' : '—';
     const sn = document.getElementById('sidebar-plan-name');
@@ -635,7 +648,7 @@
       totalReports++;
       localStorage.setItem('hystan_history', JSON.stringify(reportHistory.slice(0, 20)));
       localStorage.setItem('hystan_total', String(totalReports));
-      showToast('PDF gerado com sucesso. Baixando...', 'success');
+      showToast('PDF gerado e baixado com sucesso! Verifique sua pasta de downloads.', 'success');
 
     } catch (err) {
       showToast(err.message && err.message.length < 120 ? err.message : 'Erro ao gerar PDF. Tente novamente.', 'error');

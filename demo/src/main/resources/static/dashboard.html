@@ -644,6 +644,11 @@
 
     if (window._hideLoader) window._hideLoader();
     verificarPlano();
+    const goto = sessionStorage.getItem('hystan_goto');
+    if (goto) {
+      sessionStorage.removeItem('hystan_goto');
+      setTimeout(() => window._navigate?.(goto), 500);
+    }
   });
 
   window._doSignOut = async () => {
