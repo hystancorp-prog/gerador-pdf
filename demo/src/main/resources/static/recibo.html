@@ -197,6 +197,9 @@
     .card-title { font-size: 14px !important; }
     .btn { font-size: 13px !important; }
   }
+  .sidebar         { z-index: 200 !important; }
+  .sidebar-overlay { z-index: 199 !important; }
+  .trial-banner    { z-index: 50  !important; }
 </style>
 </head>
 <body>
@@ -481,6 +484,35 @@
     setTimeout(() => { t.classList.remove('is-visible'); setTimeout(() => t.remove(), 350); }, 3500);
   }
 })();
+</script>
+
+<script>
+window.addEventListener('load', function() {
+  var btn     = document.getElementById('btn-menu');
+  var sidebar = document.querySelector('.sidebar');
+  var overlay = document.querySelector('.sidebar-overlay');
+
+  console.log('btn-menu encontrado:', !!btn);
+  console.log('sidebar encontrada:', !!sidebar);
+  console.log('overlay encontrado:', !!overlay);
+
+  if (btn) {
+    btn.addEventListener('click', function() {
+      console.log('CLICOU NO HAMBURGUER');
+      console.log('sidebar classes antes:', sidebar ? sidebar.className : 'sem sidebar');
+      if (sidebar) sidebar.classList.toggle('open');
+      if (overlay) overlay.classList.toggle('show');
+      console.log('sidebar classes depois:', sidebar ? sidebar.className : 'sem sidebar');
+    });
+  }
+
+  if (overlay) {
+    overlay.addEventListener('click', function() {
+      if (sidebar) sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+  }
+});
 </script>
 
 </body>

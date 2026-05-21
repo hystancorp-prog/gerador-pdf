@@ -355,6 +355,9 @@
     .card-title { font-size: 14px !important; }
     .btn { font-size: 13px !important; }
   }
+  .sidebar         { z-index: 200 !important; }
+  .sidebar-overlay { z-index: 199 !important; }
+  .trial-banner    { z-index: 50  !important; }
 </style>
 </head>
 <body>
@@ -1110,7 +1113,6 @@ window.addEventListener('load', function() {
   console.log('overlay encontrado:', !!overlay);
 
   if (btn) {
-    btn.style.border = '2px solid red';
     btn.addEventListener('click', function() {
       console.log('CLICOU NO HAMBURGUER');
       console.log('sidebar classes antes:', sidebar ? sidebar.className : 'sem sidebar');
