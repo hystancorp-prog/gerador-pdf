@@ -85,14 +85,42 @@
   function openSidebar() {
     var s = document.getElementById('sidebar');
     var o = document.getElementById('sidebar-overlay');
-    if (s) s.classList.add('is-open');
-    if (o) o.classList.add('is-visible');
+    if (s) { s.classList.add('is-open'); s.classList.add('open'); }
+    if (o) { o.classList.add('is-visible'); o.classList.add('show'); }
   }
   function closeSidebar() {
     var s = document.getElementById('sidebar');
     var o = document.getElementById('sidebar-overlay');
-    if (s) s.classList.remove('is-open');
-    if (o) o.classList.remove('is-visible');
+    if (s) { s.classList.remove('is-open'); s.classList.remove('open'); }
+    if (o) { o.classList.remove('is-visible'); o.classList.remove('show'); }
+  }
+
+  /* ── ATTACH SIDEBAR EVENTS ── */
+  function attachSidebarEvents() {
+    var btnMenu = document.getElementById('btn-menu');
+    var sidebar = document.getElementById('sidebar');
+    var overlay = document.getElementById('sidebar-overlay');
+
+    if (btnMenu) {
+      btnMenu.addEventListener('click', function () {
+        if (sidebar) sidebar.classList.toggle('open');
+        if (overlay) overlay.classList.toggle('show');
+      });
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', function () {
+        if (sidebar) sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('show');
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        if (sidebar) sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('show');
+      }
+    });
   }
 
   /* ── SET ACTIVE ITEM (SPA navigation) ── */
@@ -255,6 +283,8 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') { closeSidebar(); }
     });
+
+    attachSidebarEvents();
   }
 
   /* ── EXPORTS ── */
