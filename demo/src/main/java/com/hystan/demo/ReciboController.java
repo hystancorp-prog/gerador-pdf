@@ -21,6 +21,10 @@ public class ReciboController {
             return ResponseEntity.status(429)
                 .body("Muitas requisicoes. Tente novamente em instantes.".getBytes());
 
+        if (req.valor < 0 || !Double.isFinite(req.valor) || req.valor > 9_999_999.99) {
+            return ResponseEntity.status(400).body("Valor inválido.".getBytes());
+        }
+
         try {
             byte[] pdf = GeradorReciboPDF.gerar(req);
             HttpHeaders headers = new HttpHeaders();

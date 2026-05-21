@@ -52,10 +52,14 @@ public class PdfController {
 
         // 2. Filename sanity — prevent null/blank/path-traversal names
         String originalName = file.getOriginalFilename();
-        if (originalName == null
-                || Paths.get(originalName).getFileName().toString().isBlank()) {
+        if (originalName == null) {
             return ResponseEntity.status(400)
                 .body("Nome de arquivo inválido.".getBytes());
+        }
+        String safeName = Paths.get(originalName).getFileName().toString();
+        if (safeName.isBlank() || !safeName.matches("[a-zA-Z0-9_\\-\\.]{1,100}")) {
+            return ResponseEntity.status(400)
+                .body("Nome de arquivo inválido. Use apenas letras, números, - _ e .".getBytes());
         }
 
         File temp = null;

@@ -181,7 +181,7 @@
     document.getElementById('logout-cancel').onclick = function () { modal.remove(); };
     document.getElementById('logout-confirm').onclick = function () {
       modal.remove();
-      if (typeof window.logout === 'function') window.logout();
+      if (typeof window._doSignOut === 'function') window._doSignOut();
     };
     modal.addEventListener('click', function (e) { if (e.target === modal) modal.remove(); });
     document.addEventListener('keydown', function escHandler(e) {

@@ -10,12 +10,12 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 import javax.imageio.ImageIO;
 
 public class GeradorReciboPDF {
 
     private static final String FOOTER = "Gerado com Hystan · hystancorp.up.railway.app";
+    private static final java.util.Random RNG = new java.util.Random();
 
     private static final String[] UNIDADES = {
         "", "um", "dois", "tres", "quatro", "cinco", "seis", "sete", "oito", "nove",
@@ -45,7 +45,7 @@ public class GeradorReciboPDF {
 
                 String numRecibo = san(
                     ok(req.numeroRecibo) ? req.numeroRecibo
-                                        : String.valueOf(new Random().nextInt(9000) + 1000), 20);
+                                        : String.valueOf(RNG.nextInt(9000) + 1000), 20);
 
                 /* data fornecida pelo frontend ou hoje */
                 String dataFormatada = "";

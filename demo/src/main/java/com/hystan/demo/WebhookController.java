@@ -254,7 +254,7 @@ public class WebhookController {
         String priceBasicoAnual = System.getenv("STRIPE_PRICE_BASICO_ANUAL");
         String priceProAnual = System.getenv("STRIPE_PRICE_PRO_ANUAL");
 
-        if (priceId.equals(priceBasico) || priceId.equals(priceBasicoAnual)) return "basico";
+        if (priceId.equals(priceBasico) || priceId.equals(priceBasicoAnual)) return "essencial";
         if (priceId.equals(pricePro) || priceId.equals(priceProAnual)) return "pro";
         return "gratuito";
     }

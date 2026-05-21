@@ -15,6 +15,8 @@ import javax.imageio.ImageIO;
 
 public class GeradorOrcamentoPDF {
 
+    private static final java.util.Random RNG = new java.util.Random();
+
     /* column boundaries — content width 495 (x 50→545) */
     private static final float C0 = 50,  C0R = 297; // DESCRICAO  50%
     private static final float C1 = 297, C1R = 347; // QTD        10%
@@ -23,144 +25,153 @@ public class GeradorOrcamentoPDF {
     private static final float PAD = 5f;
     private static final String FOOTER = "Gerado com Hystan · hystancorp.up.railway.app";
 
+    private static final float PAGE_H   = PDRectangle.A4.getHeight();
+    private static final float ROW_H    = 22f;
+    private static final float TBLHDR_H = 20f;
+    private static final float MIN_Y    = 80f; // footer + margin
+
     public static byte[] gerar(OrcamentoRequest req) throws Exception {
         try (PDDocument doc = new PDDocument()) {
-            PDPage pagina = new PDPage(PDRectangle.A4);
-            doc.addPage(pagina);
 
             PDFont bold   = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
             PDFont normal = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
 
-            try (PDPageContentStream cs = new PDPageContentStream(doc, pagina)) {
-                float y = 790f;
-                int numOrc = new Random().nextInt(9000) + 1000;
-                String hoje = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            int numOrc = RNG.nextInt(9000) + 1000;
+            String hoje = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            PDImageXObject logo = loadLogo(doc, req.logoBase64);
 
-                /* ── HEADER ── */
-                float headerH   = 56f;
-                float headerBot = y - headerH; // = 734
-                cs.setNonStrokingColor(new Color(26, 26, 26));
-                cs.addRect(C0, headerBot, 495, headerH);
-                cs.fill();
+            PDPage firstPage = new PDPage(PDRectangle.A4);
+            doc.addPage(firstPage);
+            PDPageContentStream cs = new PDPageContentStream(doc, firstPage);
+            float y = PAGE_H - 10f;
 
-                PDImageXObject logo = loadLogo(doc, req.logoBase64);
-                float textX = 60f;
-                if (logo != null) {
-                    float lH = Math.min(36f, logo.getHeight());
-                    float lW = lH * ((float) logo.getWidth() / logo.getHeight());
-                    cs.drawImage(logo, 60, headerBot + (headerH - lH) / 2f, lW, lH);
-                    textX = 60 + lW + 10;
-                }
+            /* ── HEADER ── */
+            float headerH   = 56f;
+            float headerBot = y - headerH;
+            cs.setNonStrokingColor(new Color(26, 26, 26));
+            cs.addRect(C0, headerBot, 495, headerH);
+            cs.fill();
 
-                float textY = headerBot + headerH / 2f - 4f;
-                cs.setNonStrokingColor(Color.WHITE);
-                txt(cs, bold,   13, textX,       textY, "ORCAMENTO No " + numOrc);
-                txtR(cs, normal, 9, C3R - PAD,   textY, "EMISSAO: " + hoje);
-                cs.setNonStrokingColor(Color.BLACK);
-                y = headerBot - 20;
-
-                /* ── PRESTADOR ── */
-                lbl(cs, bold, normal, 50, y, "PRESTADOR");
-                y -= 12;
-                txt(cs, bold, 11, 50, y, san(req.prestadorNome, 70));
-                y -= 14;
-                if (ok(req.prestadorCnpj)) {
-                    txt(cs, normal, 9, 50, y, san(req.prestadorCnpj, 40));
-                    y -= 12;
-                }
-                if (ok(req.prestadorTelefone)) {
-                    txt(cs, normal, 9, 50, y, san(req.prestadorTelefone, 40));
-                    y -= 12;
-                }
-                y -= 16;
-
-                /* ── CLIENTE ── */
-                lbl(cs, bold, normal, 50, y, "CLIENTE");
-                y -= 12;
-                txt(cs, bold, 11, 50, y, san(req.clienteNome, 70));
-                y -= 14;
-                if (ok(req.clienteCnpj)) {
-                    txt(cs, normal, 9, 50, y, san(req.clienteCnpj, 40));
-                    y -= 12;
-                }
-                y -= 20;
-
-                /* ── TABLE HEADER ── */
-                float thH = 20f;
-                cs.setNonStrokingColor(new Color(26, 26, 26));
-                cs.addRect(C0, y - thH, 495, thH);
-                cs.fill();
-                cs.setNonStrokingColor(Color.WHITE);
-                float thY = y - thH + (thH - 9f) / 2f + 2f;
-                txt(cs, bold,  9, C0 + PAD,    thY, "DESCRICAO");
-                txtC(cs, bold, 9, C1, C1R - C1, thY, "QTD");
-                txtR(cs, bold, 9, C2R - PAD,   thY, "VALOR UNIT.");
-                txtR(cs, bold, 9, C3R - PAD,   thY, "TOTAL");
-                cs.setNonStrokingColor(Color.BLACK);
-                y -= thH;
-
-                /* ── TABLE ROWS ── */
-                float rowH = 22f;
-                double subtotal = 0;
-                List<OrcamentoRequest.ItemOrcamento> itens =
-                    req.itens != null ? req.itens : Collections.emptyList();
-
-                for (int i = 0; i < itens.size(); i++) {
-                    OrcamentoRequest.ItemOrcamento item = itens.get(i);
-                    double total = item.quantidade * item.valorUnitario;
-                    subtotal += total;
-
-                    if (i % 2 == 0) {
-                        cs.setNonStrokingColor(new Color(245, 245, 245));
-                        cs.addRect(C0, y - rowH, 495, rowH);
-                        cs.fill();
-                        cs.setNonStrokingColor(Color.BLACK);
-                    }
-                    hline(cs, new Color(224, 224, 224), 0.3f, C0, C3R, y - rowH);
-
-                    float rY = y - rowH + (rowH - 9f) / 2f + 2f;
-                    String desc = trunc(normal, 9, san(item.descricao, 100), C0R - C0 - PAD * 2);
-                    txt(cs, normal,  9, C0 + PAD, rY, desc);
-                    txtC(cs, normal, 9, C1, C1R - C1, rY, String.valueOf(item.quantidade));
-                    txtR(cs, normal, 9, C2R - PAD, rY, money(item.valorUnitario));
-                    txtR(cs, normal, 9, C3R - PAD, rY, money(total));
-                    y -= rowH;
-                }
-
-                /* ── TOTAL ── */
-                y -= 10;
-                hline(cs, new Color(26, 26, 26), 1f, C0, C3R, y);
-                float totH = 24f;
-                cs.setNonStrokingColor(new Color(249, 249, 249));
-                cs.addRect(C0, y - totH, 495, totH);
-                cs.fill();
-                cs.setNonStrokingColor(Color.BLACK);
-                float tY = y - totH + (totH - 11f) / 2f + 3f;
-                txtR(cs, bold, 11, C2R - PAD, tY, "TOTAL:");
-                txtR(cs, bold, 11, C3R - PAD, tY, money(subtotal));
-                y -= totH + 16;
-
-                /* ── VALIDADE / OBS. ── */
-                if (ok(req.validadeDias)) {
-                    txt(cs, normal, 9, 50, y, "Validade da proposta: " + san(req.validadeDias, 20) + " dias");
-                    y -= 13;
-                }
-                if (ok(req.observacoes)) {
-                    cs.setNonStrokingColor(new Color(136, 136, 136));
-                    txt(cs, bold, 8, 50, y, "OBS.:");
-                    cs.setNonStrokingColor(Color.BLACK);
-                    y -= 11;
-                    txt(cs, normal, 9, 50, y, san(req.observacoes, 200));
-                }
-
-                /* ── PAGE FOOTER ── */
-                footer(cs, normal);
+            float textX = 60f;
+            if (logo != null) {
+                float lH = Math.min(36f, logo.getHeight());
+                float lW = lH * ((float) logo.getWidth() / logo.getHeight());
+                cs.drawImage(logo, 60, headerBot + (headerH - lH) / 2f, lW, lH);
+                textX = 60 + lW + 10;
             }
+
+            float textY = headerBot + headerH / 2f - 4f;
+            cs.setNonStrokingColor(Color.WHITE);
+            txt(cs, bold,   13, textX,       textY, "ORCAMENTO No " + numOrc);
+            txtR(cs, normal, 9, C3R - PAD,   textY, "EMISSAO: " + hoje);
+            cs.setNonStrokingColor(Color.BLACK);
+            y = headerBot - 20;
+
+            /* ── PRESTADOR ── */
+            lbl(cs, bold, normal, 50, y, "PRESTADOR");
+            y -= 12;
+            txt(cs, bold, 11, 50, y, san(req.prestadorNome, 70));
+            y -= 14;
+            if (ok(req.prestadorCnpj))     { txt(cs, normal, 9, 50, y, san(req.prestadorCnpj, 40));     y -= 12; }
+            if (ok(req.prestadorTelefone)) { txt(cs, normal, 9, 50, y, san(req.prestadorTelefone, 40)); y -= 12; }
+            y -= 16;
+
+            /* ── CLIENTE ── */
+            lbl(cs, bold, normal, 50, y, "CLIENTE");
+            y -= 12;
+            txt(cs, bold, 11, 50, y, san(req.clienteNome, 70));
+            y -= 14;
+            if (ok(req.clienteCnpj)) { txt(cs, normal, 9, 50, y, san(req.clienteCnpj, 40)); y -= 12; }
+            y -= 20;
+
+            /* ── TABLE HEADER ── */
+            y = drawTableHeader(cs, bold, y);
+
+            /* ── TABLE ROWS ── */
+            double subtotal = 0;
+            List<OrcamentoRequest.ItemOrcamento> itens =
+                req.itens != null ? req.itens : Collections.emptyList();
+
+            for (int i = 0; i < itens.size(); i++) {
+                /* need space for row + total block (34 + 16) */
+                if (y - ROW_H < MIN_Y + 50f) {
+                    footer(cs, normal);
+                    cs.close();
+                    PDPage next = new PDPage(PDRectangle.A4);
+                    doc.addPage(next);
+                    cs = new PDPageContentStream(doc, next);
+                    y  = PAGE_H - 20f;
+                    y  = drawTableHeader(cs, bold, y);
+                }
+
+                OrcamentoRequest.ItemOrcamento item = itens.get(i);
+                double total = item.quantidade * item.valorUnitario;
+                subtotal += total;
+
+                if (i % 2 == 0) {
+                    cs.setNonStrokingColor(new Color(245, 245, 245));
+                    cs.addRect(C0, y - ROW_H, 495, ROW_H);
+                    cs.fill();
+                    cs.setNonStrokingColor(Color.BLACK);
+                }
+                hline(cs, new Color(224, 224, 224), 0.3f, C0, C3R, y - ROW_H);
+
+                float rY = y - ROW_H + (ROW_H - 9f) / 2f + 2f;
+                txt(cs, normal,  9, C0 + PAD, rY, trunc(normal, 9, san(item.descricao, 100), C0R - C0 - PAD * 2));
+                txtC(cs, normal, 9, C1, C1R - C1, rY, String.valueOf(item.quantidade));
+                txtR(cs, normal, 9, C2R - PAD, rY, money(item.valorUnitario));
+                txtR(cs, normal, 9, C3R - PAD, rY, money(total));
+                y -= ROW_H;
+            }
+
+            /* ── TOTAL ── */
+            y -= 10;
+            hline(cs, new Color(26, 26, 26), 1f, C0, C3R, y);
+            float totH = 24f;
+            cs.setNonStrokingColor(new Color(249, 249, 249));
+            cs.addRect(C0, y - totH, 495, totH);
+            cs.fill();
+            cs.setNonStrokingColor(Color.BLACK);
+            float tY = y - totH + (totH - 11f) / 2f + 3f;
+            txtR(cs, bold, 11, C2R - PAD, tY, "TOTAL:");
+            txtR(cs, bold, 11, C3R - PAD, tY, money(subtotal));
+            y -= totH + 16;
+
+            /* ── VALIDADE / OBS. ── */
+            if (ok(req.validadeDias)) {
+                txt(cs, normal, 9, 50, y, "Validade da proposta: " + san(req.validadeDias, 20) + " dias");
+                y -= 13;
+            }
+            if (ok(req.observacoes)) {
+                cs.setNonStrokingColor(new Color(136, 136, 136));
+                txt(cs, bold, 8, 50, y, "OBS.:");
+                cs.setNonStrokingColor(Color.BLACK);
+                y -= 11;
+                txt(cs, normal, 9, 50, y, san(req.observacoes, 200));
+            }
+
+            footer(cs, normal);
+            cs.close();
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             doc.save(baos);
             return baos.toByteArray();
         }
+    }
+
+    private static float drawTableHeader(PDPageContentStream cs, PDFont bold, float y) throws Exception {
+        float thH = TBLHDR_H;
+        cs.setNonStrokingColor(new Color(26, 26, 26));
+        cs.addRect(C0, y - thH, 495, thH);
+        cs.fill();
+        cs.setNonStrokingColor(Color.WHITE);
+        float thY = y - thH + (thH - 9f) / 2f + 2f;
+        txt(cs, bold,  9, C0 + PAD,    thY, "DESCRICAO");
+        txtC(cs, bold, 9, C1, C1R - C1, thY, "QTD");
+        txtR(cs, bold, 9, C2R - PAD,   thY, "VALOR UNIT.");
+        txtR(cs, bold, 9, C3R - PAD,   thY, "TOTAL");
+        cs.setNonStrokingColor(Color.BLACK);
+        return y - thH;
     }
 
     /* ────────────────────────── HELPERS ────────────────────────── */
