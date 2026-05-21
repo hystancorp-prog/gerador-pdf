@@ -165,27 +165,66 @@
   /* ── LOGOUT MODAL ── */
   function showLogoutModal() {
     if (document.getElementById('logout-modal')) return;
-    var modal = document.createElement('div');
-    modal.id = 'logout-modal';
-    modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;';
-    modal.innerHTML =
-      '<div style="background:var(--surface,#ffffff);color:var(--text,#1a1a1a);border:1px solid var(--border-strong,#c8c8c4);border-radius:16px;padding:32px;max-width:400px;width:90%;box-shadow:0 24px 60px rgba(0,0,0,0.3);">' +
-        '<h3 style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;margin:0 0 8px;color:var(--text,#1a1a1a);">Sair da conta?</h3>' +
-        '<p style="font-size:14px;color:var(--text-muted,#888);margin:0 0 24px;line-height:1.5;">Tem certeza que deseja encerrar sua sessão neste dispositivo?</p>' +
-        '<div style="display:flex;gap:10px;">' +
-          '<button id="logout-cancel" style="flex:1;padding:12px;border-radius:8px;border:1px solid var(--border,#e0e0dd);background:var(--surface-2,#f5f5f3);color:var(--text,#1a1a1a);font-size:14px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;">Cancelar</button>' +
-          '<button id="logout-confirm" style="flex:1;padding:12px;border-radius:8px;border:none;background:#dc2626;color:white;font-size:14px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;">Sair</button>' +
-        '</div>' +
-      '</div>';
-    document.body.appendChild(modal);
-    document.getElementById('logout-cancel').onclick = function () { modal.remove(); };
-    document.getElementById('logout-confirm').onclick = function () {
-      modal.remove();
+
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+    var overlay = document.createElement('div');
+    overlay.id = 'logout-modal';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;';
+
+    var box = document.createElement('div');
+    box.style.cssText = [
+      'background:'    + (isDark ? '#1a1a1a' : '#ffffff') + ';',
+      'color:'         + (isDark ? '#ffffff' : '#1a1a1a') + ';',
+      'border:1px solid ' + (isDark ? 'rgba(255,255,255,0.12)' : '#e0e0dd') + ';',
+      'border-radius:16px;',
+      'padding:32px;',
+      'max-width:400px;',
+      'width:90%;',
+      'box-shadow:0 24px 60px rgba(0,0,0,0.3);'
+    ].join('');
+
+    var title = document.createElement('h3');
+    title.style.cssText = 'font-family:Syne,sans-serif;font-size:20px;font-weight:800;margin:0 0 8px;';
+    title.textContent = 'Sair da conta?';
+
+    var body = document.createElement('p');
+    body.style.cssText = 'font-size:14px;opacity:0.7;margin:0 0 24px;line-height:1.5;';
+    body.textContent = 'Tem certeza que deseja encerrar sua sessão neste dispositivo?';
+
+    var actions = document.createElement('div');
+    actions.style.cssText = 'display:flex;gap:10px;';
+
+    var btnCancel = document.createElement('button');
+    btnCancel.style.cssText = [
+      'flex:1;padding:12px;border-radius:8px;',
+      'border:1px solid ' + (isDark ? 'rgba(255,255,255,0.12)' : '#e0e0dd') + ';',
+      'background:' + (isDark ? '#2a2a2a' : '#f5f5f3') + ';',
+      'color:'      + (isDark ? '#ffffff' : '#1a1a1a') + ';',
+      'font-size:14px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;'
+    ].join('');
+    btnCancel.textContent = 'Cancelar';
+
+    var btnConfirm = document.createElement('button');
+    btnConfirm.style.cssText = 'flex:1;padding:12px;border-radius:8px;border:none;background:#dc2626;color:#ffffff;font-size:14px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;';
+    btnConfirm.textContent = 'Sair';
+
+    actions.appendChild(btnCancel);
+    actions.appendChild(btnConfirm);
+    box.appendChild(title);
+    box.appendChild(body);
+    box.appendChild(actions);
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    btnCancel.onclick  = function () { overlay.remove(); };
+    btnConfirm.onclick = function () {
+      overlay.remove();
       if (typeof window._doSignOut === 'function') window._doSignOut();
     };
-    modal.addEventListener('click', function (e) { if (e.target === modal) modal.remove(); });
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.remove(); });
     document.addEventListener('keydown', function escHandler(e) {
-      if (e.key === 'Escape') { modal.remove(); document.removeEventListener('keydown', escHandler); }
+      if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', escHandler); }
     });
   }
 
