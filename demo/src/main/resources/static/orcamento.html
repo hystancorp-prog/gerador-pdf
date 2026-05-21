@@ -501,7 +501,7 @@
     tr.className = 'item-row';
     tr.innerHTML =
       '<td class="col-desc"><input type="text" placeholder="Descrição do serviço/produto" data-field="desc"></td>' +
-      '<td class="col-qty"><input type="number" min="1" value="1" data-field="qty" style="width:100%; color:inherit; -webkit-text-fill-color:currentColor;"></td>' +
+      '<td class="col-qty"><input type="number" min="1" value="1" data-field="qty" style="width:100%; color:inherit;"></td>' +
       '<td class="col-unit"><input type="text" placeholder="R$ 0,00" data-field="unit"></td>' +
       '<td class="col-total td-total-val" data-field="total">R$ 0,00</td>' +
       '<td class="col-del"><button class="btn-remove" type="button" aria-label="Remover">' +
@@ -516,6 +516,13 @@
     tr.querySelector('.btn-remove').addEventListener('click', () => { tr.remove(); recalcTotal(); });
 
     itemsBody.appendChild(tr);
+
+    setTimeout(function() {
+      tr.querySelectorAll('input').forEach(function(input) {
+        input.style.cssText += '; color: inherit !important; -webkit-text-fill-color: unset !important; opacity: 1 !important;';
+      });
+    }, 0);
+
     recalcTotal();
   }
 
