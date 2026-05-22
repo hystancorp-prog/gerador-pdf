@@ -270,6 +270,10 @@
         </select>
       </div>
 
+      <div id="logo-upgrade-notice" style="display:none;margin-top:-6px;margin-bottom:14px;padding:10px 14px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);font-size:12px;color:var(--text-2);">
+        🔒 Logo da empresa disponível no <a href="/planos.html" style="color:var(--text-1);font-weight:600;text-decoration:underline;">Plano Business</a>
+      </div>
+
       <div class="form-row form-row-2">
         <div class="form-group">
           <label class="form-label" for="prestador-nome">Nome *</label>
@@ -373,7 +377,19 @@
     if (ss) ss.textContent = plano === 'ativo' ? 'Relatórios ilimitados' : '';
     if (window._hideLoader) window._hideLoader();
     loadEmpresas();
+
+    try {
+      const token = await user.getIdToken();
+      const r = await fetch('/meu-plano', { headers: { 'Authorization': 'Bearer ' + token } });
+      if (r.ok) { const d = await r.json(); window._planoInfo = d; aplicarRestricoesDePlano(d); }
+    } catch (_) {}
   });
+
+  window.aplicarRestricoesDePlano = function (d) {
+    const isPro = (d.plano === 'pro' || d.plano === 'business') && d.status === 'ativo';
+    const notice = document.getElementById('logo-upgrade-notice');
+    if (notice && !isPro) notice.style.display = 'block';
+  };
 
   window._doSignOut = async () => {
     await signOut(auth);
@@ -439,9 +455,11 @@
     }
     try {
       const e = JSON.parse(this.value);
-      document.getElementById('prestador-nome').value = e.nome     || '';
-      document.getElementById('prestador-doc').value  = e.cpfCnpj  || '';
-      selectedLogoBase64 = e.logoBase64 || null;
+      document.getElementById('prestador-nome').value = e.nome    || '';
+      document.getElementById('prestador-doc').value  = e.cpfCnpj || '';
+      const d = window._planoInfo;
+      const isPro = d && (d.plano === 'pro' || d.plano === 'business');
+      selectedLogoBase64 = isPro ? (e.logoBase64 || null) : null;
     } catch (_) {}
   });
 

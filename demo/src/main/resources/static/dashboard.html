@@ -670,7 +670,10 @@
           if (data.status === 'ativo' || data.status === 'trial') {
             localStorage.setItem('hystan_plano', data.status === 'trial' ? 'trial' : 'ativo');
             localStorage.setItem('hystan_plano_nome', data.plano || 'essencial');
-            setupUI(data.status === 'trial' ? 'trial' : 'ativo', null, data.plano);
+            const usados = data.status === 'trial'
+              ? parseInt(data.docsTotalTrial || '0', 10)
+              : parseInt(data.docsMesAtual  || '0', 10);
+            setupUI(data.status === 'trial' ? 'trial' : 'ativo', null, data.plano, usados);
             return;
           }
         }
@@ -700,26 +703,31 @@
     window.location.href = '/planos.html';
   };
 
-  function setupUI(plano, diasRestantes, planoNome) {
+  function setupUI(plano, diasRestantes, planoNome, docsUsados) {
+    const usados = docsUsados != null ? docsUsados : 0;
     if (plano === 'trial') {
-      document.getElementById('user-plan').textContent         = 'Trial · ' + diasRestantes + 'd';
+      const dias = diasRestantes != null ? diasRestantes : '?';
+      document.getElementById('user-plan').textContent         = 'Trial · ' + dias + 'd';
       document.getElementById('trial-banner').classList.add('is-visible');
-      document.getElementById('trial-msg').textContent         = 'Trial termina em ' + diasRestantes + ' dia(s).';
+      document.getElementById('trial-msg').textContent         = 'Trial termina em ' + dias + ' dia(s).';
       document.getElementById('upgrade-card').classList.add('is-visible');
       document.getElementById('sidebar-plan-name').textContent = 'Trial';
-      document.getElementById('sidebar-plan-sub').textContent  = diasRestantes + ' dias restantes';
+      document.getElementById('sidebar-plan-sub').textContent  = usados + ' de 5 docs usados';
       document.getElementById('cfg-plan-badge').textContent    = 'Trial';
       document.getElementById('cfg-plan-name').textContent     = 'Período de teste';
-      document.getElementById('cfg-plan-sub').textContent      = diasRestantes + ' dias · 5 relatórios incluídos';
+      document.getElementById('cfg-plan-sub').textContent      = usados + ' de 5 documentos usados · ' + dias + ' dias restantes';
     } else {
       const NOMES = { essencial: 'Essencial', basico: 'Essencial', pro: 'Pro', gratuito: 'Gratuito' };
-      const nome = NOMES[planoNome] || 'Ativo';
+      const nome  = NOMES[planoNome] || 'Ativo';
+      const isPro = (planoNome === 'pro' || planoNome === 'business');
+      const subSidebar = isPro ? 'Ilimitado' : usados + ' de 20 docs este mês';
+      const subConfig  = isPro ? 'Ilimitado · Ativo' : usados + ' de 20 documentos este mês · Ativo';
       document.getElementById('user-plan').textContent         = 'Plano ' + nome;
       document.getElementById('sidebar-plan-name').textContent = 'Plano ' + nome;
-      document.getElementById('sidebar-plan-sub').textContent  = 'Relatórios ilimitados';
+      document.getElementById('sidebar-plan-sub').textContent  = subSidebar;
       document.getElementById('cfg-plan-badge').textContent    = nome;
       document.getElementById('cfg-plan-name').textContent     = 'Plano ' + nome;
-      document.getElementById('cfg-plan-sub').textContent      = 'Relatórios ilimitados · Ativo';
+      document.getElementById('cfg-plan-sub').textContent      = subConfig;
     }
     updateStats();
   }

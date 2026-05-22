@@ -34,8 +34,10 @@ public class UsuarioController {
         }
 
         Usuario u = opt.get();
-        resp.put("plano", u.getPlano() != null ? u.getPlano() : "gratuito");
-        resp.put("status", u.getPlanoStatus() != null ? u.getPlanoStatus() : "inativo");
+        resp.put("plano",         u.getPlano()       != null ? u.getPlano()       : "gratuito");
+        resp.put("status",        u.getPlanoStatus() != null ? u.getPlanoStatus() : "inativo");
+        resp.put("docsMesAtual",  String.valueOf(u.getDocsMesAtual()   != null ? u.getDocsMesAtual()   : 0));
+        resp.put("docsTotalTrial",String.valueOf(u.getDocsTotalTrial() != null ? u.getDocsTotalTrial() : 0));
         return ResponseEntity.ok(resp);
     }
 }

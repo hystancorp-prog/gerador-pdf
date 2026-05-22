@@ -38,6 +38,15 @@ public class Usuario {
     @Column(name = "firebase_uid", unique = true)
     private String firebaseUid;
 
+    @Column(name = "docs_mes_atual")
+    private Integer docsMesAtual = 0;
+
+    @Column(name = "mes_contagem")
+    private Integer mesContagem;
+
+    @Column(name = "docs_total_trial")
+    private Integer docsTotalTrial = 0;
+
     @Column(name = "criado_em")
     private LocalDateTime criadoEm = LocalDateTime.now();
 
@@ -62,7 +71,10 @@ public class Usuario {
     }
 
     // Getters
-    public Long getId() { return id; }
+    public Long getId()                         { return id; }
+    public Integer getDocsMesAtual()             { return docsMesAtual; }
+    public Integer getMesContagem()              { return mesContagem; }
+    public Integer getDocsTotalTrial()           { return docsTotalTrial; }
     public String getEmail() { return email; }
     public String getNome() { return nome; }
     public String getFoto() { return foto; }
@@ -77,6 +89,10 @@ public class Usuario {
     public LocalDateTime getAtualizadoEm() { return atualizadoEm; }
 
     // Setters
+    public void setDocsMesAtual(Integer v)   { this.docsMesAtual = v; }
+    public void setMesContagem(Integer v)    { this.mesContagem = v; }
+    public void setDocsTotalTrial(Integer v) { this.docsTotalTrial = v; }
+
     public void setEmail(String email) { this.email = email; }
     public void setNome(String nome) { this.nome = nome; }
     public void setFoto(String foto) { this.foto = foto; }
