@@ -530,7 +530,8 @@
   onAuthStateChanged(auth, async (user) => {
     if (!user) { window.location.href = '/auth.html'; return; }
 
-    window._firebaseUser = user;
+    window._firebaseUser   = user;
+    window._storagePrefix  = 'hystan_' + user.uid + '_';
 
     try {
       const token = await user.getIdToken();
@@ -607,11 +608,13 @@
   let activeHistTab  = 'planilhas';
   let _userNavigated = false; /* true after any explicit user navigation */
 
+  function sk(k) { return (window._storagePrefix || 'hystan_') + k; }
+
   function loadStorage() {
-    try { reportHistory = JSON.parse(localStorage.getItem('hystan_history')   || '[]'); } catch (_) { reportHistory = []; }
-    try { orcamentos    = JSON.parse(localStorage.getItem('hystan_orcamentos') || '[]'); } catch (_) { orcamentos = []; }
-    try { recibos       = JSON.parse(localStorage.getItem('hystan_recibos')    || '[]'); } catch (_) { recibos = []; }
-    totalPDF = parseInt(localStorage.getItem('hystan_total') || '0', 10);
+    try { reportHistory = JSON.parse(localStorage.getItem(sk('history'))    || '[]'); } catch (_) { reportHistory = []; }
+    try { orcamentos    = JSON.parse(localStorage.getItem(sk('orcamentos')) || '[]'); } catch (_) { orcamentos = []; }
+    try { recibos       = JSON.parse(localStorage.getItem(sk('recibos'))    || '[]'); } catch (_) { recibos = []; }
+    totalPDF = parseInt(localStorage.getItem(sk('total')) || '0', 10);
   }
   loadStorage();
 
@@ -848,10 +851,10 @@
   document.getElementById('modal-cancel-confirm').addEventListener('click', () => { closeModal('modal-cancel'); showToast('Entre em contato: suporte@hystan.com.br'); });
   document.getElementById('modal-history-close').addEventListener('click', () => closeModal('modal-history'));
   document.getElementById('modal-history-confirm').addEventListener('click', () => {
-    localStorage.removeItem('hystan_history');
-    localStorage.removeItem('hystan_orcamentos');
-    localStorage.removeItem('hystan_recibos');
-    localStorage.removeItem('hystan_total');
+    localStorage.removeItem(sk('history'));
+    localStorage.removeItem(sk('orcamentos'));
+    localStorage.removeItem(sk('recibos'));
+    localStorage.removeItem(sk('total'));
     reportHistory = []; orcamentos = []; recibos = []; totalPDF = 0;
     updateStats();
     closeModal('modal-history');

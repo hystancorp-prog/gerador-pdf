@@ -256,17 +256,6 @@
 
       <div class="section-label">Prestador</div>
 
-      <div class="form-group" style="margin-bottom:14px;">
-        <label class="form-label" for="empresa-select">Usar empresa cadastrada</label>
-        <select id="empresa-select">
-          <option value="">— Preencher manualmente —</option>
-        </select>
-      </div>
-
-      <div id="logo-upgrade-notice" style="display:none;margin-top:-6px;margin-bottom:14px;padding:10px 14px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);font-size:12px;color:var(--text-2);">
-        🔒 Logo da empresa disponível no <a href="/planos.html" style="color:var(--text-1);font-weight:600;text-decoration:underline;">Plano Business</a>
-      </div>
-
       <div class="form-row form-row-3">
         <div class="form-group">
           <label class="form-label" for="prestador-nome">Nome *</label>
@@ -390,21 +379,9 @@
     const ss = document.getElementById('sidebar-plan-sub');
     if (sn) sn.textContent = plano === 'ativo' ? 'Plano Business' : plano === 'trial' ? 'Trial' : '—';
     if (ss) ss.textContent = plano === 'ativo' ? 'Relatórios ilimitados' : '';
+    window._storagePrefix = 'hystan_' + user.uid + '_';
     if (window._hideLoader) window._hideLoader();
-    loadEmpresas();
-
-    try {
-      const token = await user.getIdToken();
-      const r = await fetch('/meu-plano', { headers: { 'Authorization': 'Bearer ' + token } });
-      if (r.ok) { const d = await r.json(); window._planoInfo = d; aplicarRestricoesDePlano(d); }
-    } catch (_) {}
   });
-
-  window.aplicarRestricoesDePlano = function (d) {
-    const isPro = (d.plano === 'pro' || d.plano === 'business') && d.status === 'ativo';
-    const notice = document.getElementById('logo-upgrade-notice');
-    if (notice && !isPro) notice.style.display = 'block';
-  };
 
   window._doSignOut = async () => {
     await signOut(auth);
@@ -423,8 +400,8 @@
   const toastContainer = document.getElementById('toast-container');
   const itemsBody      = document.getElementById('items-body');
   const totalGeralEl   = document.getElementById('total-geral');
-  const empresaSel     = document.getElementById('empresa-select');
-  let selectedLogoBase64 = null;
+
+  function sk(k) { return (window._storagePrefix || 'hystan_') + k; }
 
   /* ── THEME ── */
   function applyTheme(t) {
@@ -441,43 +418,6 @@
   document.getElementById('prestador-cnpj').addEventListener('input', maskCpfCnpj);
   document.getElementById('prestador-tel').addEventListener('input',  maskTelefone);
   document.getElementById('cliente-cnpj').addEventListener('input',   maskCpfCnpj);
-
-  /* ── LOAD EMPRESAS ── */
-  window.loadEmpresas = async function () {
-    const user  = window._firebaseUser;
-    const token = user ? await user.getIdToken() : null;
-    if (!token) return;
-    try {
-      const resp = await fetch('/empresas', { headers: { 'Authorization': 'Bearer ' + token } });
-      if (!resp.ok) return;
-      const list = await resp.json();
-      list.forEach(e => {
-        const opt = document.createElement('option');
-        opt.value       = JSON.stringify(e);
-        opt.textContent = e.nome + (e.cpfCnpj ? ' — ' + e.cpfCnpj : '');
-        empresaSel.appendChild(opt);
-      });
-    } catch (_) {}
-  };
-
-  empresaSel.addEventListener('change', function () {
-    if (!this.value) {
-      document.getElementById('prestador-nome').value  = '';
-      document.getElementById('prestador-cnpj').value  = '';
-      document.getElementById('prestador-tel').value   = '';
-      selectedLogoBase64 = null;
-      return;
-    }
-    try {
-      const e = JSON.parse(this.value);
-      document.getElementById('prestador-nome').value = e.nome     || '';
-      document.getElementById('prestador-cnpj').value = e.cpfCnpj  || '';
-      document.getElementById('prestador-tel').value  = e.telefone || '';
-      const d = window._planoInfo;
-      const isPro = d && (d.plano === 'pro' || d.plano === 'business');
-      selectedLogoBase64 = isPro ? (e.logoBase64 || null) : null;
-    } catch (_) {}
-  });
 
   /* ── ITEMS ── */
   let itemCount = 0;
@@ -564,7 +504,7 @@
       validadeDias: document.getElementById('validade').value,
       observacoes:  document.getElementById('observacoes').value.trim(),
       itens,
-      logoBase64: selectedLogoBase64 || null
+      logoBase64: null
     };
 
     btnGenerate.disabled = true;
@@ -589,9 +529,9 @@
       setTimeout(() => URL.revokeObjectURL(url), 5000);
 
       try {
-        const _orcs = JSON.parse(localStorage.getItem('hystan_orcamentos') || '[]');
+        const _orcs = JSON.parse(localStorage.getItem(sk('orcamentos')) || '[]');
         _orcs.unshift({ prestador: prestadorNome, cliente: clienteNome, total: totalGeralEl.textContent, data: new Date().toLocaleDateString('pt-BR'), timestamp: Date.now() });
-        localStorage.setItem('hystan_orcamentos', JSON.stringify(_orcs.slice(0, 50)));
+        localStorage.setItem(sk('orcamentos'), JSON.stringify(_orcs.slice(0, 50)));
       } catch (_) {}
 
       showToast('PDF gerado e baixado com sucesso! Verifique sua pasta de downloads.', 'success');

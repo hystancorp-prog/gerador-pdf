@@ -433,7 +433,8 @@
 
   onAuthStateChanged(auth, async (user) => {
     if (!user) { window.location.href = '/auth.html'; return; }
-    window._firebaseUser = user;
+    window._firebaseUser  = user;
+    window._storagePrefix = 'hystan_' + user.uid + '_';
     const name = user.displayName || user.email.split('@')[0];
     document.getElementById('user-name').textContent = name;
     document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();
@@ -513,14 +514,16 @@
   const MONTHS_PT_SHORT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
   const MONTHS_PT_LONG  = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
+  function sk(k) { return (window._storagePrefix || 'hystan_') + k; }
+
   let selectedFile  = null;
   let currentPeriod = 'mes';
   let selectedMonth = new Date().getMonth() + 1;
   let reportHistory = [];
   let totalReports  = 0;
   try {
-    reportHistory = JSON.parse(localStorage.getItem('hystan_history') || '[]');
-    totalReports  = parseInt(localStorage.getItem('hystan_total') || '0', 10);
+    reportHistory = JSON.parse(localStorage.getItem(sk('history')) || '[]');
+    totalReports  = parseInt(localStorage.getItem(sk('total')) || '0', 10);
   } catch (_) {}
 
   const dropzone       = document.getElementById('dropzone');
@@ -687,8 +690,8 @@
 
       reportHistory.unshift({ empresa, periodo: periodoLabel, data: new Date().toLocaleDateString('pt-BR'), timestamp: Date.now() });
       totalReports++;
-      localStorage.setItem('hystan_history', JSON.stringify(reportHistory.slice(0, 20)));
-      localStorage.setItem('hystan_total', String(totalReports));
+      localStorage.setItem(sk('history'), JSON.stringify(reportHistory.slice(0, 20)));
+      localStorage.setItem(sk('total'), String(totalReports));
       showToast('PDF gerado e baixado com sucesso! Verifique sua pasta de downloads.', 'success');
 
     } catch (err) {
