@@ -3,6 +3,7 @@ package com.hystan.demo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
@@ -24,6 +25,20 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+            .headers(headers -> headers
+                .frameOptions(frame -> frame.deny())
+                .xssProtection(Customizer.withDefaults())
+                .contentTypeOptions(Customizer.withDefaults())
+                .contentSecurityPolicy(csp -> csp.policyDirectives(
+                    "default-src 'self'; " +
+                    "script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; " +
+                    "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; " +
+                    "img-src 'self' data: https:; " +
+                    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+                    "font-src 'self' https://fonts.gstatic.com; " +
+                    "frame-ancestors 'none'"
+                ))
+            )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/webhook/stripe", "/*.html", "/*.png", "/*.ico", "/*.js", "/*.css", "/").permitAll()
                 .requestMatchers("/gerar-orcamento", "/gerar-recibo").authenticated()

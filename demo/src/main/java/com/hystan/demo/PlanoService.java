@@ -28,10 +28,17 @@ public class PlanoService {
         }
 
         if (plano.equals("basico") || plano.equals("essencial")) {
-            int mesAtual = LocalDate.now().getMonthValue();
-            if (u.getMesContagem() == null || u.getMesContagem() != mesAtual) {
+            LocalDate hoje = LocalDate.now();
+            int mesAtual = hoje.getMonthValue();
+            int anoAtual = hoje.getYear();
+            boolean mesExpirado = u.getMesContagem() == null
+                || u.getAnoContagem() == null
+                || u.getMesContagem() != mesAtual
+                || u.getAnoContagem() != anoAtual;
+            if (mesExpirado) {
                 u.setDocsMesAtual(0);
                 u.setMesContagem(mesAtual);
+                u.setAnoContagem(anoAtual);
                 usuarioRepository.save(u);
             }
             int usado = u.getDocsMesAtual() != null ? u.getDocsMesAtual() : 0;
@@ -61,10 +68,17 @@ public class PlanoService {
             u.setDocsTotalTrial(atual + 1);
         }
 
-        int mesAtual = LocalDate.now().getMonthValue();
-        if (u.getMesContagem() == null || u.getMesContagem() != mesAtual) {
+        LocalDate hoje = LocalDate.now();
+        int mesAtual = hoje.getMonthValue();
+        int anoAtual = hoje.getYear();
+        boolean mesExpirado = u.getMesContagem() == null
+            || u.getAnoContagem() == null
+            || u.getMesContagem() != mesAtual
+            || u.getAnoContagem() != anoAtual;
+        if (mesExpirado) {
             u.setDocsMesAtual(0);
             u.setMesContagem(mesAtual);
+            u.setAnoContagem(anoAtual);
         }
         int mensal = u.getDocsMesAtual() != null ? u.getDocsMesAtual() : 0;
         u.setDocsMesAtual(mensal + 1);

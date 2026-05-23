@@ -187,13 +187,13 @@
   }
 
   :root[data-theme="dark"] [data-field="qty"],
-  :root[data-theme="dark"] [data-field="price"] {
-    color: #ffffff;
+  :root[data-theme="dark"] [data-field="unit"] {
+    color: #ffffff !important;
     background: transparent;
   }
   :root[data-theme="light"] [data-field="qty"],
-  :root[data-theme="light"] [data-field="price"] {
-    color: #000000;
+  :root[data-theme="light"] [data-field="unit"] {
+    color: #1a1a1a !important;
     background: transparent;
   }
 
@@ -253,6 +253,17 @@
   <main class="content">
     <div class="card">
       <div class="card-title">Gerar Orçamento PDF</div>
+
+      <div class="form-group" id="empresa-select-wrap" style="margin-bottom:20px;display:none;">
+        <label class="form-label" for="empresa-select-orc">Usar empresa cadastrada</label>
+        <select id="empresa-select-orc" style="width:100%;">
+          <option value="">— Preencher manualmente —</option>
+        </select>
+      </div>
+
+      <div id="logo-upgrade-notice-orc" style="display:none;margin-bottom:14px;padding:10px 14px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);font-size:12px;color:var(--text-2);">
+        Logo da empresa disponível no <a href="/planos.html" style="color:var(--text-1);font-weight:600;text-decoration:underline;">Plano Business</a>
+      </div>
 
       <div class="section-label">Prestador</div>
 
@@ -373,15 +384,53 @@
         }
       });
     }
-    const plano = localStorage.getItem('hystan_plano');
-    document.getElementById('user-plan').textContent = plano === 'ativo' ? 'Plano Ativo' : plano === 'trial' ? 'Trial' : '—';
+    const plano     = localStorage.getItem('hystan_plano');
+    const planoNome = localStorage.getItem('hystan_plano_nome') || '';
+    const NOMES_ORC = { essencial: 'Essencial', basico: 'Essencial', pro: 'Business' };
+    const nomeExib  = NOMES_ORC[planoNome] || planoNome || 'Ativo';
+    const isProORC  = (planoNome === 'pro' || planoNome === 'business');
+    document.getElementById('user-plan').textContent = plano === 'ativo' ? 'Plano ' + nomeExib : plano === 'trial' ? 'Trial' : '—';
     const sn = document.getElementById('sidebar-plan-name');
     const ss = document.getElementById('sidebar-plan-sub');
-    if (sn) sn.textContent = plano === 'ativo' ? 'Plano Business' : plano === 'trial' ? 'Trial' : '—';
-    if (ss) ss.textContent = plano === 'ativo' ? 'Relatórios ilimitados' : '';
+    if (sn) sn.textContent = plano === 'ativo' ? 'Plano ' + nomeExib : plano === 'trial' ? 'Trial' : '—';
+    if (ss) ss.textContent = plano === 'ativo' ? (isProORC ? 'Ilimitado' : 'Até 20 docs/mês') : '';
     window._storagePrefix = 'hystan_' + user.uid + '_';
     if (window._hideLoader) window._hideLoader();
+
+    // Load plan info and companies
+    try {
+      const token = await user.getIdToken();
+      const r = await fetch('/meu-plano', { headers: { 'Authorization': 'Bearer ' + token } });
+      if (r.ok) {
+        const d = await r.json();
+        window._planoInfoOrc = d;
+        const isPro = (d.plano === 'pro' || d.plano === 'business') && d.status === 'ativo';
+        document.getElementById('logo-upgrade-notice-orc').style.display = isPro ? 'none' : 'block';
+        if (isPro) loadEmpresasOrc();
+        else document.getElementById('empresa-select-wrap').style.display = 'none';
+      }
+    } catch (_) {}
   });
+
+  window.loadEmpresasOrc = async function () {
+    const user  = window._firebaseUser;
+    const token = user ? await user.getIdToken() : null;
+    if (!token) return;
+    try {
+      const resp = await fetch('/empresas', { headers: { 'Authorization': 'Bearer ' + token } });
+      if (!resp.ok) return;
+      const list = await resp.json();
+      if (!list.length) return;
+      const sel = document.getElementById('empresa-select-orc');
+      list.forEach(e => {
+        const opt = document.createElement('option');
+        opt.value       = JSON.stringify(e);
+        opt.textContent = e.nome + (e.cpfCnpj ? ' — ' + e.cpfCnpj : '');
+        sel.appendChild(opt);
+      });
+      document.getElementById('empresa-select-wrap').style.display = '';
+    } catch (_) {}
+  };
 
   window._doSignOut = async () => {
     await signOut(auth);
@@ -400,8 +449,27 @@
   const toastContainer = document.getElementById('toast-container');
   const itemsBody      = document.getElementById('items-body');
   const totalGeralEl   = document.getElementById('total-geral');
+  let selectedLogoOrc  = null;
 
   function sk(k) { return (window._storagePrefix || 'hystan_') + k; }
+
+  /* ── COMPANY SELECTOR ── */
+  document.getElementById('empresa-select-orc').addEventListener('change', function () {
+    if (!this.value) { selectedLogoOrc = null; return; }
+    try {
+      const e = JSON.parse(this.value);
+      const d = window._planoInfoOrc;
+      const isPro = d && (d.plano === 'pro' || d.plano === 'business');
+      // Pre-fill prestador fields if empty
+      const nomeEl = document.getElementById('prestador-nome');
+      if (nomeEl && !nomeEl.value.trim()) nomeEl.value = e.nome || '';
+      const cnpjEl = document.getElementById('prestador-cnpj');
+      if (cnpjEl && !cnpjEl.value.trim()) cnpjEl.value = e.cpfCnpj || '';
+      const telEl = document.getElementById('prestador-tel');
+      if (telEl && !telEl.value.trim()) telEl.value = e.telefone || '';
+      selectedLogoOrc = isPro ? (e.logoBase64 || null) : null;
+    } catch (_) {}
+  });
 
   /* ── THEME ── */
   function applyTheme(t) {
@@ -428,7 +496,7 @@
     tr.className = 'item-row';
     tr.innerHTML =
       '<td class="col-desc"><input type="text" placeholder="Descrição do serviço/produto" data-field="desc"></td>' +
-      '<td class="col-qty"><input type="number" min="1" value="1" data-field="qty" style="width:100%;background:transparent;border:none;outline:none;font-size:14px;font-family:inherit;padding:4px;color:#000000;opacity:1;"></td>' +
+      '<td class="col-qty"><input type="number" min="1" value="1" data-field="qty" style="width:100%;background:transparent;border:none;outline:none;font-size:14px;font-family:inherit;padding:4px;"></td>' +
       '<td class="col-unit"><input type="text" placeholder="R$ 0,00" data-field="unit"></td>' +
       '<td class="col-total td-total-val" data-field="total">R$ 0,00</td>' +
       '<td class="col-del"><button class="btn-remove" type="button" aria-label="Remover">' +
@@ -443,13 +511,6 @@
     tr.querySelector('.btn-remove').addEventListener('click', () => { tr.remove(); recalcTotal(); });
 
     itemsBody.appendChild(tr);
-
-    setTimeout(function() {
-      tr.querySelectorAll('input').forEach(function(input) {
-        input.style.cssText += '; color: inherit !important; opacity: 1 !important;';
-      });
-    }, 0);
-
     recalcTotal();
   }
 
@@ -504,7 +565,7 @@
       validadeDias: document.getElementById('validade').value,
       observacoes:  document.getElementById('observacoes').value.trim(),
       itens,
-      logoBase64: null
+      logoBase64: selectedLogoOrc || null
     };
 
     btnGenerate.disabled = true;
@@ -556,44 +617,5 @@
 })();
 </script>
 
-<script>
-window.addEventListener('load', function() {
-  var btn = document.getElementById('btn-menu');
-  var sidebar = document.querySelector('.sidebar');
-  var overlay = document.querySelector('.sidebar-overlay');
-
-  if (btn) {
-    btn.addEventListener('click', function() {
-      if (sidebar) sidebar.classList.toggle('open');
-      if (overlay) overlay.classList.toggle('show');
-    });
-  }
-});
-</script>
-
-<script>
-window.addEventListener('load', function() {
-  var btn = document.getElementById('btn-menu');
-  var sidebar = document.querySelector('.sidebar');
-
-  if (btn) {
-    btn.addEventListener('click', function() {
-      sidebar.classList.toggle('open');
-
-      // Força o estilo diretamente para testar
-      if (sidebar.classList.contains('open')) {
-        sidebar.style.transform = 'translateX(0)';
-        sidebar.style.position = 'fixed';
-        sidebar.style.top = '0';
-        sidebar.style.left = '0';
-        sidebar.style.height = '100vh';
-        sidebar.style.zIndex = '9999';
-      } else {
-        sidebar.style.transform = 'translateX(-100%)';
-      }
-    });
-  }
-});
-</script>
 </body>
 </html>

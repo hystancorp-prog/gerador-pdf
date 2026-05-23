@@ -435,6 +435,7 @@
     if (!user) { window.location.href = '/auth.html'; return; }
     window._firebaseUser  = user;
     window._storagePrefix = 'hystan_' + user.uid + '_';
+    if (window._loadPlanilhaStorage) window._loadPlanilhaStorage();
     const name = user.displayName || user.email.split('@')[0];
     document.getElementById('user-name').textContent = name;
     document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();
@@ -451,12 +452,16 @@
         }
       });
     }
-    const plano = localStorage.getItem('hystan_plano');
-    document.getElementById('user-plan').textContent = plano === 'ativo' ? 'Plano Ativo' : plano === 'trial' ? 'Trial' : '—';
+    const plano     = localStorage.getItem('hystan_plano');
+    const planoNome = localStorage.getItem('hystan_plano_nome') || '';
+    const NOMES_PL  = { essencial: 'Essencial', basico: 'Essencial', pro: 'Business' };
+    const nomeExib  = NOMES_PL[planoNome] || planoNome || 'Ativo';
+    const isProPL   = (planoNome === 'pro' || planoNome === 'business');
+    document.getElementById('user-plan').textContent = plano === 'ativo' ? 'Plano ' + nomeExib : plano === 'trial' ? 'Trial' : '—';
     const sn = document.getElementById('sidebar-plan-name');
     const ss = document.getElementById('sidebar-plan-sub');
-    if (sn) sn.textContent = plano === 'ativo' ? 'Plano Business' : plano === 'trial' ? 'Trial' : '—';
-    if (ss) ss.textContent = plano === 'ativo' ? 'Relatórios ilimitados' : '';
+    if (sn) sn.textContent = plano === 'ativo' ? 'Plano ' + nomeExib : plano === 'trial' ? 'Trial' : '—';
+    if (ss) ss.textContent = plano === 'ativo' ? (isProPL ? 'Ilimitado' : 'Até 20 docs/mês') : '';
     const trialInicio = parseInt(localStorage.getItem('hystan_trial_inicio') || '0', 10);
     if (plano === 'trial') {
       const dias = Math.max(1, Math.ceil((7 * 24 * 60 * 60 * 1000 - (Date.now() - trialInicio)) / 86400000));
@@ -521,10 +526,16 @@
   let selectedMonth = new Date().getMonth() + 1;
   let reportHistory = [];
   let totalReports  = 0;
-  try {
-    reportHistory = JSON.parse(localStorage.getItem(sk('history')) || '[]');
-    totalReports  = parseInt(localStorage.getItem(sk('total')) || '0', 10);
-  } catch (_) {}
+  // Storage is loaded ONLY after _storagePrefix is set (inside onAuthStateChanged),
+  // so this initial load uses the fallback key which is intentionally empty.
+  // The real load happens in loadStorageAfterAuth() called from onAuthStateChanged.
+  function loadStorageFromPrefix() {
+    try {
+      reportHistory = JSON.parse(localStorage.getItem(sk('history')) || '[]');
+      totalReports  = parseInt(localStorage.getItem(sk('total')) || '0', 10);
+    } catch (_) { reportHistory = []; totalReports = 0; }
+  }
+  window._loadPlanilhaStorage = loadStorageFromPrefix;
 
   const dropzone       = document.getElementById('dropzone');
   let selectedLogoBase64 = null;

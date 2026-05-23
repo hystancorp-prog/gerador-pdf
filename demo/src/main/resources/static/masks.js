@@ -35,7 +35,8 @@ function maskNumeroRecibo(e) {
 
 function maskMoeda(e) {
   let v = e.target.value.replace(/\D/g, '');
-  v = (parseInt(v) / 100).toFixed(2);
+  if (!v) { e.target.value = ''; return; }
+  v = (parseInt(v, 10) / 100).toFixed(2);
   v = v.replace('.', ',');
   v = v.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
   e.target.value = 'R$ ' + v;

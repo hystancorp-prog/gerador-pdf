@@ -30,7 +30,7 @@ public class ReciboController {
             return ResponseEntity.status(403)
                 .body("Limite do plano atingido. Faça upgrade para continuar.".getBytes());
 
-        if (req.valor < 0 || !Double.isFinite(req.valor) || req.valor > 9_999_999.99)
+        if (req.valor <= 0 || !Double.isFinite(req.valor) || req.valor > 9_999_999.99)
             return ResponseEntity.status(400).body("Valor inválido.".getBytes());
 
         if (!planoService.podeUsarLogo(uid))

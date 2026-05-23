@@ -53,6 +53,14 @@ public class PdfController {
             return ResponseEntity.status(403)
                 .body("Limite do plano atingido. Faça upgrade para continuar.".getBytes());
 
+        // Parameter range validation
+        if (ano < 2000 || ano > 2100)
+            return ResponseEntity.status(400).body("Ano inválido.".getBytes());
+        if (mesInicio < 1 || mesInicio > 12 || mesFim < 1 || mesFim > 12)
+            return ResponseEntity.status(400).body("Mês inválido.".getBytes());
+        if (mesInicio > mesFim)
+            return ResponseEntity.status(400).body("Mês inicial não pode ser maior que o final.".getBytes());
+
         // 1. Size check
         if (file.getSize() > MAX_SIZE)
             return ResponseEntity.status(413).body("Arquivo excede o limite de 5MB.".getBytes());

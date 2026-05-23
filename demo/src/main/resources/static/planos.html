@@ -608,9 +608,10 @@
   }
 
   function comecarTrial() {
-    localStorage.setItem('hystan_plano', 'trial');
-    localStorage.setItem('hystan_trial_inicio', Date.now());
-    window.location.href = '/dashboard.html';
+    // Trial requires Stripe checkout (card captured, not charged until day 8).
+    // Setting localStorage alone does NOT grant server-side access — PlanoService
+    // checks the DB. Redirect through the Essencial checkout which includes 7-day trial.
+    assinar('essencial');
   }
 
   async function assinar(plano) {

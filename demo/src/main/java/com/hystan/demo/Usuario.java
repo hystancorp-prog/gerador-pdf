@@ -44,6 +44,9 @@ public class Usuario {
     @Column(name = "mes_contagem")
     private Integer mesContagem;
 
+    @Column(name = "ano_contagem")
+    private Integer anoContagem;
+
     @Column(name = "docs_total_trial")
     private Integer docsTotalTrial = 0;
 
@@ -74,6 +77,7 @@ public class Usuario {
     public Long getId()                         { return id; }
     public Integer getDocsMesAtual()             { return docsMesAtual; }
     public Integer getMesContagem()              { return mesContagem; }
+    public Integer getAnoContagem()              { return anoContagem; }
     public Integer getDocsTotalTrial()           { return docsTotalTrial; }
     public String getEmail() { return email; }
     public String getNome() { return nome; }
@@ -91,6 +95,7 @@ public class Usuario {
     // Setters
     public void setDocsMesAtual(Integer v)   { this.docsMesAtual = v; }
     public void setMesContagem(Integer v)    { this.mesContagem = v; }
+    public void setAnoContagem(Integer v)    { this.anoContagem = v; }
     public void setDocsTotalTrial(Integer v) { this.docsTotalTrial = v; }
 
     public void setEmail(String email) { this.email = email; }

@@ -33,6 +33,14 @@ public class OrcamentoController {
         if (!planoService.podeUsarLogo(uid))
             req.logoBase64 = null;
 
+        // Sanitize items: clamp negatives, enforce minimum qty=1
+        if (req.itens != null) {
+            for (OrcamentoRequest.ItemOrcamento item : req.itens) {
+                if (item.quantidade <= 0) item.quantidade = 1;
+                if (item.valorUnitario < 0) item.valorUnitario = 0;
+            }
+        }
+
         try {
             byte[] pdf = GeradorOrcamentoPDF.gerar(req);
 

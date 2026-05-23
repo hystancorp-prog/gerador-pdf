@@ -50,7 +50,11 @@ public class RateLimiter {
     public static String getClientIp(HttpServletRequest request) {
         String forwarded = request.getHeader("X-Forwarded-For");
         if (forwarded != null && !forwarded.isBlank()) {
-            return forwarded.split(",")[0].trim();
+            // Take the RIGHTMOST IP — that is the one appended by the trusted
+            // upstream proxy (Railway). The leftmost IPs are client-supplied and
+            // can be forged to trivially bypass rate limiting.
+            String[] parts = forwarded.split(",");
+            return parts[parts.length - 1].trim();
         }
         return request.getRemoteAddr();
     }

@@ -276,9 +276,17 @@
 
     injectLoader();
 
-    var plano    = localStorage.getItem('hystan_plano') || '';
-    var planName = plano === 'ativo' ? 'Plano Business' : plano === 'trial' ? 'Trial' : '—';
-    var planSub  = plano === 'ativo' ? 'Relatórios ilimitados' : plano === 'trial' ? 'Período de teste' : '—';
+    var plano     = localStorage.getItem('hystan_plano') || '';
+    var planoNome = localStorage.getItem('hystan_plano_nome') || '';
+    var NOMES     = { essencial: 'Essencial', basico: 'Essencial', pro: 'Business' };
+    var nomeExibido = NOMES[planoNome] || planoNome || 'Ativo';
+    var isPro     = (planoNome === 'pro' || planoNome === 'business');
+    var planName  = plano === 'ativo'  ? 'Plano ' + nomeExibido
+                  : plano === 'trial'  ? 'Trial'
+                  : '—';
+    var planSub   = plano === 'ativo'  ? (isPro ? 'Ilimitado' : 'Até 20 docs/mês')
+                  : plano === 'trial'  ? 'Período de teste'
+                  : '—';
 
     container.innerHTML =
       '<aside class="sidebar" id="sidebar">' +

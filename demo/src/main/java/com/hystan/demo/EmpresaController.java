@@ -30,6 +30,9 @@ public class EmpresaController {
                                     HttpServletRequest request) {
         if (!rateLimiter.isAllowed(RateLimiter.getClientIp(request) + ":empresas-post", 10, 60_000L))
             return ResponseEntity.status(429).body("Muitas requisições.");
+        // Limit base64 logo to ~3MB decoded (4MB base64) to prevent DB abuse / OOM
+        if (req.getLogoBase64() != null && req.getLogoBase64().length() > 4 * 1024 * 1024)
+            return ResponseEntity.status(413).body("Logo muito grande. Máximo 2MB.");
         req.setId(null);
         req.setFirebaseUid(auth.getName());
         req.setCriadoEm(LocalDateTime.now());

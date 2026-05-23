@@ -484,11 +484,11 @@
     <div class="modal-icon">
       <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.2 6.5L4 30a2 2 0 0 0 1.7 3h28.6A2 2 0 0 0 36 30L22.8 6.5a2 2 0 0 0-3.6 0z"/><line x1="20" y1="16" x2="20" y2="23"/><line x1="20" y1="27" x2="20.02" y2="27"/></svg>
     </div>
-    <div class="modal-title">Cancelar assinatura?</div>
-    <div class="modal-body">Você continuará com acesso até o fim do período já pago. Após isso, sua conta volta ao plano gratuito.</div>
+    <div class="modal-title">Cancelar assinatura</div>
+    <div class="modal-body">Para cancelar, entre em contato com o suporte e incluiremos o cancelamento imediatamente. Você mantém o acesso até o fim do período já pago.<br><br><strong>suporte@hystan.com.br</strong></div>
     <div class="modal-actions">
-      <button class="btn-modal-cancel" id="modal-cancel-close">Manter plano</button>
-      <button class="btn-modal-confirm" id="modal-cancel-confirm">Sim, cancelar</button>
+      <button class="btn-modal-cancel" id="modal-cancel-close">Fechar</button>
+      <button class="btn-modal-confirm" id="modal-cancel-confirm">Copiar e-mail do suporte</button>
     </div>
   </div>
 </div>
@@ -848,7 +848,11 @@
   function closeModal(id) { const el = document.getElementById(id); if (el) el.classList.remove('is-visible'); }
 
   document.getElementById('modal-cancel-close').addEventListener('click', () => closeModal('modal-cancel'));
-  document.getElementById('modal-cancel-confirm').addEventListener('click', () => { closeModal('modal-cancel'); showToast('Entre em contato: suporte@hystan.com.br'); });
+  document.getElementById('modal-cancel-confirm').addEventListener('click', () => {
+    navigator.clipboard?.writeText('suporte@hystan.com.br').catch(() => {});
+    closeModal('modal-cancel');
+    showToast('E-mail copiado: suporte@hystan.com.br', 'success');
+  });
   document.getElementById('modal-history-close').addEventListener('click', () => closeModal('modal-history'));
   document.getElementById('modal-history-confirm').addEventListener('click', () => {
     localStorage.removeItem(sk('history'));
