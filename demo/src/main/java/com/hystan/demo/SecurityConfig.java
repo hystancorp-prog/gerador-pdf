@@ -29,13 +29,13 @@ public class SecurityConfig {
                 .contentSecurityPolicy(csp -> csp
                     .policyDirectives(
                         "default-src 'self'; " +
-                        "script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://accounts.google.com; " +
-                        "script-src-elem 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://accounts.google.com https://fonts.googleapis.com; " +
-                        "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://accounts.google.com https://www.gstatic.com; " +
-                        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+                        "script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://accounts.google.com https://www.google.com; " +
+                        "script-src-elem 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://accounts.google.com https://www.google.com https://fonts.googleapis.com; " +
+                        "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://accounts.google.com https://www.gstatic.com https://oauth2.googleapis.com; " +
+                        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com; " +
                         "font-src 'self' https://fonts.gstatic.com; " +
-                        "img-src 'self' data: https://*.googleusercontent.com; " +
-                        "frame-src https://accounts.google.com; " +
+                        "img-src 'self' data: blob: https://*.googleusercontent.com https://www.google.com https://www.gstatic.com; " +
+                        "frame-src https://accounts.google.com https://hystan-859f8.firebaseapp.com; " +
                         "object-src 'none'"
                     )
                 )
