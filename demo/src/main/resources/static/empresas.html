@@ -486,6 +486,10 @@
   document.getElementById('e-doc').addEventListener('input', maskCpfCnpj);
   document.getElementById('e-tel').addEventListener('input', maskTelefone);
   document.getElementById('e-cep').addEventListener('input', maskCep);
+  document.querySelectorAll('[placeholder*="CPF"], [placeholder*="CNPJ"], [id*="cnpj"], [id*="cpf"], [name*="cnpj"], [name*="cpf"]')
+    .forEach(el => el.addEventListener('input', maskCpfCnpj));
+  document.querySelectorAll('[placeholder*="Telefone"], [placeholder*="telefone"], [id*="telefone"], [name*="telefone"]')
+    .forEach(el => el.addEventListener('input', maskTelefone));
 
   /* ── LOGO UPLOAD ── */
   let selectedLogoBase64 = null;
