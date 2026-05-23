@@ -26,18 +26,22 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .headers(headers -> headers
+                .contentSecurityPolicy(csp -> csp
+                    .policyDirectives(
+                        "default-src 'self'; " +
+                        "script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://accounts.google.com; " +
+                        "script-src-elem 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://accounts.google.com https://fonts.googleapis.com; " +
+                        "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://accounts.google.com https://www.gstatic.com; " +
+                        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+                        "font-src 'self' https://fonts.gstatic.com; " +
+                        "img-src 'self' data: https://*.googleusercontent.com; " +
+                        "frame-src https://accounts.google.com; " +
+                        "object-src 'none'"
+                    )
+                )
                 .frameOptions(frame -> frame.deny())
                 .xssProtection(Customizer.withDefaults())
                 .contentTypeOptions(Customizer.withDefaults())
-                .contentSecurityPolicy(csp -> csp.policyDirectives(
-                    "default-src 'self'; " +
-                    "script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; " +
-                    "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; " +
-                    "img-src 'self' data: https:; " +
-                    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-                    "font-src 'self' https://fonts.gstatic.com; " +
-                    "frame-ancestors 'none'"
-                ))
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/webhook/stripe", "/*.html", "/*.png", "/*.ico", "/*.js", "/*.css", "/").permitAll()
