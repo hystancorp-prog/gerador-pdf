@@ -70,8 +70,8 @@ public class StripeController {
 
             SessionCreateParams.Builder builder = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
-                .setSuccessUrl("https://hystancorp.up.railway.app/dashboard.html?pago=true")
-                .setCancelUrl("https://hystancorp.up.railway.app/planos.html")
+                .setSuccessUrl("https://hystan.com.br/dashboard.html?pago=true")
+                .setCancelUrl("https://hystan.com.br/planos.html")
                 .addLineItem(
                     SessionCreateParams.LineItem.builder()
                         .setPrice(priceId)

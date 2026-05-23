@@ -28,7 +28,7 @@ public class GeradorPDF {
     private static final float TOTAL_H   = 32f; // separator + total row
     private static final float FOOTER_H  = 38f; // footer line + text area
     private static final float MARGIN_BOT = 20f;
-    private static final String FOOTER = "Gerado com Hystan · hystancorp.up.railway.app";
+    private static final String FOOTER = "Gerado com Hystan · hystan.com.br";
 
     public static void gerar(List<String[]> dados, String saida,
                              String nomeEmpresa, String logoBase64) throws Exception {

@@ -23,7 +23,7 @@ public class GeradorOrcamentoPDF {
     private static final float C2 = 347, C2R = 446; // VALOR UNIT 20%
     private static final float C3 = 446, C3R = 545; // TOTAL      20%
     private static final float PAD = 5f;
-    private static final String FOOTER = "Gerado com Hystan · hystancorp.up.railway.app";
+    private static final String FOOTER = "Gerado com Hystan · hystan.com.br";
 
     private static final float PAGE_H   = PDRectangle.A4.getHeight();
     private static final float ROW_H    = 22f;
