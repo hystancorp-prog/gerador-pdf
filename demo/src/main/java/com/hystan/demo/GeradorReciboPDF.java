@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 public class GeradorReciboPDF {
 
-    private static final String FOOTER = "Gerado com Hystan · hystan.com.br";
+    private static final String FOOTER = "Gerado com Hystan · www.hystan.com.br";
     private static final java.util.Random RNG = new java.util.Random();
 
     private static final String[] UNIDADES = {
