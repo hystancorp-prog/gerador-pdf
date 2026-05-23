@@ -426,27 +426,6 @@
   <!-- CARDS DE PLANOS -->
   <div class="pricing-grid">
 
-    <!-- GRATUITO — só aparece no mensal -->
-    <div class="plan-card" id="card-trial">
-      <div class="plan-name-tag">Grátis</div>
-      <div class="plan-name">Trial</div>
-      <div class="plan-price-wrap">
-        <div class="plan-price">R$0<span class="cents"></span></div>
-      </div>
-      <div class="plan-price-period">por 7 dias</div>
-      <div class="plan-trial">✦ Sem cobrar cartão agora</div>
-      <div class="plan-divider"></div>
-      <ul class="plan-features">
-        <li>Relatórios, orçamentos e recibos</li>
-        <li>Filtro por mês específico</li>
-        <li>Download em PDF</li>
-        <li class="muted">Logo da empresa no PDF</li>
-        <li class="muted">Filtro por intervalo ou ano</li>
-        <li class="muted">Suporte prioritário</li>
-      </ul>
-      <button class="btn-plan btn-outline" onclick="comecarTrial()">Começar grátis</button>
-    </div>
-
     <!-- ESSENCIAL -->
     <div class="plan-card featured">
       <div class="popular-badge">MAIS POPULAR</div>
@@ -465,6 +444,7 @@
         <li>Suporte por e-mail</li>
         <li class="muted">Logo da empresa no PDF</li>
         <li class="muted">Suporte prioritário</li>
+        <li>7 dias grátis para testar</li>
       </ul>
       <button class="btn-plan btn-white" onclick="assinar('essencial')">Começar com 7 dias grátis</button>
     </div>
@@ -578,16 +558,8 @@
       badge.style.transform = 'translateY(-8px)';
     }
 
-    // Esconde card Trial no anual
-    const cardTrial = document.getElementById('card-trial');
-    cardTrial.style.transition = 'opacity .3s ease';
-    cardTrial.style.opacity = isAnual ? '0' : '1';
-    cardTrial.style.pointerEvents = isAnual ? 'none' : 'auto';
-    setTimeout(() => { cardTrial.style.display = isAnual ? 'none' : 'flex'; }, isAnual ? 300 : 0);
-    if (!isAnual) { setTimeout(() => { cardTrial.style.opacity = '1'; }, 10); }
-
-    // Grid: 2 colunas no anual, 3 no mensal
-    document.querySelector('.pricing-grid').style.gridTemplateColumns = isAnual ? '1fr 1fr' : '1fr 1fr 1fr';
+    // Grid: sempre 2 colunas (Essencial + Business)
+    document.querySelector('.pricing-grid').style.gridTemplateColumns = '1fr 1fr';
 
     // Preços
     document.getElementById('preco-essencial').innerHTML = isAnual ? precos.essencial.anual : precos.essencial.mensal;
@@ -605,13 +577,6 @@
     document.getElementById('trial-essencial').innerHTML = isAnual
       ? '&nbsp;'
       : '✦ 7 dias grátis · cancele antes de cobrar';
-  }
-
-  function comecarTrial() {
-    // Trial requires Stripe checkout (card captured, not charged until day 8).
-    // Setting localStorage alone does NOT grant server-side access — PlanoService
-    // checks the DB. Redirect through the Essencial checkout which includes 7-day trial.
-    assinar('essencial');
   }
 
   async function assinar(plano) {

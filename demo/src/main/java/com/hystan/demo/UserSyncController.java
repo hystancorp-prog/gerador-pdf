@@ -30,11 +30,13 @@ public class UserSyncController {
         Optional<Usuario> opt = usuarioRepository.findByFirebaseUid(uid);
 
         if (opt.isEmpty()) {
-            // Primeiro login — cria usuário com plano gratuito
+            // Primeiro login — inicia com trial
             Usuario novo = new Usuario(email, nome, foto);
             novo.setFirebaseUid(uid);
-            novo.setPlano("gratuito");
-            novo.setPlanoStatus("inativo");
+            novo.setPlano("trial");
+            novo.setPlanoStatus("trial");
+            novo.setDocsTotalTrial(0);
+            novo.setDocsMesAtual(0);
             usuarioRepository.save(novo);
         } else {
             // Atualiza dados básicos se mudaram
