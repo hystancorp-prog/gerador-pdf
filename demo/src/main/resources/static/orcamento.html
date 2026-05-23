@@ -261,10 +261,6 @@
         </select>
       </div>
 
-      <div id="logo-upgrade-notice-orc" style="display:none;margin-bottom:14px;padding:10px 14px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);font-size:12px;color:var(--text-2);">
-        Logo da empresa disponível no <a href="/planos.html" style="color:var(--text-1);font-weight:600;text-decoration:underline;">Plano Business</a>
-      </div>
-
       <div class="section-label">Prestador</div>
 
       <div class="form-row form-row-3">
@@ -397,17 +393,13 @@
     window._storagePrefix = 'hystan_' + user.uid + '_';
     if (window._hideLoader) window._hideLoader();
 
-    // Load plan info and companies
+    // Load companies for all plans; fetch plan info for logo logic
+    loadEmpresasOrc();
     try {
       const token = await user.getIdToken();
       const r = await fetch('/meu-plano', { headers: { 'Authorization': 'Bearer ' + token } });
       if (r.ok) {
-        const d = await r.json();
-        window._planoInfoOrc = d;
-        const isPro = (d.plano === 'pro' || d.plano === 'business') && d.status === 'ativo';
-        document.getElementById('logo-upgrade-notice-orc').style.display = isPro ? 'none' : 'block';
-        if (isPro) loadEmpresasOrc();
-        else document.getElementById('empresa-select-wrap').style.display = 'none';
+        window._planoInfoOrc = await r.json();
       }
     } catch (_) {}
   });

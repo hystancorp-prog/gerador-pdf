@@ -720,14 +720,14 @@
       document.getElementById('trial-msg').textContent         = 'Trial termina em ' + dias + ' dia(s).';
       document.getElementById('upgrade-card').classList.add('is-visible');
       document.getElementById('sidebar-plan-name').textContent = 'Trial';
-      document.getElementById('sidebar-plan-sub').textContent  = usados + ' de 5 docs usados';
+      document.getElementById('sidebar-plan-sub').textContent  = usados + ' docs gerados';
       document.getElementById('cfg-plan-badge').textContent    = 'Trial';
       document.getElementById('cfg-plan-name').textContent     = 'Período de teste';
-      document.getElementById('cfg-plan-sub').textContent      = usados + ' de 5 documentos usados · ' + dias + ' dias restantes';
+      document.getElementById('cfg-plan-sub').textContent      = dias + ' dias restantes';
       const plCard = document.getElementById('stat-plano-valor');
       const plSub  = document.getElementById('stat-plano-sub');
-      if (plCard) plCard.textContent = usados + '/5';
-      if (plSub)  plSub.textContent  = 'documentos do trial usados';
+      if (plCard) plCard.textContent = String(usados);
+      if (plSub)  plSub.textContent  = 'documentos gerados';
     } else {
       const NOMES = { essencial: 'Essencial', basico: 'Essencial', pro: 'Pro', gratuito: 'Gratuito' };
       const nome  = NOMES[planoNome] || 'Ativo';
