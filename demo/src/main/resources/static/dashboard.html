@@ -157,7 +157,7 @@
     .btn-promo:hover { opacity: 0.86; }
 
     /* ── STATS GRID ── */
-    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
     .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px 24px; }
     .stat-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2); margin-bottom: 10px; }
     .stat-value { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800; color: var(--text-1); line-height: 1; letter-spacing: -0.03em; }
@@ -339,6 +339,11 @@
           <div class="stat-label">Recibos</div>
           <div class="stat-value" id="stat-rec">0</div>
           <div class="stat-sub">Recibos emitidos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Uso do plano</div>
+          <div class="stat-value" id="stat-plano-valor">—</div>
+          <div class="stat-sub" id="stat-plano-sub">carregando…</div>
         </div>
       </div>
 
@@ -719,6 +724,10 @@
       document.getElementById('cfg-plan-badge').textContent    = 'Trial';
       document.getElementById('cfg-plan-name').textContent     = 'Período de teste';
       document.getElementById('cfg-plan-sub').textContent      = usados + ' de 5 documentos usados · ' + dias + ' dias restantes';
+      const plCard = document.getElementById('stat-plano-valor');
+      const plSub  = document.getElementById('stat-plano-sub');
+      if (plCard) plCard.textContent = usados + '/5';
+      if (plSub)  plSub.textContent  = 'documentos do trial usados';
     } else {
       const NOMES = { essencial: 'Essencial', basico: 'Essencial', pro: 'Pro', gratuito: 'Gratuito' };
       const nome  = NOMES[planoNome] || 'Ativo';
@@ -731,6 +740,10 @@
       document.getElementById('cfg-plan-badge').textContent    = nome;
       document.getElementById('cfg-plan-name').textContent     = 'Plano ' + nome;
       document.getElementById('cfg-plan-sub').textContent      = subConfig;
+      const plCard = document.getElementById('stat-plano-valor');
+      const plSub  = document.getElementById('stat-plano-sub');
+      if (plCard) plCard.textContent = isPro ? '∞' : usados + '/20';
+      if (plSub)  plSub.textContent  = isPro ? 'ilimitado' : 'documentos este mês';
     }
     updateStats();
   }

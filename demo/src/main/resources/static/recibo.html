@@ -504,6 +504,7 @@
         headers: { 'Content-Type': 'application/json', ...(token ? { 'Authorization': 'Bearer ' + token } : {}) },
         body: JSON.stringify(payload)
       });
+      if (resp.status === 403) { if (window._showTrialLimitModal) window._showTrialLimitModal(); return; }
       if (!resp.ok) { let m = 'Erro no servidor'; try { m = await resp.text(); } catch (_) {} throw new Error(m); }
 
       const blob = await resp.blob();

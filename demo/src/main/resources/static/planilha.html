@@ -679,6 +679,7 @@
         body: formData
       });
 
+      if (resp.status === 403) { if (window._showTrialLimitModal) window._showTrialLimitModal(); return; }
       if (!resp.ok) {
         let msg = 'Erro no servidor';
         try { msg = await resp.text(); } catch (_) {}

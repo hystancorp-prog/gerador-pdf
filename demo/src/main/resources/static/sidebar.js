@@ -356,12 +356,74 @@
     attachHamburger();
   }
 
+  /* ── TRIAL LIMIT MODAL ── */
+  function showTrialLimitModal() {
+    if (document.getElementById('_trial_limit_modal')) return;
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
+                 (document.documentElement.getAttribute('data-theme') !== 'light' &&
+                  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    var overlay = document.createElement('div');
+    overlay.id  = '_trial_limit_modal';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;';
+
+    var box = document.createElement('div');
+    box.style.cssText = [
+      'background:'  + (isDark ? '#1a1a1a' : '#ffffff') + ';',
+      'color:'       + (isDark ? '#ffffff' : '#1a1a1a') + ';',
+      'border:1px solid ' + (isDark ? 'rgba(255,255,255,0.12)' : '#e0e0dd') + ';',
+      'border-radius:16px;padding:32px;max-width:420px;width:calc(100% - 32px);',
+      'box-shadow:0 24px 60px rgba(0,0,0,0.3);'
+    ].join('');
+
+    var title = document.createElement('h3');
+    title.style.cssText = 'font-family:Syne,sans-serif;font-size:20px;font-weight:800;margin:0 0 8px;letter-spacing:-0.02em;';
+    title.textContent = 'Limite do trial atingido';
+
+    var body = document.createElement('p');
+    body.style.cssText = 'font-size:14px;line-height:1.65;margin:0 0 24px;opacity:0.75;';
+    body.textContent = 'Você atingiu o limite de 5 documentos do trial. Assine um plano para continuar.';
+
+    var actions = document.createElement('div');
+    actions.style.cssText = 'display:flex;gap:10px;';
+
+    var btnClose = document.createElement('button');
+    btnClose.style.cssText = [
+      'flex:1;padding:12px;border-radius:8px;',
+      'border:1px solid ' + (isDark ? 'rgba(255,255,255,0.12)' : '#e0e0dd') + ';',
+      'background:' + (isDark ? '#2a2a2a' : '#f5f5f3') + ';',
+      'color:' + (isDark ? '#ffffff' : '#1a1a1a') + ';',
+      'font-size:14px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;'
+    ].join('');
+    btnClose.textContent = 'Fechar';
+
+    var btnPlanos = document.createElement('button');
+    btnPlanos.style.cssText = 'flex:1;padding:12px;border-radius:8px;border:none;background:#111111;color:#ffffff;font-size:14px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;';
+    btnPlanos.textContent = 'Ver planos';
+
+    actions.appendChild(btnClose);
+    actions.appendChild(btnPlanos);
+    box.appendChild(title);
+    box.appendChild(body);
+    box.appendChild(actions);
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    btnClose.onclick  = function () { overlay.remove(); };
+    btnPlanos.onclick = function () { window.location.href = '/planos.html'; };
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.remove(); });
+    document.addEventListener('keydown', function escHandler(e) {
+      if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', escHandler); }
+    });
+  }
+
   /* ── EXPORTS ── */
-  window.buildSidebar      = buildSidebar;
-  window._setSidebarActive = setSidebarActive;
-  window._openSidebar      = openSidebar;
-  window._closeSidebar     = closeSidebar;
-  window._hideLoader       = hideLoader;
+  window.buildSidebar           = buildSidebar;
+  window._setSidebarActive      = setSidebarActive;
+  window._openSidebar           = openSidebar;
+  window._closeSidebar          = closeSidebar;
+  window._hideLoader            = hideLoader;
+  window._showTrialLimitModal   = showTrialLimitModal;
 })();
 
 /* ── EVENT DELEGATION (works regardless of injection timing) ── */
