@@ -146,6 +146,11 @@
     }
 
     /* PRICING GRID */
+    .plans, .pricing-grid {
+      margin-left: auto !important;
+      margin-right: auto !important;
+      justify-content: center !important;
+    }
     .pricing-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -279,6 +284,8 @@
       margin-top: 1px;
     }
     .plan-card.featured .plan-features li::before { color: #86efac; }
+    .plan-features li.plan-list-subtitle { font-size: 11px; color: var(--mid); opacity: 0.6; display: block; font-weight: 500; letter-spacing: 0.03em; margin-bottom: -2px; }
+    .plan-features li.plan-list-subtitle::before { content: none; }
     .plan-features li.muted { color: #ccc; }
     .plan-features li.muted::before { content: '—'; color: #ccc; font-weight: 400; }
     .plan-card.featured .plan-features li.muted { color: rgba(255,255,255,0.25); }
@@ -460,6 +467,7 @@
       <div class="plan-trial" id="trial-business">&nbsp;</div>
       <div class="plan-divider"></div>
       <ul class="plan-features">
+        <li class="plan-list-subtitle">Tudo do plano Essencial, mais:</li>
         <li>Relatórios ilimitados</li>
         <li>Logo da empresa no PDF</li>
         <li>Filtro por ano completo</li>
