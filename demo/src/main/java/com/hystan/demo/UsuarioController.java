@@ -38,7 +38,15 @@ public class UsuarioController {
         resp.put("status",        u.getPlanoStatus() != null ? u.getPlanoStatus() : "inativo");
         resp.put("docsMesAtual",  String.valueOf(u.getDocsMesAtual()   != null ? u.getDocsMesAtual()   : 0));
         resp.put("docsTotalTrial",String.valueOf(u.getDocsTotalTrial() != null ? u.getDocsTotalTrial() : 0));
-        if (u.getTrialFim() != null) resp.put("trialFim", u.getTrialFim().toString());
+        if (u.getTrialFim() != null) {
+            resp.put("trialFim", u.getTrialFim().toString());
+        } else {
+            if (u.getCriadoEm() != null) {
+                resp.put("trialFim", u.getCriadoEm().plusDays(7).toString());
+            } else {
+                resp.put("trialFim", java.time.LocalDateTime.now().plusDays(7).toString());
+            }
+        }
         return ResponseEntity.ok(resp);
     }
 }

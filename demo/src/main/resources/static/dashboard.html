@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18185118067"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-18185118067');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hystan — Dashboard</title>
@@ -681,13 +689,18 @@
             const usados = data.status === 'trial'
               ? parseInt(data.docsTotalTrial || '0', 10)
               : parseInt(data.docsMesAtual  || '0', 10);
-            let diasRestantes = null;
-            if (data.status === 'trial' && data.trialFim) {
-              const trialFim = new Date(data.trialFim);
-              const hoje = new Date();
-              const diff = Math.ceil((trialFim - hoje) / (1000 * 60 * 60 * 24));
-              diasRestantes = diff > 0 ? diff : 0;
+            function calcDiasRestantes(trialFimStr) {
+              if (!trialFimStr) return 7;
+              try {
+                const fim = new Date(trialFimStr);
+                const hoje = new Date();
+                const diff = Math.ceil((fim - hoje) / (1000 * 60 * 60 * 24));
+                return Math.max(0, diff);
+              } catch(e) {
+                return 7;
+              }
             }
+            const diasRestantes = data.status === 'trial' ? calcDiasRestantes(data.trialFim) : null;
             setupUI(data.status === 'trial' ? 'trial' : 'ativo', diasRestantes, data.plano, usados);
             return;
           }
