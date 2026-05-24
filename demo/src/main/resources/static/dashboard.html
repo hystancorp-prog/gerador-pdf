@@ -681,7 +681,14 @@
             const usados = data.status === 'trial'
               ? parseInt(data.docsTotalTrial || '0', 10)
               : parseInt(data.docsMesAtual  || '0', 10);
-            setupUI(data.status === 'trial' ? 'trial' : 'ativo', null, data.plano, usados);
+            let diasRestantes = null;
+            if (data.status === 'trial' && data.trialFim) {
+              const trialFim = new Date(data.trialFim);
+              const hoje = new Date();
+              const diff = Math.ceil((trialFim - hoje) / (1000 * 60 * 60 * 24));
+              diasRestantes = diff > 0 ? diff : 0;
+            }
+            setupUI(data.status === 'trial' ? 'trial' : 'ativo', diasRestantes, data.plano, usados);
             return;
           }
         }

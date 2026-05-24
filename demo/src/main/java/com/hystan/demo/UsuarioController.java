@@ -38,6 +38,7 @@ public class UsuarioController {
         resp.put("status",        u.getPlanoStatus() != null ? u.getPlanoStatus() : "inativo");
         resp.put("docsMesAtual",  String.valueOf(u.getDocsMesAtual()   != null ? u.getDocsMesAtual()   : 0));
         resp.put("docsTotalTrial",String.valueOf(u.getDocsTotalTrial() != null ? u.getDocsTotalTrial() : 0));
+        if (u.getTrialFim() != null) resp.put("trialFim", u.getTrialFim().toString());
         return ResponseEntity.ok(resp);
     }
 }

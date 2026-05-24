@@ -37,6 +37,7 @@ public class UserSyncController {
             novo.setPlanoStatus("trial");
             novo.setDocsTotalTrial(0);
             novo.setDocsMesAtual(0);
+            novo.setTrialFim(java.time.LocalDateTime.now().plusDays(7));
             usuarioRepository.save(novo);
         } else {
             // Atualiza dados básicos se mudaram
