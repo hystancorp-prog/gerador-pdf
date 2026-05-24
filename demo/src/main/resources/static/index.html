@@ -523,10 +523,16 @@
   .plans, .pricing-grid {
     margin-left: auto !important;
     margin-right: auto !important;
+    display: flex !important;
     justify-content: center !important;
+    align-items: stretch !important;
+    flex-wrap: wrap !important;
+    gap: 20px !important;
   }
-  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .plans { gap: 20px; }
   .plan {
+    flex: 0 1 320px !important;
+    max-width: 360px !important;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 18px;

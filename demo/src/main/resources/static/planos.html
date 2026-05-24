@@ -149,7 +149,11 @@
     .plans, .pricing-grid {
       margin-left: auto !important;
       margin-right: auto !important;
+      display: flex !important;
       justify-content: center !important;
+      align-items: stretch !important;
+      flex-wrap: wrap !important;
+      gap: 20px !important;
     }
     .pricing-grid {
       display: grid;
@@ -161,6 +165,8 @@
     }
 
     .plan-card {
+      flex: 0 1 320px !important;
+      max-width: 360px !important;
       background: var(--white);
       border: 1.5px solid var(--border);
       border-radius: 20px;
