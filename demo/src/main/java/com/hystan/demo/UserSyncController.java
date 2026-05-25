@@ -15,6 +15,9 @@ public class UserSyncController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     @PostMapping("/sync-user")
     public ResponseEntity<Void> syncUser(
             org.springframework.security.core.Authentication auth,
@@ -39,6 +42,7 @@ public class UserSyncController {
             novo.setDocsMesAtual(0);
             novo.setTrialFim(java.time.LocalDateTime.now().plusDays(7));
             usuarioRepository.save(novo);
+            emailService.enviarBoasVindas(email, nome);
         } else {
             // Atualiza dados básicos se mudaram
             Usuario u = opt.get();
