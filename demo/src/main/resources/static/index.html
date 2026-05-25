@@ -648,6 +648,18 @@
   .testimonial-name { font-weight: 600; font-size: 14px; }
   .testimonial-role { font-size: 12.5px; color: var(--text-muted); }
   @media (max-width: 768px) { .testimonials { grid-template-columns: 1fr !important; } }
+  @media (max-width: 768px) {
+    .testimonial-img img {
+      border-radius: 12px !important;
+      width: 100% !important;
+      height: auto !important;
+      object-fit: contain !important;
+    }
+    .testimonials {
+      gap: 12px !important;
+      padding: 0 8px !important;
+    }
+  }
 
   /* ===== CTA FINAL ===== */
   .cta-final { padding: 60px 0 100px; }
