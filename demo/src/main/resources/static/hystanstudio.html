@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -45,6 +45,8 @@ gtag('config', 'G-VWDJBB5DTY');
   --mockup-frame: #1a1a1a;
   --mockup-border: rgba(255,255,255,0.1);
   --number-accent: #ffffff;
+  --logo-light-display: none;
+  --logo-dark-display: block;
 }
 
 :root[data-theme="light"] {
@@ -64,7 +66,12 @@ gtag('config', 'G-VWDJBB5DTY');
   --mockup-frame: #e0e0de;
   --mockup-border: rgba(0,0,0,0.1);
   --number-accent: #0a0a0a;
+  --logo-light-display: block;
+  --logo-dark-display: none;
 }
+
+.logo-light { display: var(--logo-light-display); }
+.logo-dark  { display: var(--logo-dark-display); }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -518,113 +525,6 @@ section { max-width: 1200px; margin: 0 auto; padding: 100px 32px; }
   .number-item + .number-item::before { display: none; }
 }
 
-/* SERVICES */
-#servicos { padding: 100px 32px; max-width: 1200px; margin: 0 auto; }
-.services-header { text-align: center; margin-bottom: 56px; }
-
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  align-items: start;
-}
-
-@media (max-width: 900px) { .services-grid { grid-template-columns: 1fr; } }
-
-.service-card { padding: 32px; display: flex; flex-direction: column; gap: 20px; position: relative; }
-
-.service-card-featured {
-  position: relative;
-  z-index: 1;
-}
-
-.service-card-featured::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 17px;
-  padding: 1px;
-  background: conic-gradient(from var(--border-angle), transparent 20%, rgba(255,255,255,0.5) 40%, transparent 60%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: rotateBorder 3s linear infinite;
-  z-index: -1;
-}
-
-@keyframes rotateBorder { to { --border-angle: 360deg; } }
-
-.service-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 12px;
-  border-radius: 100px;
-  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
-  color: var(--text-muted); width: fit-content;
-}
-
-.service-tag-popular { background: rgba(255,255,255,0.1); color: var(--text); }
-:root[data-theme="light"] .service-tag-popular { background: rgba(0,0,0,0.08); }
-
-.service-name { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; }
-
-.service-price {
-  font-family: 'Syne', sans-serif;
-  font-size: 40px; font-weight: 800;
-  letter-spacing: -0.02em; line-height: 1;
-}
-
-.service-price span {
-  font-size: 18px; font-weight: 500; color: var(--text-muted);
-  vertical-align: top; margin-top: 6px; display: inline-block;
-}
-
-.service-features { list-style: none; display: flex; flex-direction: column; gap: 12px; flex: 1; }
-
-.service-features li {
-  font-size: 14px; color: var(--text-muted);
-  display: flex; align-items: center; gap: 10px;
-}
-
-.service-features li::before {
-  content: '';
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  background: rgba(74,222,128,0.15);
-  border: 1px solid rgba(74,222,128,0.3);
-  flex-shrink: 0;
-  background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%234ade80' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.btn-service {
-  margin-top: 8px;
-  padding: 13px 20px;
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
-  font-size: 14px; font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: 'DM Sans', sans-serif;
-  width: 100%;
-}
-.btn-service:hover { background: var(--glass); border-color: rgba(255,255,255,0.2); }
-
-.btn-service-featured {
-  background: var(--btn-primary-bg);
-  color: var(--btn-primary-text);
-  border-color: transparent;
-}
-.btn-service-featured:hover {
-  opacity: 0.88;
-  box-shadow: 0 0 20px rgba(255,255,255,0.15);
-  background: var(--btn-primary-bg);
-  border-color: transparent;
-}
-
 /* COMO FUNCIONA */
 #como-funciona { padding: 100px 32px; max-width: 1200px; margin: 0 auto; }
 .steps-header { text-align: center; margin-bottom: 64px; }
@@ -894,13 +794,11 @@ footer {
 <!-- NAVBAR -->
 <nav id="navbar">
   <div class="nav-logo">
-    <span class="nav-brand">HYSTAN</span>
-    <span class="glass nav-pill">STUDIO</span>
+    <img src="/logohystanstudio_black.png" alt="Hystan Studio" class="logo-light" style="height: 28px; width: auto;">
+    <img src="/logohystanstudio_white.png" alt="Hystan Studio" class="logo-dark" style="height: 28px; width: auto;">
   </div>
   <div class="nav-links">
-    <a href="#servicos">Serviços</a>
     <a href="#portfolio">Portfólio</a>
-    <a href="#servicos">Preços</a>
     <a href="#cta-final">Contato</a>
   </div>
   <div class="nav-right">
@@ -995,64 +893,6 @@ footer {
     </div>
   </div>
 </div>
-
-<!-- SERVICES -->
-<section id="servicos">
-  <div class="services-header">
-    <p class="section-label reveal">Serviços</p>
-    <h2 class="section-title reveal">O plano certo para<br>o seu projeto</h2>
-    <p class="section-sub reveal" style="margin:0 auto">Sem mensalidades. Sem surpresas. Um valor fixo para um site que você vai querer mostrar para todo mundo.</p>
-  </div>
-  <div class="services-grid">
-    <div class="glass service-card reveal">
-      <div class="service-tag glass">Essencial</div>
-      <div>
-        <div class="service-name">Essencial</div>
-        <div class="service-price"><span>R$</span>497</div>
-      </div>
-      <ul class="service-features">
-        <li>Design profissional</li>
-        <li>Mobile responsivo</li>
-        <li>Formulário WhatsApp</li>
-        <li>Entrega em 7 dias</li>
-        <li>1 revisão incluída</li>
-      </ul>
-      <button class="btn-service" onclick="abrirWhatsApp()">Solicitar orçamento</button>
-    </div>
-    <div class="glass service-card service-card-featured reveal" style="transition-delay:0.1s">
-      <div class="service-tag service-tag-popular">Mais popular</div>
-      <div>
-        <div class="service-name">Pro</div>
-        <div class="service-price"><span>R$</span>897</div>
-      </div>
-      <ul class="service-features">
-        <li>Tudo do Essencial</li>
-        <li>Animações premium</li>
-        <li>SEO otimizado</li>
-        <li>Google Analytics</li>
-        <li>Entrega em 10 dias</li>
-        <li>2 revisões incluídas</li>
-      </ul>
-      <button class="btn-service btn-service-featured" onclick="abrirWhatsApp()">Solicitar orçamento</button>
-    </div>
-    <div class="glass service-card reveal" style="transition-delay:0.2s">
-      <div class="service-tag glass">Premium</div>
-      <div>
-        <div class="service-name">Premium</div>
-        <div class="service-price"><span>R$</span>1.497</div>
-      </div>
-      <ul class="service-features">
-        <li>Tudo do Pro</li>
-        <li>Glassmorphism / 3D</li>
-        <li>Integração avançada</li>
-        <li>Performance score 95+</li>
-        <li>Entrega em 14 dias</li>
-        <li>Revisões ilimitadas</li>
-      </ul>
-      <button class="btn-service" onclick="abrirWhatsApp()">Solicitar orçamento</button>
-    </div>
-  </div>
-</section>
 
 <!-- COMO FUNCIONA -->
 <section id="como-funciona">
@@ -1228,7 +1068,7 @@ footer {
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-brand">HYSTAN STUDIO</div>
+    <img src="/logohystanstudio_white.png" alt="Hystan Studio" style="height: 32px; width: auto;">
     <p class="footer-desc">Criamos landing pages que impressionam e convertem. Design premium, entrega rápida, resultado real.</p>
     <p class="footer-copy">© 2026 Hystan Studio · hystanstudio.com.br</p>
     <a href="https://www.hystan.com.br" class="footer-back">← Voltar para Hystan</a>
@@ -1463,17 +1303,17 @@ var modalData = {
   clinica: {
     title: 'Clínica Bella Vida',
     desc: 'Landing page para clínica de dermatologia com foco em captação de pacientes para procedimentos estéticos. Layout clean com tons azuis que transmitem confiança e saúde.',
-    details: ['Plano Pro — R$897', 'Entregue em 10 dias', 'Score PageSpeed: 96/100', '2 revisões realizadas', 'Mobile responsivo']
+    details: ['Entregue em 10 dias', 'Score PageSpeed: 96/100', '2 revisões realizadas', 'Mobile responsivo']
   },
   restaurante: {
     title: 'Brasa & Sabor',
     desc: 'Landing page para churrascaria premium com galeria visual, cardápio e botão de reserva via WhatsApp. Cores quentes que despertam apetite.',
-    details: ['Plano Essencial — R$497', 'Entregue em 7 dias', 'Score PageSpeed: 94/100', '1 revisão realizada', 'Formulário WhatsApp integrado']
+    details: ['Entregue em 7 dias', 'Score PageSpeed: 94/100', '1 revisão realizada', 'Formulário WhatsApp integrado']
   },
   academia: {
     title: 'Iron Forge Gym',
     desc: 'Landing page premium para academia de CrossFit com glassmorphism, animações de entrada e seção de planos. Visual agressivo e motivador.',
-    details: ['Plano Premium — R$1.497', 'Entregue em 14 dias', 'Score PageSpeed: 97/100', 'Revisões ilimitadas', 'Integração com Google Analytics']
+    details: ['Entregue em 14 dias', 'Score PageSpeed: 97/100', 'Revisões ilimitadas', 'Integração com Google Analytics']
   }
 };
 
