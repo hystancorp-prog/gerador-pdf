@@ -624,7 +624,7 @@
   @media (max-width: 768px) { .plans { grid-template-columns: 1fr; } }
 
   /* ===== TESTIMONIALS ===== */
-  .testimonials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .testimonials { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 1100px; margin-left: auto; margin-right: auto; }
   .testimonial {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: 16px; padding: 28px;
@@ -647,7 +647,7 @@
   }
   .testimonial-name { font-weight: 600; font-size: 14px; }
   .testimonial-role { font-size: 12.5px; color: var(--text-muted); }
-  @media (max-width: 768px) { .testimonials { grid-template-columns: 1fr; } }
+  @media (max-width: 768px) { .testimonials { grid-template-columns: 1fr !important; } }
 
   /* ===== CTA FINAL ===== */
   .cta-final { padding: 60px 0 100px; }
@@ -1203,46 +1203,61 @@
       <h2>Quem usa, recomenda.</h2>
       <p>Centenas de profissionais já entregam documentos mais bonitos — e gastam metade do tempo fazendo isso.</p>
     </div>
-    <div class="testimonials" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 56px; max-width: 900px; margin-left: auto; margin-right: auto;">
+    <div class="testimonials" style="margin-top: 56px;">
       <div class="testimonial-img reveal reveal-1">
         <img src="/avaliacaoo1.png" alt="Avaliação cliente 1"
-             style="max-width: 100%; width: 100%; border-radius: 16px; border: 1px solid var(--border);">
+             style="width: 100%; min-height: 200px; object-fit: cover; border-radius: 16px; border: 1px solid var(--border);">
       </div>
       <div class="testimonial-img reveal reveal-2">
         <img src="/avaliacaoo2.png" alt="Avaliação cliente 2"
-             style="max-width: 100%; width: 100%; border-radius: 16px; border: 1px solid var(--border);">
+             style="width: 100%; min-height: 200px; object-fit: cover; border-radius: 16px; border: 1px solid var(--border);">
       </div>
       <div class="testimonial-img reveal reveal-3">
         <img src="/avaliacaoo3.png" alt="Avaliação cliente 3"
-             style="max-width: 100%; width: 100%; border-radius: 16px; border: 1px solid var(--border);">
+             style="width: 100%; min-height: 200px; object-fit: cover; border-radius: 16px; border: 1px solid var(--border);">
       </div>
       <div class="testimonial-img reveal reveal-4"
-           style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+           style="border: 1px solid var(--border);
+                  border-radius: 16px;
+                  padding: 24px;
+                  background: var(--surface);">
 
-        <a href="https://mdfgold.com.br" target="_blank" rel="noopener"
-           style="display: flex; align-items: center; justify-content: center;
-                  background: var(--surface); border: 1px solid var(--border);
-                  border-radius: 16px; padding: 32px;
-                  transition: transform 200ms ease, border-color 200ms ease;
-                  cursor: pointer;"
-           onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--border-strong)'"
-           onmouseout="this.style.transform=''; this.style.borderColor=''">
-          <img src="/logodmfgold.png" alt="MDF Gold"
-               style="max-height: 60px; width: auto; object-fit: contain;">
-        </a>
+        <p style="font-family: 'Syne', sans-serif;
+                  font-size: 12px;
+                  font-weight: 600;
+                  text-transform: uppercase;
+                  letter-spacing: 0.1em;
+                  color: var(--text-muted);
+                  margin: 0 0 20px 0;
+                  text-align: center;">
+          Nossos Parceiros
+        </p>
 
-        <a href="https://www.hystan.com.br/hystanstudio.html" target="_blank" rel="noopener"
-           style="display: flex; align-items: center; justify-content: center;
-                  background: var(--surface); border: 1px solid var(--border);
-                  border-radius: 16px; padding: 32px;
-                  transition: transform 200ms ease, border-color 200ms ease;
-                  cursor: pointer;"
-           onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--border-strong)'"
-           onmouseout="this.style.transform=''; this.style.borderColor=''">
-          <img src="/logohystanstudio.png" alt="Hystan Studio"
-               style="max-height: 60px; width: auto; object-fit: contain;">
-        </a>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
 
+          <a href="https://mdfgold.com.br" target="_blank" rel="noopener"
+             style="display: flex; align-items: center; justify-content: center;
+                    border: 1px solid var(--border); border-radius: 12px;
+                    padding: 20px; cursor: pointer;
+                    transition: transform 200ms ease, border-color 200ms ease;"
+             onmouseover="this.style.transform='translateY(-3px)'; this.style.borderColor='var(--border-strong)'"
+             onmouseout="this.style.transform=''; this.style.borderColor=''">
+            <img src="/logomdfgold.png" alt="MDF Gold"
+                 style="max-height: 50px; width: auto; object-fit: contain;">
+          </a>
+
+          <a href="https://www.hystan.com.br/hystanstudio.html" target="_blank" rel="noopener"
+             style="display: flex; align-items: center; justify-content: center;
+                    border: 1px solid var(--border); border-radius: 12px;
+                    padding: 20px; cursor: pointer;
+                    transition: transform 200ms ease, border-color 200ms ease;"
+             onmouseover="this.style.transform='translateY(-3px)'; this.style.borderColor='var(--border-strong)'"
+             onmouseout="this.style.transform=''; this.style.borderColor=''">
+            <img src="/logohystanstudio.png" alt="Hystan Studio"
+                 style="max-height: 50px; width: auto; object-fit: contain;">
+          </a>
+
+        </div>
       </div>
     </div>
   </div>
