@@ -1,4 +1,4 @@
-package com.hystan.demo;
+﻿package com.hystan.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,7 @@ public class PlanoService {
         String plano  = u.getPlano()  != null ? u.getPlano()      : "gratuito";
         String status = u.getPlanoStatus() != null ? u.getPlanoStatus() : "inativo";
 
+        if ("expirado".equals(status)) return false;
         if (!status.equals("ativo") && !status.equals("trial")) return false;
 
         if (status.equals("trial")) {

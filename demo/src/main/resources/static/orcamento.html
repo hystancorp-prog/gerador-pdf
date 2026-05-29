@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -415,7 +415,9 @@
       const token = await user.getIdToken();
       const r = await fetch('/meu-plano', { headers: { 'Authorization': 'Bearer ' + token } });
       if (r.ok) {
-        window._planoInfoOrc = await r.json();
+        const dOrc = await r.json();
+        if (dOrc.status === 'expirado') { mostrarModalExpirado(); return; }
+        window._planoInfoOrc = dOrc;
       }
     } catch (_) {}
   });
@@ -440,10 +442,19 @@
     } catch (_) {}
   };
 
-  window._doSignOut = async () => {
-    await signOut(auth);
-    localStorage.removeItem('hystan_plano');
-    localStorage.removeItem('hystan_trial_inicio');
+
+  function mostrarModalExpirado() {
+    var el = document.createElement('div');
+    el.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center;';
+    el.innerHTML = '<div style="background:var(--surface,#fff);border:1px solid var(--border,#e0e0dd);border-radius:20px;padding:48px 40px;max-width:460px;width:90%;text-align:center;">'
+      + '<h2 style="font-family:Syne,sans-serif;font-size:24px;font-weight:800;margin:0 0 12px;">Seu trial expirou</h2>'
+      + '<p style="color:var(--text-muted,#666);font-size:15px;margin:0 0 32px;line-height:1.6;">Você testou a Hystan por 7 dias. Para continuar gerando documentos profissionais, escolha um plano.</p>'
+      + '<a href="/planos.html" style="display:block;background:var(--text,#1a1a1a);color:var(--bg,#fff);padding:14px 28px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;margin-bottom:12px;">Ver planos →</a>'
+      + '<button onclick="window._doSignOut()" style="background:none;border:none;color:var(--text-muted,#999);font-size:13px;cursor:pointer;text-decoration:underline;">Sair da conta</button>'
+      + '</div>';
+    document.body.appendChild(el);
+  }
+
     window.location.href = '/auth.html';
   };
 </script>
