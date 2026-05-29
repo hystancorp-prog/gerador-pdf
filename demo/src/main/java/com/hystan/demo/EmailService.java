@@ -1,4 +1,4 @@
-﻿package com.hystan.demo;
+ackage com.hystan.demo;
 
 import com.resend.Resend;
 import com.resend.services.emails.model.CreateEmailOptions;
