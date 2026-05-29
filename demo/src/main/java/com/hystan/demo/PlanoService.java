@@ -1,4 +1,4 @@
-ackage com.hystan.demo;
+package com.hystan.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-ackage com.hystan.demo;
+package com.hystan.demo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
