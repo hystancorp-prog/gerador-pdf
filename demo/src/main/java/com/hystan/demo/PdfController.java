@@ -16,13 +16,14 @@ import java.util.Objects;
 @RestController
 public class PdfController {
 
-    private static final long MAX_SIZE   = 5 * 1024 * 1024;
+    private static final long MAX_SIZE    = 5 * 1024 * 1024;
     private static final byte[] XLSX_MAGIC = {0x50, 0x4B, 0x03, 0x04};
-    private static final int  RATE_LIMIT = 10;
-    private static final long WINDOW_MS  = 60_000L;
+    private static final int  RATE_LIMIT  = 10;
+    private static final long WINDOW_MS   = 60_000L;
 
-    @Autowired private RateLimiter  rateLimiter;
-    @Autowired private PlanoService planoService;
+    @Autowired private RateLimiter     rateLimiter;
+    @Autowired private PlanoService    planoService;
+    @Autowired private ContadorService contadorService;
 
     @GetMapping("/app")
     public ResponseEntity<Void> app() {
@@ -53,7 +54,6 @@ public class PdfController {
             return ResponseEntity.status(403)
                 .body("Limite do plano atingido. Faça upgrade para continuar.".getBytes());
 
-        // Parameter range validation
         if (ano < 2000 || ano > 2100)
             return ResponseEntity.status(400).body("Ano inválido.".getBytes());
         if (mesInicio < 1 || mesInicio > 12 || mesFim < 1 || mesFim > 12)
@@ -61,11 +61,9 @@ public class PdfController {
         if (mesInicio > mesFim)
             return ResponseEntity.status(400).body("Mês inicial não pode ser maior que o final.".getBytes());
 
-        // 1. Size check
         if (file.getSize() > MAX_SIZE)
             return ResponseEntity.status(413).body("Arquivo excede o limite de 5MB.".getBytes());
 
-        // 2. Filename sanity
         String originalName = file.getOriginalFilename();
         if (originalName == null)
             return ResponseEntity.status(400).body("Nome de arquivo inválido.".getBytes());
@@ -74,7 +72,6 @@ public class PdfController {
             return ResponseEntity.status(400)
                 .body("Nome de arquivo inválido. Use apenas letras, números, - _ e .".getBytes());
 
-        // Strip logo if plan does not allow it
         String logoParaUsar = planoService.podeUsarLogo(uid) ? logoBase64 : null;
 
         File temp    = null;
@@ -83,7 +80,6 @@ public class PdfController {
             temp = File.createTempFile("planilha", ".xlsx");
             file.transferTo(Objects.requireNonNull(temp));
 
-            // 3. Magic bytes check
             try (FileInputStream fis = new FileInputStream(temp)) {
                 byte[] header = new byte[4];
                 if (fis.read(header) < 4
@@ -102,6 +98,8 @@ public class PdfController {
             if (dados.isEmpty())
                 return ResponseEntity.status(400)
                     .body("Nenhum registro encontrado para o período selecionado.".getBytes());
+
+            contadorService.proximoNumero(uid, "relatorio");
 
             GeradorPDF.gerar(dados, saida, nomeEmpresa, logoParaUsar != null ? logoParaUsar : "");
 

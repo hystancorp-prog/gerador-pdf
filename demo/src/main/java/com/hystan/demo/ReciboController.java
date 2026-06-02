@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ReciboController {
 
-    @Autowired private RateLimiter  rateLimiter;
-    @Autowired private PlanoService planoService;
+    @Autowired private RateLimiter     rateLimiter;
+    @Autowired private PlanoService    planoService;
+    @Autowired private ContadorService contadorService;
 
     @PostMapping("/gerar-recibo")
     public ResponseEntity<byte[]> gerarRecibo(
@@ -37,6 +38,9 @@ public class ReciboController {
             req.logoBase64 = null;
 
         try {
+            int numDoc = contadorService.proximoNumero(uid, "recibo");
+            req.numeroRecibo = String.format("%04d", numDoc);
+
             byte[] pdf = GeradorReciboPDF.gerar(req);
 
             planoService.incrementarContador(uid);

@@ -15,7 +15,6 @@ import javax.imageio.ImageIO;
 
 public class GeradorOrcamentoPDF {
 
-    private static final java.util.Random RNG = new java.util.Random();
     private static final String FOOTER_TEXT = "Gerado com Hystan · www.hystan.com.br";
 
     private static final float PAGE_H    = PDRectangle.A4.getHeight(); // 841.89
@@ -55,12 +54,12 @@ public class GeradorOrcamentoPDF {
     // PUBLIC ENTRY POINT
     // ─────────────────────────────────────────────────────────────
 
-    public static byte[] gerar(OrcamentoRequest req) throws Exception {
+    public static byte[] gerar(OrcamentoRequest req, int numDoc) throws Exception {
         try (PDDocument doc = new PDDocument()) {
             PDFont bold   = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
             PDFont normal = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
 
-            int numOrc = 1000 + RNG.nextInt(9000);
+            int numOrc = numDoc;
             String hoje = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             PDImageXObject logo = loadLogo(doc, req.logoBase64);
             List<OrcamentoRequest.ItemOrcamento> itens =

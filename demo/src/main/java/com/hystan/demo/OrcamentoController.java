@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class OrcamentoController {
 
-    @Autowired private RateLimiter  rateLimiter;
-    @Autowired private PlanoService planoService;
+    @Autowired private RateLimiter     rateLimiter;
+    @Autowired private PlanoService    planoService;
+    @Autowired private ContadorService contadorService;
 
     @PostMapping("/gerar-orcamento")
     public ResponseEntity<byte[]> gerarOrcamento(
@@ -33,7 +34,6 @@ public class OrcamentoController {
         if (!planoService.podeUsarLogo(uid))
             req.logoBase64 = null;
 
-        // Sanitize items: clamp negatives, enforce minimum qty=1
         if (req.itens != null) {
             for (OrcamentoRequest.ItemOrcamento item : req.itens) {
                 if (item.quantidade <= 0) item.quantidade = 1;
@@ -42,7 +42,8 @@ public class OrcamentoController {
         }
 
         try {
-            byte[] pdf = GeradorOrcamentoPDF.gerar(req);
+            int numDoc = contadorService.proximoNumero(uid, "orcamento");
+            byte[] pdf = GeradorOrcamentoPDF.gerar(req, numDoc);
 
             planoService.incrementarContador(uid);
 
