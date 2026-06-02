@@ -16,141 +16,105 @@ import javax.imageio.ImageIO;
 public class GeradorOrcamentoPDF {
 
     private static final java.util.Random RNG = new java.util.Random();
+    private static final String FOOTER_TEXT = "Gerado com Hystan · www.hystan.com.br";
 
-    /* column boundaries — content width 495 (x 50→545) */
-    private static final float C0 = 50,  C0R = 297; // DESCRICAO  50%
-    private static final float C1 = 297, C1R = 347; // QTD        10%
-    private static final float C2 = 347, C2R = 446; // VALOR UNIT 20%
-    private static final float C3 = 446, C3R = 545; // TOTAL      20%
-    private static final float PAD = 5f;
-    private static final String FOOTER = "Gerado com Hystan · www.hystan.com.br";
+    private static final float PAGE_H    = PDRectangle.A4.getHeight(); // 841.89
+    private static final float MAR_L     = 40f;
+    private static final float MAR_R     = 555f;
+    private static final float CONTENT_W = 515f;
 
-    private static final float PAGE_H   = PDRectangle.A4.getHeight();
-    private static final float ROW_H    = 22f;
-    private static final float TBLHDR_H = 20f;
-    private static final float MIN_Y    = 80f; // footer + margin
+    // Table columns: x 40 -> 272 -> 323 -> 436 -> 555
+    private static final float C_DESC_X = 40f,  C_DESC_W = 232f;
+    private static final float C_QTD_X  = 272f, C_QTD_W  =  51f;
+    private static final float C_UNIT_X = 323f, C_UNIT_W = 113f;
+    private static final float C_TOT_X  = 436f;
+    private static final float C_TOT_R  = 555f;
+
+    private static final float ROW_H = 20f;
+    private static final float TBL_H = 22f;
+    private static final float TOT_H = 26f;
+    private static final float MIN_Y = 130f; // clears signature + footer
+    private static final float PAD   =  4f;
+
+    // Palette
+    private static final Color CBLACK = new Color( 20,  20,  20);
+    private static final Color CTEXT  = new Color( 40,  40,  40);
+    private static final Color CGM    = new Color(100, 100, 100);
+    private static final Color CGL    = new Color(160, 160, 160);
+    private static final Color CGS    = new Color(140, 140, 140);
+    private static final Color CGHD   = new Color( 45,  45,  45);
+    private static final Color CGRW   = new Color(250, 250, 250);
+    private static final Color CGSP   = new Color(210, 210, 210);
+    private static final Color CGLN   = new Color(225, 225, 225);
+    private static final Color CGST   = new Color(242, 242, 242);
+    private static final Color CGFT   = new Color(190, 190, 190);
+    private static final Color COBS   = new Color( 80,  80,  80);
+    private static final Color CWHITE = Color.WHITE;
+
+    // ─────────────────────────────────────────────────────────────
+    // PUBLIC ENTRY POINT
+    // ─────────────────────────────────────────────────────────────
 
     public static byte[] gerar(OrcamentoRequest req) throws Exception {
         try (PDDocument doc = new PDDocument()) {
-
             PDFont bold   = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
             PDFont normal = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
 
-            int numOrc = RNG.nextInt(9000) + 1000;
+            int numOrc = 1000 + RNG.nextInt(9000);
             String hoje = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             PDImageXObject logo = loadLogo(doc, req.logoBase64);
-
-            PDPage firstPage = new PDPage(PDRectangle.A4);
-            doc.addPage(firstPage);
-            PDPageContentStream cs = new PDPageContentStream(doc, firstPage);
-            float y = PAGE_H - 10f;
-
-            /* ── HEADER ── */
-            float headerH   = 56f;
-            float headerBot = y - headerH;
-            cs.setNonStrokingColor(new Color(26, 26, 26));
-            cs.addRect(C0, headerBot, 495, headerH);
-            cs.fill();
-
-            float textX = 60f;
-            if (logo != null) {
-                float lH = Math.min(36f, logo.getHeight());
-                float lW = lH * ((float) logo.getWidth() / logo.getHeight());
-                cs.drawImage(logo, 60, headerBot + (headerH - lH) / 2f, lW, lH);
-                textX = 60 + lW + 10;
-            }
-
-            float textY = headerBot + headerH / 2f - 4f;
-            cs.setNonStrokingColor(Color.WHITE);
-            txt(cs, bold,   13, textX,       textY, "ORCAMENTO No " + numOrc);
-            txtR(cs, normal, 9, C3R - PAD,   textY, "EMISSAO: " + hoje);
-            cs.setNonStrokingColor(Color.BLACK);
-            y = headerBot - 20;
-
-            /* ── PRESTADOR ── */
-            lbl(cs, bold, normal, 50, y, "PRESTADOR");
-            y -= 12;
-            txt(cs, bold, 11, 50, y, san(req.prestadorNome, 70));
-            y -= 14;
-            if (ok(req.prestadorCnpj))     { txt(cs, normal, 9, 50, y, san(req.prestadorCnpj, 40));     y -= 12; }
-            if (ok(req.prestadorTelefone)) { txt(cs, normal, 9, 50, y, san(req.prestadorTelefone, 40)); y -= 12; }
-            y -= 16;
-
-            /* ── CLIENTE ── */
-            lbl(cs, bold, normal, 50, y, "CLIENTE");
-            y -= 12;
-            txt(cs, bold, 11, 50, y, san(req.clienteNome, 70));
-            y -= 14;
-            if (ok(req.clienteCnpj)) { txt(cs, normal, 9, 50, y, san(req.clienteCnpj, 40)); y -= 12; }
-            y -= 20;
-
-            /* ── TABLE HEADER ── */
-            y = drawTableHeader(cs, bold, y);
-
-            /* ── TABLE ROWS ── */
-            double subtotal = 0;
             List<OrcamentoRequest.ItemOrcamento> itens =
                 req.itens != null ? req.itens : Collections.emptyList();
 
+            // First page
+            PDPage page = new PDPage(PDRectangle.A4);
+            doc.addPage(page);
+            PDPageContentStream cs = new PDPageContentStream(doc, page);
+
+            drawHeader(cs, bold, normal, numOrc, hoje, logo);
+            drawInfoBlocks(cs, bold, normal, req);
+
+            float y = 625f;
+            y = drawTableHeader(cs, bold, y);
+
+            // Item rows
+            double subtotal = 0;
             for (int i = 0; i < itens.size(); i++) {
-                /* need space for row + total block (34 + 16) */
-                if (y - ROW_H < MIN_Y + 50f) {
-                    footer(cs, normal);
+                if (y - ROW_H < MIN_Y) {
+                    drawFooter(cs, normal);
                     cs.close();
-                    PDPage next = new PDPage(PDRectangle.A4);
-                    doc.addPage(next);
-                    cs = new PDPageContentStream(doc, next);
-                    y  = PAGE_H - 20f;
-                    y  = drawTableHeader(cs, bold, y);
+                    page = new PDPage(PDRectangle.A4);
+                    doc.addPage(page);
+                    cs = new PDPageContentStream(doc, page);
+                    y = PAGE_H - 40f;
+                    y = drawTableHeader(cs, bold, y);
                 }
-
                 OrcamentoRequest.ItemOrcamento item = itens.get(i);
-                double total = item.quantidade * item.valorUnitario;
-                subtotal += total;
-
-                if (i % 2 == 0) {
-                    cs.setNonStrokingColor(new Color(245, 245, 245));
-                    cs.addRect(C0, y - ROW_H, 495, ROW_H);
-                    cs.fill();
-                    cs.setNonStrokingColor(Color.BLACK);
-                }
-                hline(cs, new Color(224, 224, 224), 0.3f, C0, C3R, y - ROW_H);
-
-                float rY = y - ROW_H + (ROW_H - 9f) / 2f + 2f;
-                txt(cs, normal,  9, C0 + PAD, rY, trunc(normal, 9, san(item.descricao, 100), C0R - C0 - PAD * 2));
-                txtC(cs, normal, 9, C1, C1R - C1, rY, String.valueOf(item.quantidade));
-                txtR(cs, normal, 9, C2R - PAD, rY, money(item.valorUnitario));
-                txtR(cs, normal, 9, C3R - PAD, rY, money(total));
-                y -= ROW_H;
+                double rowTotal = item.quantidade * item.valorUnitario;
+                subtotal += rowTotal;
+                y = drawItemRow(cs, normal, i, item, rowTotal, y);
             }
 
-            /* ── TOTAL ── */
-            y -= 10;
-            hline(cs, new Color(26, 26, 26), 1f, C0, C3R, y);
-            float totH = 24f;
-            cs.setNonStrokingColor(new Color(249, 249, 249));
-            cs.addRect(C0, y - totH, 495, totH);
-            cs.fill();
-            cs.setNonStrokingColor(Color.BLACK);
-            float tY = y - totH + (totH - 11f) / 2f + 3f;
-            txtR(cs, bold, 11, C2R - PAD, tY, "TOTAL:");
-            txtR(cs, bold, 11, C3R - PAD, tY, money(subtotal));
-            y -= totH + 16;
-
-            /* ── VALIDADE / OBS. ── */
-            if (ok(req.validadeDias)) {
-                txt(cs, normal, 9, 50, y, "Validade da proposta: " + san(req.validadeDias, 20) + " dias");
-                y -= 13;
+            // Summary rows — if not enough room, push to new page
+            if (y - ROW_H - TOT_H < MIN_Y) {
+                drawFooter(cs, normal);
+                cs.close();
+                page = new PDPage(PDRectangle.A4);
+                doc.addPage(page);
+                cs = new PDPageContentStream(doc, page);
+                y = PAGE_H - 40f;
             }
-            if (ok(req.observacoes)) {
-                cs.setNonStrokingColor(new Color(136, 136, 136));
-                txt(cs, bold, 8, 50, y, "OBS.:");
-                cs.setNonStrokingColor(Color.BLACK);
-                y -= 11;
-                txt(cs, normal, 9, 50, y, san(req.observacoes, 200));
-            }
+            y = drawSubtotalRow(cs, bold, normal, y, subtotal);
+            y = drawTotalRow(cs, bold, y, subtotal);
 
-            footer(cs, normal);
+            // Post-table sections
+            y -= 20f;
+            y = drawValidade(cs, bold, normal, y, req);
+            y = drawObservacoes(cs, bold, normal, y, req);
+
+            // Signature and footer always at fixed positions on last page
+            drawSignature(cs, bold, normal, req.clienteNome);
+            drawFooter(cs, normal);
             cs.close();
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -159,65 +123,218 @@ public class GeradorOrcamentoPDF {
         }
     }
 
+    // ─────────────────────────────────────────────────────────────
+    // SECTION DRAWERS
+    // ─────────────────────────────────────────────────────────────
+
+    private static void drawHeader(PDPageContentStream cs, PDFont bold, PDFont normal,
+                                   int numOrc, String hoje, PDImageXObject logo) throws Exception {
+        // Title — left side
+        float titleY = PAGE_H - 32f; // baseline ~810
+        cs.setNonStrokingColor(CBLACK);
+        txt(cs, bold, 20f, MAR_L, titleY, "ORCAMENTO - No " + numOrc);
+
+        cs.setNonStrokingColor(CGS);
+        txt(cs, normal, 9f, MAR_L, titleY - 18f, "Data de emissao: " + hoje);
+
+        // Logo — right side, scaled to fit 100x55 box, top-right aligned
+        if (logo != null) {
+            float maxW = 100f, maxH = 55f;
+            float iW   = logo.getWidth(), iH = logo.getHeight();
+            float scale = Math.min(maxW / iW, maxH / iH);
+            float dW = iW * scale, dH = iH * scale;
+            cs.drawImage(logo, MAR_R - dW, PAGE_H - dH, dW, dH);
+        }
+
+        cs.setNonStrokingColor(CBLACK);
+        hline(cs, CGSP, 0.5f, MAR_L, MAR_R, 755f);
+    }
+
+    private static void drawInfoBlocks(PDPageContentStream cs, PDFont bold, PDFont normal,
+                                       OrcamentoRequest req) throws Exception {
+        // ── PRESTADOR (left) ──
+        cs.setNonStrokingColor(CGL);
+        txt(cs, bold, 7f, MAR_L, 740f, "PRESTADOR");
+
+        cs.setNonStrokingColor(CBLACK);
+        txt(cs, bold, 12f, MAR_L, 727f, san(req.prestadorNome, 50));
+
+        cs.setNonStrokingColor(CGM);
+        float infoY = 714f;
+        if (ok(req.prestadorCnpj))     { txt(cs, normal, 9f, MAR_L, infoY, san(req.prestadorCnpj, 30));     infoY -= 12f; }
+        if (ok(req.prestadorTelefone)) { txt(cs, normal, 9f, MAR_L, infoY, san(req.prestadorTelefone, 25)); }
+
+        // Vertical separator between blocks
+        vline(cs, CGSP, 0.5f, 297f, 640f, 745f);
+
+        // ── CLIENTE (right) ──
+        float cx = 307f;
+        cs.setNonStrokingColor(CGL);
+        txt(cs, bold, 7f, cx, 740f, "CLIENTE");
+
+        cs.setNonStrokingColor(CBLACK);
+        txt(cs, bold, 12f, cx, 727f, san(req.clienteNome, 50));
+
+        cs.setNonStrokingColor(CGM);
+        if (ok(req.clienteCnpj)) txt(cs, normal, 9f, cx, 714f, san(req.clienteCnpj, 30));
+
+        cs.setNonStrokingColor(CBLACK);
+        hline(cs, CGSP, 0.5f, MAR_L, MAR_R, 635f);
+    }
+
     private static float drawTableHeader(PDPageContentStream cs, PDFont bold, float y) throws Exception {
-        float thH = TBLHDR_H;
-        cs.setNonStrokingColor(new Color(26, 26, 26));
-        cs.addRect(C0, y - thH, 495, thH);
+        cs.setNonStrokingColor(CGHD);
+        cs.addRect(C_DESC_X, y - TBL_H, CONTENT_W, TBL_H);
         cs.fill();
-        cs.setNonStrokingColor(Color.WHITE);
-        float thY = y - thH + (thH - 9f) / 2f + 2f;
-        txt(cs, bold,  9, C0 + PAD,    thY, "DESCRICAO");
-        txtC(cs, bold, 9, C1, C1R - C1, thY, "QTD");
-        txtR(cs, bold, 9, C2R - PAD,   thY, "VALOR UNIT.");
-        txtR(cs, bold, 9, C3R - PAD,   thY, "TOTAL");
-        cs.setNonStrokingColor(Color.BLACK);
-        return y - thH;
+
+        cs.setNonStrokingColor(CWHITE);
+        float tY = y - TBL_H + (TBL_H - 8f) / 2f + 2f;
+        txt(cs,  bold, 8f, C_DESC_X + PAD,             tY, "DESCRICAO");
+        txtR(cs, bold, 8f, C_QTD_X  + C_QTD_W  - PAD, tY, "QTD");
+        txtR(cs, bold, 8f, C_UNIT_X + C_UNIT_W - PAD, tY, "VALOR UNIT.");
+        txtR(cs, bold, 8f, C_TOT_R  - PAD,             tY, "TOTAL");
+
+        cs.setNonStrokingColor(CBLACK);
+        return y - TBL_H;
     }
 
-    /* ────────────────────────── HELPERS ────────────────────────── */
+    private static float drawItemRow(PDPageContentStream cs, PDFont normal,
+                                     int idx, OrcamentoRequest.ItemOrcamento item,
+                                     double rowTotal, float y) throws Exception {
+        // Even rows (1-indexed) = gray stripe; pares = idx%2==1 in 0-indexed
+        if (idx % 2 == 1) {
+            cs.setNonStrokingColor(CGRW);
+            cs.addRect(C_DESC_X, y - ROW_H, CONTENT_W, ROW_H);
+            cs.fill();
+        }
+        hline(cs, CGLN, 0.3f, C_DESC_X, C_TOT_R, y - ROW_H);
 
-    private static void footer(PDPageContentStream cs, PDFont normal) throws Exception {
-        hline(cs, new Color(224, 224, 221), 0.5f, 50, 545, 52);
-        cs.setNonStrokingColor(new Color(170, 170, 170));
-        float w = tw(normal, 7, FOOTER);
-        txt(cs, normal, 7, 50 + (495 - w) / 2f, 40, FOOTER);
-        cs.setNonStrokingColor(Color.BLACK);
+        float rY = y - ROW_H + (ROW_H - 9f) / 2f + 2f;
+        cs.setNonStrokingColor(CTEXT);
+        String desc = trunc(normal, 9f, san(item.descricao, 150), C_DESC_W - PAD * 2);
+        txt(cs,  normal, 9f, C_DESC_X + PAD,             rY, desc);
+        txtR(cs, normal, 9f, C_QTD_X  + C_QTD_W  - PAD, rY, String.valueOf(item.quantidade));
+        txtR(cs, normal, 9f, C_UNIT_X + C_UNIT_W - PAD, rY, money(item.valorUnitario));
+        txtR(cs, normal, 9f, C_TOT_R  - PAD,             rY, money(rowTotal));
+
+        return y - ROW_H;
     }
 
-    private static void lbl(PDPageContentStream cs, PDFont bold, PDFont normal,
-                              float x, float y, String label) throws Exception {
-        cs.setNonStrokingColor(new Color(136, 136, 136));
-        txt(cs, bold, 8, x, y, label);
-        cs.setNonStrokingColor(Color.BLACK);
+    private static float drawSubtotalRow(PDPageContentStream cs, PDFont bold, PDFont normal,
+                                         float y, double subtotal) throws Exception {
+        cs.setNonStrokingColor(CGST);
+        cs.addRect(C_DESC_X, y - ROW_H, CONTENT_W, ROW_H);
+        cs.fill();
+
+        float rY = y - ROW_H + (ROW_H - 9f) / 2f + 2f;
+        cs.setNonStrokingColor(CGM);
+        txtR(cs, normal, 9f, C_TOT_X - PAD, rY, "Subtotal");
+        cs.setNonStrokingColor(CBLACK);
+        txtR(cs, bold,   9f, C_TOT_R - PAD, rY, money(subtotal));
+
+        return y - ROW_H;
     }
 
-    private static void hline(PDPageContentStream cs, Color col, float w,
-                                float x1, float x2, float lineY) throws Exception {
+    private static float drawTotalRow(PDPageContentStream cs, PDFont bold,
+                                      float y, double total) throws Exception {
+        cs.setNonStrokingColor(CGHD);
+        cs.addRect(C_DESC_X, y - TOT_H, CONTENT_W, TOT_H);
+        cs.fill();
+
+        float tY = y - TOT_H + (TOT_H - 10f) / 2f + 2f;
+        cs.setNonStrokingColor(CWHITE);
+        txt(cs,  bold, 10f, MAR_L + PAD,  tY, "TOTAL");
+        txtR(cs, bold, 12f, C_TOT_R - PAD, tY, money(total));
+
+        cs.setNonStrokingColor(CBLACK);
+        return y - TOT_H;
+    }
+
+    private static float drawValidade(PDPageContentStream cs, PDFont bold, PDFont normal,
+                                      float y, OrcamentoRequest req) throws Exception {
+        if (!ok(req.validadeDias)) return y;
+        cs.setNonStrokingColor(CGL);
+        txt(cs, bold, 7f, MAR_L, y, "VALIDADE DO ORCAMENTO");
+        y -= 13f;
+        cs.setNonStrokingColor(CBLACK);
+        txt(cs, normal, 10f, MAR_L, y, san(req.validadeDias, 10) + " dias");
+        return y - 16f;
+    }
+
+    private static float drawObservacoes(PDPageContentStream cs, PDFont bold, PDFont normal,
+                                         float y, OrcamentoRequest req) throws Exception {
+        if (!ok(req.observacoes)) return y;
+        cs.setNonStrokingColor(CGL);
+        txt(cs, bold, 7f, MAR_L, y, "OBSERVACOES");
+        y -= 13f;
+        cs.setNonStrokingColor(COBS);
+        for (String line : wrapText(normal, 9f, san(req.observacoes, 600), CONTENT_W)) {
+            if (y < MIN_Y + 20f) break;
+            txt(cs, normal, 9f, MAR_L, y, line);
+            y -= 13f;
+        }
+        cs.setNonStrokingColor(CBLACK);
+        return y;
+    }
+
+    private static void drawSignature(PDPageContentStream cs, PDFont bold, PDFont normal,
+                                      String clienteNome) throws Exception {
+        float sigY = 110f;
+        float x1   = 370f, x2 = 555f;
+        float cx   = x1 + (x2 - x1) / 2f;
+
+        hline(cs, CGL, 0.5f, x1, x2, sigY);
+
+        String label = "Assinatura do cliente";
+        cs.setNonStrokingColor(CGL);
+        txt(cs, normal, 8f, cx - tw(normal, 8f, label) / 2f, sigY - 10f, label);
+
+        if (ok(clienteNome)) {
+            String name = san(clienteNome, 40);
+            cs.setNonStrokingColor(CBLACK);
+            txt(cs, bold, 9f, cx - tw(bold, 9f, name) / 2f, sigY - 22f, name);
+        }
+        cs.setNonStrokingColor(CBLACK);
+    }
+
+    private static void drawFooter(PDPageContentStream cs, PDFont normal) throws Exception {
+        hline(cs, CGSP, 0.3f, MAR_L, MAR_R, 42f);
+        float w = tw(normal, 7f, FOOTER_TEXT);
+        cs.setNonStrokingColor(CGFT);
+        txt(cs, normal, 7f, MAR_L + (CONTENT_W - w) / 2f, 28f, FOOTER_TEXT);
+        cs.setNonStrokingColor(CBLACK);
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // HELPERS
+    // ─────────────────────────────────────────────────────────────
+
+    private static void hline(PDPageContentStream cs, Color col, float lw,
+                               float x1, float x2, float lineY) throws Exception {
         cs.setStrokingColor(col);
-        cs.setLineWidth(w);
-        cs.moveTo(x1, lineY);
-        cs.lineTo(x2, lineY);
-        cs.stroke();
-        cs.setStrokingColor(Color.BLACK);
-        cs.setLineWidth(1f);
+        cs.setLineWidth(lw);
+        cs.moveTo(x1, lineY); cs.lineTo(x2, lineY); cs.stroke();
+        cs.setStrokingColor(Color.BLACK); cs.setLineWidth(1f);
+    }
+
+    private static void vline(PDPageContentStream cs, Color col, float lw,
+                               float x, float y1, float y2) throws Exception {
+        cs.setStrokingColor(col);
+        cs.setLineWidth(lw);
+        cs.moveTo(x, y1); cs.lineTo(x, y2); cs.stroke();
+        cs.setStrokingColor(Color.BLACK); cs.setLineWidth(1f);
     }
 
     private static void txt(PDPageContentStream cs, PDFont f, float sz,
-                              float x, float y, String s) throws Exception {
+                             float x, float y, String s) throws Exception {
+        if (s == null || s.isEmpty()) return;
         cs.setFont(f, sz);
         cs.beginText(); cs.newLineAtOffset(x, y); cs.showText(s); cs.endText();
     }
 
     private static void txtR(PDPageContentStream cs, PDFont f, float sz,
-                               float rightX, float y, String s) throws Exception {
-        float w = tw(f, sz, s);
-        txt(cs, f, sz, rightX - w, y, s);
-    }
-
-    private static void txtC(PDPageContentStream cs, PDFont f, float sz,
-                               float colX, float colW, float y, String s) throws Exception {
-        float w = tw(f, sz, s);
-        txt(cs, f, sz, colX + (colW - w) / 2f, y, s);
+                              float rightX, float y, String s) throws Exception {
+        txt(cs, f, sz, rightX - tw(f, sz, s), y, s);
     }
 
     private static float tw(PDFont f, float sz, String s) {
@@ -226,16 +343,41 @@ public class GeradorOrcamentoPDF {
     }
 
     private static String trunc(PDFont f, float sz, String s, float maxW) {
+        if (s == null || s.isEmpty()) return "";
         try {
             if (tw(f, sz, s) <= maxW) return s;
             float dotW = tw(f, sz, "...");
-            while (s.length() > 0) {
+            while (!s.isEmpty()) {
                 s = s.substring(0, s.length() - 1);
                 if (tw(f, sz, s) + dotW <= maxW) return s + "...";
             }
         } catch (Exception ignored) {}
         int est = (int)(maxW / (sz * 0.5f));
         return s.length() <= est ? s : s.substring(0, Math.max(0, est - 3)) + "...";
+    }
+
+    private static List<String> wrapText(PDFont f, float sz, String text, float maxW) {
+        List<String> result = new ArrayList<>();
+        if (text == null || text.isBlank()) return result;
+        String[] words = text.split("\\s+");
+        StringBuilder current = new StringBuilder();
+        for (String word : words) {
+            String test = current.length() == 0 ? word : current + " " + word;
+            try {
+                if (f.getStringWidth(test) / 1000f * sz <= maxW) {
+                    current = new StringBuilder(test);
+                } else {
+                    if (current.length() > 0) result.add(current.toString());
+                    // If a single word is wider than maxW, truncate it
+                    current = new StringBuilder(trunc(f, sz, word, maxW));
+                }
+            } catch (Exception e) {
+                if (current.length() > 0) current.append(" ");
+                current.append(word);
+            }
+        }
+        if (current.length() > 0) result.add(current.toString());
+        return result;
     }
 
     private static String money(double v) {

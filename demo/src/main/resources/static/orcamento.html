@@ -455,6 +455,8 @@
     document.body.appendChild(el);
   }
 
+  window._doSignOut = async function() {
+    await signOut(auth);
     window.location.href = '/auth.html';
   };
 </script>
