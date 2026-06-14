@@ -56,8 +56,10 @@ public class StripeController {
         }
 
         try {
+            String planoNormalizado = plano.trim().toLowerCase();
+
             // Mapeia nome do plano para price ID
-            String priceId = resolverPriceId(plano.trim().toLowerCase());
+            String priceId = resolverPriceId(planoNormalizado);
 
             if (priceId == null || priceId.isBlank()) {
                 Map<String, String> err = new HashMap<>();
@@ -65,8 +67,10 @@ public class StripeController {
                 return ResponseEntity.status(400).body(err);
             }
 
-            // Trial de 7 dias só nos planos mensais
-            boolean temTrial = !plano.contains("anual");
+            // Trial de 7 dias só no plano Essencial (com cartão via Stripe)
+            boolean temTrial = planoNormalizado.equals("trial")
+                || planoNormalizado.equals("essencial")
+                || planoNormalizado.equals("basico");
 
             SessionCreateParams.Builder builder = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
@@ -79,7 +83,7 @@ public class StripeController {
                         .build()
                 );
 
-            // Adiciona trial de 7 dias se for plano mensal
+            // Adiciona trial_period_days na sessão (Stripe exige cartão para o trial)
             if (temTrial) {
                 builder.setSubscriptionData(
                     SessionCreateParams.SubscriptionData.builder()

@@ -42,6 +42,15 @@ public class OrcamentoController {
         }
 
         try {
+            if (req.itens == null || req.itens.isEmpty()) {
+                return ResponseEntity.status(400)
+                    .body("Adicione pelo menos um item.".getBytes());
+            }
+            if (req.itens.size() > 200) {
+                return ResponseEntity.status(400)
+                    .body("Limite de 200 itens por orçamento.".getBytes());
+            }
+
             int numDoc = contadorService.proximoNumero(uid, "orcamento");
             byte[] pdf = GeradorOrcamentoPDF.gerar(req, numDoc);
 

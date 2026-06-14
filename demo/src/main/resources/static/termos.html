@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VWDJBB5DTY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-VWDJBB5DTY');
+</script>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Termos de Uso e Política de Privacidade da Hystan — planos, pagamento, reembolso, cancelamento e proteção de dados (LGPD).">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.hystan.com.br/termos.html">
+<meta name="theme-color" content="#0a0a0a" />
+<title>Termos de Uso & Privacidade — Hystan</title>
+
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('hystan_theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" /></noscript>
+
+<style>
+  :root[data-theme="dark"] {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface-2: #161616;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --text: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.6);
+    --text-dim: rgba(255, 255, 255, 0.4);
+    --invert: #ffffff;
+    --invert-text: #0a0a0a;
+    --logo-light-display: none;
+    --logo-dark-display: block;
+    --grid-color: rgba(255, 255, 255, 0.04);
+  }
+  :root[data-theme="light"] {
+    --bg: #f5f5f3;
+    --surface: #ffffff;
+    --surface-2: #fafaf8;
+    --border: #e0e0dd;
+    --border-strong: #c8c8c4;
+    --text: #1a1a1a;
+    --text-muted: rgba(26, 26, 26, 0.65);
+    --text-dim: rgba(26, 26, 26, 0.45);
+    --invert: #1a1a1a;
+    --invert-text: #ffffff;
+    --logo-light-display: block;
+    --logo-dark-display: none;
+    --grid-color: rgba(0, 0, 0, 0.05);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body {
+    margin: 0;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    font-size: 16px;
+    transition: background 200ms ease, color 200ms ease;
+  }
+  ::selection { background: var(--text); color: var(--bg); }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin: 0; }
+  p { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+
+  .container { width: 100%; max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  /* ===== NAVBAR ===== */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  .nav.scrolled { border-bottom-color: var(--border); }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px; max-width: 880px; margin: 0 auto; padding: 0 24px;
+  }
+  .nav-logo { display: flex; align-items: center; }
+  .nav-logo img { height: 26px; width: auto; }
+  .nav-logo .logo-light { display: var(--logo-light-display); }
+  .nav-logo .logo-dark { display: var(--logo-dark-display); }
+  .nav-actions { display: flex; align-items: center; gap: 8px; }
+
+  .icon-btn {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .icon-btn:hover { background: var(--surface); color: var(--text); }
+  .icon-btn svg { width: 18px; height: 18px; }
+  .theme-toggle .sun { display: none; }
+  :root[data-theme="light"] .theme-toggle .moon { display: none; }
+  :root[data-theme="light"] .theme-toggle .sun { display: block; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px;
+    padding: 10px 18px; border-radius: 10px;
+    font-weight: 500; font-size: 14px;
+    transition: transform 120ms ease, background 160ms ease, border-color 160ms ease, color 160ms ease, opacity 160ms ease;
+    white-space: nowrap;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-ghost { color: var(--text-muted); }
+  .btn-ghost:hover { color: var(--text); background: var(--surface); }
+  .btn-secondary {
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--border-strong); background: var(--surface-2); }
+
+  /* ===== HERO ===== */
+  .legal-hero { position: relative; padding: 132px 0 56px; overflow: hidden; text-align: center; }
+  .legal-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+    pointer-events: none;
+  }
+  .legal-hero .container { position: relative; z-index: 1; }
+  .section-eyebrow {
+    display: inline-block; font-size: 12px; color: var(--text-muted);
+    font-weight: 500; margin-bottom: 16px;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    font-family: 'Syne', sans-serif;
+  }
+  .legal-hero h1 { font-size: clamp(32px, 5.5vw, 56px); margin-bottom: 14px; }
+  .legal-updated { color: var(--text-muted); font-size: 14px; }
+
+  /* ===== TOC ===== */
+  .toc-section { padding: 0 0 56px; }
+  .toc-card {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px 32px;
+  }
+  .toc-col h3 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--text-dim); margin-bottom: 14px; font-weight: 600;
+  }
+  .toc-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .toc-col a { font-size: 14px; color: var(--text-muted); transition: color 160ms ease; }
+  .toc-col a:hover { color: var(--text); }
+
+  /* ===== LEGAL CONTENT ===== */
+  .legal-section { padding: 56px 0; }
+  .legal-section + .legal-section { border-top: 1px solid var(--border); }
+  .legal-title { font-size: clamp(26px, 4vw, 40px); margin-bottom: 44px; }
+  .legal-block { margin-bottom: 36px; scroll-margin-top: 88px; }
+  .legal-block:last-child { margin-bottom: 0; }
+  .legal-block h2 { font-size: 21px; font-weight: 700; margin-bottom: 12px; }
+  .legal-block p {
+    font-size: 15px; font-weight: 400; color: var(--text-muted);
+    line-height: 1.7; margin-bottom: 12px;
+  }
+  .legal-block p:last-child { margin-bottom: 0; }
+  .legal-block ul {
+    margin: 0 0 12px; padding-left: 20px;
+    color: var(--text-muted); font-size: 15px; line-height: 1.7;
+  }
+  .legal-block ul:last-child { margin-bottom: 0; }
+  .legal-block li { margin-bottom: 6px; }
+  .legal-block strong { color: var(--text); font-weight: 600; }
+
+  /* ===== HIGHLIGHT CARDS ===== */
+  .highlight-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 24px; margin-top: 16px;
+  }
+  .highlight-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-dim); margin-bottom: 10px;
+  }
+  .highlight-card p { font-size: 14.5px; color: var(--text-muted); margin-bottom: 8px; }
+  .highlight-card p:last-child { margin-bottom: 0; }
+  .highlight-card strong { color: var(--text); }
+
+  .plan-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .plan-mini { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .plan-mini strong { font-family: 'Syne', sans-serif; color: var(--text); display: block; margin-bottom: 4px; }
+
+  /* ===== FOOTER ===== */
+  footer { border-top: 1px solid var(--border); padding: 32px 0; }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; color: var(--text-dim); flex-wrap: wrap; gap: 16px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .legal-hero { padding: 100px 0 40px; }
+    .toc-card { grid-template-columns: 1fr; gap: 24px; padding: 24px; }
+    .legal-section { padding: 40px 0; }
+    .legal-title { margin-bottom: 32px; }
+    .plan-mini-grid { grid-template-columns: 1fr; gap: 12px; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="/index.html" class="nav-logo" aria-label="Hystan">
+      <img src="/hystan.png" alt="Hystan" class="logo-light" />
+      <img src="/hystan_white.png" alt="Hystan" class="logo-dark" />
+    </a>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Alternar tema">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <a href="/index.html" class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Voltar
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="legal-hero">
+  <div class="container">
+    <span class="section-eyebrow">Documentos legais</span>
+    <h1>Termos de Uso &amp; Privacidade</h1>
+    <p class="legal-updated">Atualizado em 01/06/2026</p>
+  </div>
+</header>
+
+<!-- ===== ÍNDICE ===== -->
+<section class="toc-section">
+  <div class="container">
+    <div class="toc-card">
+      <div class="toc-col">
+        <h3>Termos de Uso</h3>
+        <ul>
+          <li><a href="#t1-identificacao">1. Identificação</a></li>
+          <li><a href="#t2-aceitacao">2. Aceitação dos Termos</a></li>
+          <li><a href="#t3-descricao">3. Descrição do Serviço</a></li>
+          <li><a href="#t4-cadastro">4. Cadastro e Conta</a></li>
+          <li><a href="#t5-planos">5. Planos e Pagamento</a></li>
+          <li><a href="#t6-reembolso">6. Política de Reembolso</a></li>
+          <li><a href="#t7-cancelamento">7. Cancelamento</a></li>
+          <li><a href="#t8-responsabilidade">8. Limitação de Responsabilidade</a></li>
+          <li><a href="#t9-propriedade">9. Propriedade Intelectual</a></li>
+          <li><a href="#t10-conduta">10. Conduta Proibida</a></li>
+          <li><a href="#t11-alteracoes">11. Alterações nos Termos</a></li>
+          <li><a href="#t12-lei">12. Lei Aplicável</a></li>
+          <li><a href="#t13-contato">13. Contato</a></li>
+        </ul>
+      </div>
+      <div class="toc-col">
+        <h3>Política de Privacidade</h3>
+        <ul>
+          <li><a href="#p1-dados">1. Dados Coletados</a></li>
+          <li><a href="#p2-uso">2. Uso dos Dados</a></li>
+          <li><a href="#p3-compartilhamento">3. Compartilhamento de Dados</a></li>
+          <li><a href="#p4-seguranca">4. Segurança</a></li>
+          <li><a href="#p5-direitos">5. Direitos do Titular (LGPD)</a></li>
+          <li><a href="#p6-cookies">6. Cookies e Tecnologias Semelhantes</a></li>
+          <li><a href="#p7-retencao">7. Retenção de Dados</a></li>
+          <li><a href="#p8-dpo">8. Contato do Encarregado (DPO)</a></li>
+          <li><a href="#p9-vigencia">9. Vigência</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <!-- ===== TERMOS DE USO ===== -->
+  <section class="legal-section">
+    <div class="container">
+      <h1 class="legal-title">Termos de Uso</h1>
+
+      <div id="t1-identificacao" class="legal-block">
+        <h2>1. Identificação</h2>
+        <p>A Hystan ("Hystan", "nós" ou "plataforma") é um serviço de software (SaaS) que converte planilhas e formulários em documentos PDF profissionais — relatórios, orçamentos e recibos — acessível pelo site hystan.com.br e pela aplicação web associada.</p>
+        <p>Para qualquer dúvida, solicitação ou contato relacionado a estes Termos, utilize o e-mail <strong>hystancorp@gmail.com</strong>.</p>
+      </div>
+
+      <div id="t2-aceitacao" class="legal-block">
+        <h2>2. Aceitação dos Termos</h2>
+        <p>Ao criar uma conta, acessar ou utilizar qualquer funcionalidade da Hystan, você declara que leu, compreendeu e concorda integralmente com estes Termos de Uso e com a Política de Privacidade descrita nesta mesma página.</p>
+        <p>Caso não concorde com qualquer disposição aqui prevista, você não deve criar uma conta nem utilizar a plataforma.</p>
+      </div>
+
+      <div id="t3-descricao" class="legal-block">
+        <h2>3. Descrição do Serviço</h2>
+        <p>A Hystan oferece ferramentas para geração automática de relatórios em PDF a partir de planilhas Excel, além de modelos para criação de orçamentos e recibos personalizáveis com a identidade visual do usuário (logo, dados da empresa, numeração sequencial de documentos).</p>
+        <p>O serviço é fornecido "como está" e pode passar por atualizações, melhorias, alterações de funcionalidades ou descontinuação de recursos a qualquer momento, sempre buscando manter a qualidade da experiência oferecida.</p>
+      </div>
+
+      <div id="t4-cadastro" class="legal-block">
+        <h2>4. Cadastro e Conta</h2>
+        <p>Para utilizar a Hystan é necessário criar uma conta por meio do Firebase Authentication, com e-mail e senha ou login com conta Google. Você é responsável por manter a confidencialidade das suas credenciais e por todas as atividades realizadas em sua conta.</p>
+        <p>Caso identifique uso não autorizado da sua conta, entre em contato imediatamente pelo e-mail <strong>hystancorp@gmail.com</strong>.</p>
+      </div>
+
+      <div id="t5-planos" class="legal-block">
+        <h2>5. Planos e Pagamento</h2>
+        <p>A Hystan oferece os seguintes planos de assinatura, com cobrança recorrente processada pelo Stripe:</p>
+        <div class="highlight-card">
+          <span class="highlight-label">Planos disponíveis</span>
+          <div class="plan-mini-grid">
+            <div class="plan-mini">
+              <strong>Essencial — R$ 37,90/mês</strong>
+              Até 20 documentos por mês.
+            </div>
+            <div class="plan-mini">
+              <strong>Business — R$ 57,90/mês</strong>
+              Documentos ilimitados, com personalização de logo na marca da sua empresa.
+            </div>
+          </div>
+        </div>
+        <p style="margin-top: 16px;">Novos usuários têm direito a um período de teste gratuito (trial) de <strong>7 dias</strong>, 7 dias grátis com cartão · sem cobrança no período de teste. Após o término do trial, a continuidade do uso da plataforma exige a contratação de um dos planos pagos.</p>
+        <p>As assinaturas são renovadas automaticamente ao final de cada ciclo de cobrança (mensal ou anual, conforme o plano escolhido), até que sejam canceladas pelo usuário.</p>
+        <p>Eventuais alterações de preço serão comunicadas com no mínimo <strong>30 dias de antecedência</strong> por e-mail, e passarão a valer somente a partir do próximo ciclo de cobrança após a notificação.</p>
+      </div>
+
+      <div id="t6-reembolso" class="legal-block">
+        <h2>6. Política de Reembolso</h2>
+        <div class="highlight-card">
+          <span class="highlight-label">Importante</span>
+          <p><strong>Garantia de 7 dias:</strong> caso você não fique satisfeito, pode solicitar o reembolso integral do valor pago em até 7 dias corridos após a primeira cobrança, enviando um e-mail para <strong>hystancorp@gmail.com</strong>.</p>
+          <p>Após esse prazo de 7 dias, <strong>não há reembolso</strong> de valores já pagos, inclusive em caso de cancelamento durante o ciclo vigente.</p>
+          <p>Você pode cancelar sua assinatura a qualquer momento, mantendo acesso à plataforma até o fim do período já pago.</p>
+        </div>
+      </div>
+
+      <div id="t7-cancelamento" class="legal-block">
+        <h2>7. Cancelamento</h2>
+        <div class="highlight-card">
+          <span class="highlight-label">Como cancelar</span>
+          <p>O cancelamento pode ser solicitado a qualquer momento pelo painel da sua conta ou por e-mail para <strong>hystancorp@gmail.com</strong>, sem multas ou taxas adicionais.</p>
+          <p>Ao cancelar, a renovação automática é interrompida e você mantém acesso completo à plataforma até o fim do período já pago.</p>
+        </div>
+      </div>
+
+      <div id="t8-responsabilidade" class="legal-block">
+        <h2>8. Limitação de Responsabilidade</h2>
+        <p>O serviço é fornecido "como está" e "conforme disponibilidade", sem garantias de que será ininterrupto, livre de erros ou de que atenderá a expectativas específicas de cada usuário.</p>
+        <p>A Hystan busca manter um índice de disponibilidade (uptime) de aproximadamente <strong>99%</strong>, porém este valor representa uma meta operacional, e não uma garantia contratual.</p>
+        <p>A Hystan não se responsabiliza por perdas, danos ou prejuízos decorrentes de: uso indevido da plataforma; informações incorretas inseridas pelo usuário nas planilhas ou formulários; indisponibilidades temporárias decorrentes de manutenção, falhas de infraestrutura de terceiros ou eventos fora do nosso controle razoável.</p>
+      </div>
+
+      <div id="t9-propriedade" class="legal-block">
+        <h2>9. Propriedade Intelectual</h2>
+        <p>Todo o software, design, marca, logotipo, layout e conteúdo da plataforma Hystan são de propriedade exclusiva da Hystan ou de seus licenciadores, protegidos pela legislação brasileira de direitos autorais e propriedade industrial.</p>
+        <p>É vedada a reprodução, cópia, engenharia reversa, descompilação ou distribuição não autorizada de qualquer parte da plataforma sem autorização prévia e por escrito.</p>
+      </div>
+
+      <div id="t10-conduta" class="legal-block">
+        <h2>10. Conduta Proibida</h2>
+        <p>Ao utilizar a Hystan, você concorda em não:</p>
+        <ul>
+          <li>Gerar documentos fraudulentos, enganosos ou com informações falsas que visem prejudicar terceiros;</li>
+          <li>Utilizar a plataforma para envio de spam ou conteúdo malicioso;</li>
+          <li>Tentar acessar dados, contas ou documentos de outros usuários sem autorização;</li>
+          <li>Realizar engenharia reversa, scraping automatizado, ataques de força bruta ou qualquer tentativa de comprometer a infraestrutura da Hystan;</li>
+          <li>Utilizar o serviço para qualquer finalidade que viole a legislação brasileira aplicável.</li>
+        </ul>
+        <p>O descumprimento destas regras pode resultar na suspensão ou encerramento imediato da conta, sem prejuízo de outras medidas cabíveis.</p>
+      </div>
+
+      <div id="t11-alteracoes" class="legal-block">
+        <h2>11. Alterações nos Termos</h2>
+        <p>Estes Termos podem ser atualizados periodicamente para refletir mudanças no serviço, em obrigações legais ou em práticas operacionais.</p>
+        <p>Alterações relevantes serão comunicadas por e-mail com no mínimo <strong>15 dias de antecedência</strong>. O uso continuado da plataforma após a entrada em vigor das alterações constitui aceite das novas condições.</p>
+      </div>
+
+      <div id="t12-lei" class="legal-block">
+        <h2>12. Lei Aplicável</h2>
+        <p>Estes Termos são regidos pelas leis da República Federativa do Brasil. Fica eleito o foro da comarca de <strong>Chapecó/SC</strong> para dirimir quaisquer controvérsias decorrentes destes Termos, com renúncia expressa a qualquer outro, por mais privilegiado que seja.</p>
+      </div>
+
+      <div id="t13-contato" class="legal-block">
+        <h2>13. Contato</h2>
+        <div class="highlight-card">
+          <span class="highlight-label">Fale conosco</span>
+          <p>Dúvidas, solicitações ou reclamações relacionadas a estes Termos de Uso podem ser enviadas a qualquer momento para <strong>hystancorp@gmail.com</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== POLÍTICA DE PRIVACIDADE ===== -->
+  <section class="legal-section">
+    <div class="container">
+      <h1 class="legal-title">Política de Privacidade</h1>
+
+      <div id="p1-dados" class="legal-block">
+        <h2>1. Dados Coletados</h2>
+        <p>Para operar a plataforma, coletamos:</p>
+        <ul>
+          <li>Dados de cadastro e autenticação (nome, e-mail) gerenciados via Firebase Authentication (Google OAuth2 ou e-mail/senha);</li>
+          <li>Dados inseridos nos documentos gerados, como nomes de clientes, descrições de serviços e valores de orçamentos e recibos;</li>
+          <li>Dados de pagamento e assinatura processados pelo Stripe — a Hystan não armazena números de cartão de crédito;</li>
+          <li>Informações técnicas de uso, como endereço IP, navegador e logs de acesso, para fins de segurança e prevenção de abusos.</li>
+        </ul>
+      </div>
+
+      <div id="p2-uso" class="legal-block">
+        <h2>2. Uso dos Dados</h2>
+        <p>Os dados coletados são utilizados para:</p>
+        <ul>
+          <li>Criar e autenticar sua conta na plataforma;</li>
+          <li>Processar pagamentos e gerenciar sua assinatura;</li>
+          <li>Gerar os documentos PDF (relatórios, orçamentos e recibos) solicitados;</li>
+          <li>Enviar comunicações operacionais sobre o serviço, como confirmações de pagamento e avisos de alterações nos Termos;</li>
+          <li>Melhorar a plataforma com base em métricas de uso agregadas e anonimizadas.</li>
+        </ul>
+      </div>
+
+      <div id="p3-compartilhamento" class="legal-block">
+        <h2>3. Compartilhamento de Dados</h2>
+        <p>A Hystan <strong>nunca vende</strong> seus dados pessoais a terceiros. Compartilhamos dados apenas com prestadores de serviço estritamente necessários para a operação da plataforma:</p>
+        <ul>
+          <li><strong>Stripe</strong> — processamento de pagamentos e gestão de assinaturas;</li>
+          <li><strong>Firebase / Google</strong> — autenticação de usuários;</li>
+          <li><strong>Railway</strong> — hospedagem da aplicação e infraestrutura;</li>
+          <li><strong>Resend</strong> — envio de e-mails transacionais (confirmações, avisos).</li>
+        </ul>
+        <p>Cada um desses prestadores possui sua própria política de privacidade e trata os dados apenas na medida necessária para a função que desempenha.</p>
+      </div>
+
+      <div id="p4-seguranca" class="legal-block">
+        <h2>4. Segurança</h2>
+        <p>Adotamos medidas técnicas e organizacionais para proteger seus dados, incluindo criptografia em trânsito (HTTPS/TLS), autenticação baseada em tokens do Firebase e controle de acesso às informações armazenadas.</p>
+        <p>Apesar dos esforços empregados, nenhum sistema é totalmente livre de riscos. Recomendamos que você mantenha suas credenciais de acesso em sigilo e utilize senhas fortes.</p>
+      </div>
+
+      <div id="p5-direitos" class="legal-block">
+        <h2>5. Direitos do Titular (LGPD)</h2>
+        <p>Em conformidade com a Lei nº 13.709/2018 (Lei Geral de Proteção de Dados — LGPD), você tem direito a:</p>
+        <ul>
+          <li>Confirmação da existência de tratamento de dados;</li>
+          <li>Acesso aos seus dados pessoais;</li>
+          <li>Correção de dados incompletos, inexatos ou desatualizados;</li>
+          <li>Anonimização, bloqueio ou eliminação de dados desnecessários ou tratados em desconformidade com a lei;</li>
+          <li>Portabilidade dos dados a outro fornecedor de serviço;</li>
+          <li>Eliminação dos dados pessoais tratados com base no seu consentimento;</li>
+          <li>Revogação do consentimento a qualquer momento.</li>
+        </ul>
+        <p>Para exercer qualquer um desses direitos, envie uma solicitação para <strong>hystancorp@gmail.com</strong>.</p>
+      </div>
+
+      <div id="p6-cookies" class="legal-block">
+        <h2>6. Cookies e Tecnologias Semelhantes</h2>
+        <p>A Hystan utiliza o armazenamento local do navegador (<strong>localStorage</strong>) para salvar preferências de exibição, como o tema claro/escuro escolhido (chave <strong>hystan_theme</strong>), além de dados de sessão necessários para manter você autenticado.</p>
+        <p>Utilizamos também o <strong>Google Analytics</strong> (identificador <code>G-VWDJBB5DTY</code>) para entender, de forma agregada e anônima, como os visitantes utilizam o site. <strong>Não utilizamos cookies de rastreamento publicitário de terceiros.</strong></p>
+        <p>Você pode limpar os dados armazenados localmente a qualquer momento pelas configurações do seu navegador, o que poderá redefinir suas preferências de exibição e exigir um novo login.</p>
+      </div>
+
+      <div id="p7-retencao" class="legal-block">
+        <h2>7. Retenção de Dados</h2>
+        <p>Após o cancelamento de uma conta, mantemos os dados associados por até <strong>30 dias</strong>, período durante o qual é possível solicitar a reativação da conta.</p>
+        <p>Logs de acesso são retidos por até <strong>6 meses</strong> para fins de segurança, auditoria e prevenção de fraudes. Após os prazos indicados, os dados são excluídos ou anonimizados de forma definitiva.</p>
+      </div>
+
+      <div id="p8-dpo" class="legal-block">
+        <h2>8. Contato do Encarregado (DPO)</h2>
+        <div class="highlight-card">
+          <span class="highlight-label">Encarregado de proteção de dados</span>
+          <p>Para exercer os direitos previstos na LGPD ou esclarecer dúvidas sobre o tratamento dos seus dados pessoais, entre em contato com nosso Encarregado de Proteção de Dados (DPO) pelo e-mail <strong>hystancorp@gmail.com</strong>.</p>
+        </div>
+      </div>
+
+      <div id="p9-vigencia" class="legal-block">
+        <h2>9. Vigência</h2>
+        <p>Esta Política de Privacidade está em vigor desde <strong>01/06/2026</strong> e poderá ser atualizada conforme necessário. Qualquer alteração será publicada nesta mesma página, com a respectiva data de atualização indicada no topo.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container footer-bottom">
+    <span>© 2026 Hystan. Todos os direitos reservados.</span>
+    <a href="/index.html" class="btn btn-ghost">← Voltar para o início</a>
+  </div>
+</footer>
+
+<script>
+  // ===== THEME TOGGLE =====
+  (function () {
+    var toggle = document.getElementById('themeToggle');
+    var root = document.documentElement;
+
+    function applyTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      try { localStorage.setItem('hystan_theme', theme); } catch (e) {}
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'light' ? '#f5f5f3' : '#0a0a0a');
+    }
+
+    toggle.addEventListener('click', function () {
+      var current = root.getAttribute('data-theme');
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    });
+  })();
+
+  // ===== NAV SCROLLED =====
+  (function () {
+    var nav = document.getElementById('nav');
+    function onScroll() {
+      if (window.scrollY > 8) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+
+</body>
+</html>
